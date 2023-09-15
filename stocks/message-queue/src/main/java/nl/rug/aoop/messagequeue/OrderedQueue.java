@@ -1,10 +1,16 @@
 package nl.rug.aoop.messagequeue;
+
 import java.time.LocalDateTime;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ *  Ordered queue class that takes time of messages into account.
+ */
+
 public class OrderedQueue implements MessageQueue {
     private SortedMap<LocalDateTime, Message> queue = new TreeMap();
+
     @Override
     public void enqueue(Message message) {
         if (message != null) {
