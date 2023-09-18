@@ -23,18 +23,49 @@ public class TestUnorderedQueue {
         assertEquals(0, queue.getSize());
     }
 
-   /* @Test
+    @Test
     void testQueueMethods() {
-        List<Method> methods = List.of(queue.getClass().getDeclaredMethods());
-        assertTrue(methods.contains("enqueue"));
-        assertTrue(methods.contains("dequeue"));
-        assertTrue(methods.contains("getSize"));
-    }*/
+        Method[] methods = queue.getClass().getDeclaredMethods();
 
+        boolean containsEnqueue = false;
+        boolean containsDequeue = false;
+        boolean containsGetSize = false;
+
+        for (Method method : methods) {
+            if (method.getName().equals("enqueue")) {
+                containsEnqueue = true;
+            } else if (method.getName().equals("dequeue")) {
+                containsDequeue = true;
+            } else if (method.getName().equals("getSize")) {
+                containsGetSize = true;
+            }
+        }
+
+        assertTrue(containsEnqueue);
+        assertTrue(containsDequeue);
+        assertTrue(containsGetSize);
+    }
+
+    @Test
+    void testEnqueue() {
+        Message nullMessage = null;
+        queue.enqueue(nullMessage);
+        assertEquals(0, queue.getSize());
+
+        Message validMessage = new Message("header", "body");
+        queue.enqueue(validMessage);
+        assertEquals(1, queue.getSize());
+    }
 
     @Test
     void testDequeue() {
         assertNull(queue.dequeue());
+        assertEquals(0, queue.getSize());
+
+        Message validMessage = new Message("header", "body");
+        queue.enqueue(validMessage);
+        assertEquals(validMessage, queue.dequeue());
+        assertEquals(0, queue.getSize());
     }
 
     @Test
@@ -59,6 +90,8 @@ public class TestUnorderedQueue {
         assertEquals(0, queue.getSize());
     }
 
+
+
     @Test
     void testQueueOrdering() {
         Message message1 = new Message("header", "body");
@@ -72,6 +105,19 @@ public class TestUnorderedQueue {
         assertEquals(message3, queue.dequeue());
         assertEquals(message1, queue.dequeue());
         assertEquals(message2, queue.dequeue());
+    }
+
+    @Test
+    void testLargeAmountOfMessages() {
+        int numberOfMessages = 10000;
+        for (int i = 0; i < numberOfMessages; i++) {
+            Message message = new Message("header", "body");
+            queue.enqueue(message);
+        }
+        for (int i = 0; i < numberOfMessages; i++) {
+            queue.dequeue();
+        }
+        assertEquals(0, queue.getSize());
     }
 
 }
