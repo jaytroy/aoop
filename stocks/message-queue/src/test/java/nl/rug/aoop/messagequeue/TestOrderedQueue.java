@@ -46,18 +46,71 @@ public class TestOrderedQueue {
     }
 
     @Test
-    void testQueueEnqueue() {
+    void testEnqueueAndDequeueTimeStamps() {
         Message message1 = new Message("header", "body");
         Message message2 = new Message("header", "body");
         Message message3 = new Message("header", "body");
 
-        queue.enqueue(message3);
         queue.enqueue(message1);
+        queue.enqueue(message3); //No matter what order we dequeue the results should be the same
         queue.enqueue(message2);
 
         assertEquals(message1, queue.dequeue());
         assertEquals(message2, queue.dequeue());
         assertEquals(message3, queue.dequeue());
+
+        assertEquals(0, queue.getSize());
+    }
+    @Test
+    void testEnqueueAndDequeueSameTimeStamps() {
+        Message message1 = new Message("header", "body");
+        Message message2 = new Message("header", "body");
+        Message message3 = new Message("header", "body");
+
+
+        queue.enqueue(message1);
+        queue.enqueue(message2);
+        queue.enqueue(message1);
+        queue.enqueue(message3);
+        queue.enqueue(message2);
+        queue.enqueue(message1);
+
+        assertEquals(message1, queue.dequeue());
+        assertEquals(message1, queue.dequeue());
+        assertEquals(message1, queue.dequeue());
+        assertEquals(message2, queue.dequeue());
+        assertEquals(message2, queue.dequeue());
+        assertEquals(message3, queue.dequeue());
+
+        assertEquals(0, queue.getSize());
+    }
+
+    @Test
+    void testOverallEnqueue() {
+        Message validMessage = new Message("header", "body");
+        queue.enqueue(validMessage);
+        assertEquals(1, queue.getSize());
+    }
+
+    @Test
+    void testEnqueueNull() {
+        Message nullMessage = null;
+        queue.enqueue(nullMessage);
+        assertEquals(0, queue.getSize());
+    }
+
+    @Test
+    void testDequeueNull() {
+        assertNull(queue.dequeue());
+        assertEquals(0, queue.getSize());
+    }
+
+    @Test
+    void testQueueDequeue() {
+        Message validMessage = new Message("header", "body");
+        queue.enqueue(validMessage);
+        assertEquals(validMessage, queue.dequeue());
+        assertEquals(0, queue.getSize());
     }
 
     @Test
@@ -71,27 +124,6 @@ public class TestOrderedQueue {
         queue.enqueue(message2);
 
         assertEquals(3, queue.getSize());
-    }
-
-    @Test
-    void testOrderedTimeStamps() {
-        Message message1 = new Message("header", "body");
-        Message message2 = new Message("header", "body");
-        Message message3 = new Message("header", "body");
-
-        queue.enqueue(message2);
-        queue.enqueue(message3);
-        queue.enqueue(message1);
-
-        Message dequeued1 = queue.dequeue();
-        Message dequeued2 = queue.dequeue();
-        Message dequeued3 = queue.dequeue();
-
-        assertEquals(message1, dequeued1);
-        assertEquals(message2, dequeued2);
-        assertEquals(message3, dequeued3);
-
-        assertEquals(0, queue.getSize());
     }
 
     @Test

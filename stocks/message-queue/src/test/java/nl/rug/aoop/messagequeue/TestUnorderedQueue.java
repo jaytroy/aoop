@@ -48,13 +48,16 @@ public class TestUnorderedQueue {
 
     @Test
     void testEnqueue() {
-        Message nullMessage = null;
-        queue.enqueue(nullMessage);
-        assertEquals(0, queue.getSize());
-
         Message validMessage = new Message("header", "body");
         queue.enqueue(validMessage);
         assertEquals(1, queue.getSize());
+    }
+
+    @Test
+    void testEnqueueNull() {
+        Message nullMessage = null;
+        queue.enqueue(nullMessage);
+        assertEquals(0, queue.getSize());
     }
 
     @Test
