@@ -5,13 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static org.junit.jupiter.api.Assertions.*;
 
 
