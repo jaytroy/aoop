@@ -18,11 +18,8 @@ public class OrderedQueue implements MessageQueue {
         if (message != null) {
             LocalDateTime timestamp = message.getTimestamp();
             if (queue.containsKey(timestamp)) {
-                // Explination for jay: If there are messages with the same timestamp, add the new message to the list
                 queue.get(timestamp).add(message);
             } else {
-                // Explination for jay: If there are no messages with this timestamp, create a new list and add the
-                // message
                 List<Message> messages = new ArrayList<>();
                 messages.add(message);
                 queue.put(timestamp, messages);
