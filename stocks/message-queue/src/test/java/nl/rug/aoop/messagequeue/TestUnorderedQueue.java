@@ -61,10 +61,13 @@ public class TestUnorderedQueue {
     }
 
     @Test
-    void testDequeue() {
+    void testDequeueNull() {
         assertNull(queue.dequeue());
         assertEquals(0, queue.getSize());
+    }
 
+    @Test
+    void testDequeue() {
         Message validMessage = new Message("header", "body");
         queue.enqueue(validMessage);
         assertEquals(validMessage, queue.dequeue());

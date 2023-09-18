@@ -33,7 +33,6 @@ public class OrderedQueue implements MessageQueue {
             LocalDateTime earliestTimestamp = queue.firstKey();
             List<Message> messages = queue.get(earliestTimestamp);
             Message message = messages.remove(0);
-
             if (messages.isEmpty()) {
                 queue.remove(earliestTimestamp);
             }
