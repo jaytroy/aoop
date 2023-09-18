@@ -14,16 +14,18 @@ public class UnorderedQueue implements MessageQueue {
     public void enqueue(Message message) {
         if (message != null) {
             queue.offer(message);
+        } else {
+            throw new IllegalArgumentException("Message cannot be null");
         }
-        throw new IllegalArgumentException("Message cannot be null");
     }
 
     @Override
     public Message dequeue() {
         if (!queue.isEmpty()) {
             return queue.poll();
+        } else {
+            throw new IllegalArgumentException("Queue has no elements");
         }
-        throw new IllegalArgumentException("Queue has no elements");
     }
 
     @Override

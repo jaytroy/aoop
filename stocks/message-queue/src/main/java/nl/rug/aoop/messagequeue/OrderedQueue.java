@@ -15,8 +15,9 @@ public class OrderedQueue implements MessageQueue {
     public void enqueue(Message message) {
         if (message != null) {
             queue.put(message.getTimestamp(), message); //What happens when times for 2 messages are the same?
+        } else {
+            throw new IllegalArgumentException("Message cannot be null");
         }
-        throw new IllegalArgumentException("Message cannot be null");
     }
 
     @Override
@@ -26,9 +27,11 @@ public class OrderedQueue implements MessageQueue {
             Message message = queue.get(earliestTimestamp);
             queue.remove(earliestTimestamp);
             return message;
+        } else {
+            throw new IllegalArgumentException("Queue has no elements");
         }
-        throw new IllegalArgumentException("Queue has no elements");
     }
+
 
     @Override
     public int getSize() {
