@@ -46,7 +46,7 @@ public class TestMessage {
         assertTrue(timestamp.isAfter(windowStart) && timestamp.isBefore(windowEnd));
     }
 
-    //Should this be moved out into producer tests?
+    //Should this be moved out into producer tests
     @Test
     void testNonEmptyHeaderAndBody() { // Test checks if either the header or body is empty
         assertNotEquals("", message.getHeader());

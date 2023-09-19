@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Class that implements MQProducer so that you can enqueue messages.
  */
 
-public class ComProducer implements MQProducer {
+public class Producer implements MQProducer {
     @Getter
     private MessageQueue messageQueue;
 
@@ -19,7 +19,7 @@ public class ComProducer implements MQProducer {
      *
      * @param messageQueue the messagequeue.
      */
-    public ComProducer(MessageQueue messageQueue) {
+    public Producer(MessageQueue messageQueue) {
         this.messageQueue = messageQueue;
     }
 

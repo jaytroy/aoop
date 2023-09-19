@@ -1,10 +1,13 @@
 package nl.rug.aoop.messagequeue;
 
+import lombok.Getter;
+
 /**
  * ComConsumer class that imlements MQConsumer.
  */
 
-public class ComConsumer implements MQConsumer {
+public class Consumer implements MQConsumer {
+    @Getter
     private MessageQueue messageQueue;
 
     /**
@@ -12,7 +15,7 @@ public class ComConsumer implements MQConsumer {
      *
      * @param messageQueue the messagequeue.
      */
-    public ComConsumer(MessageQueue messageQueue) {
+    public Consumer(MessageQueue messageQueue) {
         this.messageQueue = messageQueue;
     }
 

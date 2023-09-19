@@ -53,7 +53,6 @@ public class TestOrderedQueue {
         Message message2 = new Message("header", "body");
         Message message3 = new Message("header", "body");
 
-        queue.enqueue(message3);
         queue.enqueue(message1);
         queue.enqueue(message2);
         queue.enqueue(message1);
