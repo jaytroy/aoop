@@ -38,43 +38,29 @@ public class TestProducer {
         assertSame(queueUnord.dequeue(), msg);
     }
 
-    /*
     @Test
-    void testMaxCharacter() {
-        String longHeader = "This is more than two hundred and eighty characters This is more than two hundred and " +
-                "eighty characters This is more than two hundred and eighty characters This is more than two hundred " +
-                "and eighty characters This is more than two hundred and eighty characters This is more than two " +
-                "hundred and eighty characters";
-        String longBody = "This is more than two hundred and eighty characters This is more than two hundred and " +
-                "eighty characters This is more than two hundred and eighty characters This is more than two hundred " +
-                "and eighty characters This is more than two hundred and eighty characters This is more than two " +
-                "hundred and eighty characters";
+    void testMaxCharacters() {
+        MessageText m = new MessageText();
 
-        String maxHeader = "This is the max amount of characters. This is the max amount of characters. This is the " +
-                "max amount of characters. This is the max amount of ";
-        String maxBody = "This is the max amount of characters. This is the max amount of characters. This is the " +
-                "max amount of characters. This is the max amount of ";
-
-
-
-        Message messageLong = new Message(longHeader, longBody);
-        Message messageMax = new Message (maxHeader, maxBody);
-
+        Message messageLong = new Message(m.LONG_HEADER, m.LONG_BODY);
         assertThrows(IOException.class, () -> producerUnord.maxCharacters(messageLong));
-        assertThrows(IOException.class, () -> producerUnord.maxCharacters(messageMax));
     }
 
     @Test
-    void testShortMessage() {
-        String shortHeader = "This is a short header";
-        String shortBody = "This is a short header";
+    void testPutMessageIllegalHeader() {
+        Message m = new Message("1234", "Valid");
 
-        Message messageShort = new Message (shortHeader, shortBody);
+        producerOrd.putMessage(m);
+        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+    }
 
-        producerUnord.putMessage(messageShort);
-        assertSame(queueUnord.dequeue(), messageShort);
-    } */
+    @Test
+    void testPutMessageIllegalBody() {
+        Message m = new Message("Valid","1234");
 
+        producerOrd.putMessage(m);
+        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+    }
     @Test
     void testPutMessageOrd() {
         producerOrd.putMessage(msg);

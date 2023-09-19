@@ -17,7 +17,7 @@ public class Producer implements MQProducer {
     /**
      * Constructor for ComProducer.
      *
-     * @param messageQueue the messagequeue.
+     * @param messageQueue the message queue.
      */
     public Producer(MessageQueue messageQueue) {
         this.messageQueue = messageQueue;
@@ -47,17 +47,12 @@ public class Producer implements MQProducer {
     }
 
     @Override
-    public void maxCharacters(Message message) {
-        try {
-            String header = message.getHeader();
-            String body = message.getBody();
+    public void maxCharacters(Message message) throws IOException {
+        String header = message.getHeader();
+        String body = message.getBody();
 
-            if (header.length() + body.length() > 280) {
-                throw new IOException("Message exceeds maximum length of 280 characters.");
-            }
-
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getMessage());
+        if (header.length() + body.length() > 280) {
+            throw new IOException("Message exceeds maximum length of 280 characters.");
         }
     }
 }

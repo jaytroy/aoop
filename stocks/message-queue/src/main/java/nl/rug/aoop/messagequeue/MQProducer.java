@@ -1,5 +1,7 @@
 package nl.rug.aoop.messagequeue;
 
+import java.io.IOException;
+
 /**
  * MQProducer interface.
  */
@@ -19,5 +21,5 @@ public interface MQProducer {
      * @param message the message.
      */
 
-    void maxCharacters(Message message);
+    void maxCharacters(Message message) throws IOException;
 }
