@@ -44,6 +44,4 @@ public class ComProducer implements MQProducer {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
-
-    putMessage(new Message("1234","1234"));
 }

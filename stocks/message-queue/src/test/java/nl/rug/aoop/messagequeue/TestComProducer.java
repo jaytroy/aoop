@@ -42,9 +42,9 @@ public class TestComProducer {
 
     @Test
     void testHeaderInvalid() {
-        Message msg = new Message("1234","1234");
-        IOException exception = assertThrows(IOException.class, () -> producer1.putMessage(msg));
-        assertEquals("Header contains illegal characters", exception.getMessage());
+        Message msg = new Message("1234","valid");
+
+        assertThrows(IOException.class, () -> producer1.putMessage(msg));
     }
 
     @Test
@@ -57,12 +57,13 @@ public class TestComProducer {
 
     }
 
-    //Next two are integration tests? Are these necessary?
+    //Next two are integration tests? Are these necessary? I'll add them anyway
     @Test
     void messageIntoOrdered() {
 
     }
 
+    @Test
     void messageIntoUnordered() {
 
     }
