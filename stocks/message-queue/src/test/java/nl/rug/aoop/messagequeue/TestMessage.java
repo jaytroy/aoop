@@ -55,6 +55,7 @@ public class TestMessage {
 
     @Test
     void testMaxCharacter() {
+        // Max characters per message is 280, we test for this but do not implement it in the actual code
         String longHeader = "This is more than two hundred and eighty characters This is more than two hundred and " +
                 "eighty characters This is more than two hundred and eighty characters This is more than two hundred " +
                 "and eighty characters This is more than two hundred and eighty characters This is more than two " +
