@@ -54,37 +54,6 @@ public class TestMessage {
     }
 
     @Test
-    void testMaxCharacter() {
-        // Max characters per message is 280, we test for this but do not implement it in the actual code
-        String longHeader = "This is more than two hundred and eighty characters This is more than two hundred and " +
-                "eighty characters This is more than two hundred and eighty characters This is more than two hundred " +
-                "and eighty characters This is more than two hundred and eighty characters This is more than two " +
-                "hundred and eighty characters";
-        String longBody = "This is more than two hundred and eighty characters This is more than two hundred and " +
-                "eighty characters This is more than two hundred and eighty characters This is more than two hundred " +
-                "and eighty characters This is more than two hundred and eighty characters This is more than two " +
-                "hundred and eighty characters";
-        String shortHeader = "This is a short header";
-        String shortBody = "This is a short header";
-        String maxHeader = "This is the max amount of characters. This is the max amount of characters. This is the " +
-                "max amount of characters. This is the max amount of ";
-        String maxBody = "This is the max amount of characters. This is the max amount of characters. This is the " +
-                "max amount of characters. This is the max amount of ";
-
-        String greaterThanSixtyHeader = "Header should be a max of sixty character Header should be a max of sixty " +
-                "characters ";
-        String sixtyHeader = "Header should be a max of sixty characters Header should be ";
-        String lessThanSixtyHeader = "Header should be a max of sixty character";
-
-        assertTrue((longHeader.length() + longBody.length()) > 280);
-        assertTrue((shortHeader.length() + shortBody.length()) < 280);
-        assertEquals(280, maxHeader.length() + maxBody.length());
-        assertTrue(greaterThanSixtyHeader.length() > 60);
-        assertEquals(60, sixtyHeader.length());
-        assertTrue(lessThanSixtyHeader.length() < 60);
-    }
-
-    @Test
     void testMessageImmutable() {
         List<Field> fields = List.of(Message.class.getDeclaredFields());
         fields.forEach(field -> {

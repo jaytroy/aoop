@@ -31,16 +31,32 @@ public class Producer implements MQProducer {
             Matcher matchHeader = pattern.matcher(message.getHeader());
             Matcher matchBody = pattern.matcher(message.getBody());
 
-            if(!matchHeader.find()) {
+            if (!matchHeader.find()) {
                 throw new IOException("Header contains illegal characters.");
             }
-            if(!matchBody.find()) {
+            if (!matchBody.find()) {
                 throw new IOException("Body contains illegal characters.");
             }
 
+            maxCharacters(message);
+
             messageQueue.enqueue(message);
-            System.out.println("Message put successfully");
-        } catch(IOException e) {
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void maxCharacters(Message message) {
+        try {
+            String header = message.getHeader();
+            String body = message.getBody();
+
+            if (header.length() + body.length() > 280) {
+                throw new IOException("Message exceeds maximum length of 280 characters.");
+            }
+
+        } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }

@@ -9,7 +9,15 @@ public interface MQProducer {
     /**
      * PutMessage puts a message into the queue.
      *
-     * @param message the message of the queue.
+     * @param message the message.
      */
     void putMessage(Message message);
+
+    /**
+     * maxCharacters checks if the message exceeds max characters.
+     *
+     * @param message the message.
+     */
+
+    void maxCharacters(Message message);
 }
