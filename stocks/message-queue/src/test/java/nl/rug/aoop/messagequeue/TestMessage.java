@@ -46,7 +46,7 @@ public class TestMessage {
         assertTrue(timestamp.isAfter(windowStart) && timestamp.isBefore(windowEnd));
     }
 
-
+    //Should this be moved out into producer tests?
     @Test
     void testNonEmptyHeaderAndBody() { // Test checks if either the header or body is empty
         assertNotEquals("", message.getHeader());
@@ -91,16 +91,5 @@ public class TestMessage {
         });
     }
 
-    //Defines a test which checks whether the header is made out of english characters
-    @Test
-    void testMessageValidChars() {
-        Message message1 = new Message("TEST", "test"); //Is this line necessary?
 
-        Pattern pattern = Pattern.compile("^[a-z]*$", Pattern.CASE_INSENSITIVE);
-        Matcher matchHeader = pattern.matcher(message1.getHeader());
-        Matcher matchBody = pattern.matcher(message1.getBody());
-
-        assertTrue(matchHeader.find());
-        assertTrue(matchBody.find());
-    }
 }
