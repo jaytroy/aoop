@@ -24,25 +24,11 @@ public class TestOrderedQueue {
 
     @Test
     void testQueueMethods() {
-        Method[] methods = queue.getClass().getDeclaredMethods();
+        List<Method> methods = List.of(queue.getClass().getDeclaredMethods());
 
-        boolean containsEnqueue = false;
-        boolean containsDequeue = false;
-        boolean containsGetSize = false;
-
-        for (Method method : methods) {
-            if (method.getName().equals("enqueue")) {
-                containsEnqueue = true;
-            } else if (method.getName().equals("dequeue")) {
-                containsDequeue = true;
-            } else if (method.getName().equals("getSize")) {
-                containsGetSize = true;
-            }
-        }
-
-        assertTrue(containsEnqueue);
-        assertTrue(containsDequeue);
-        assertTrue(containsGetSize);
+        assertEquals(methods.get(0).getName(), "enqueue"); //What if methods are switched around? Other option is a bunch of loops
+        assertEquals(methods.get(1).getName(), "getSize"); //If switched around it seems to work. getDeclaredMethods() comes up with hashtable entries which sort themselves I guess?
+        assertEquals(methods.get(2).getName(), "dequeue");
     }
 
     @Test
@@ -67,7 +53,7 @@ public class TestOrderedQueue {
         Message message2 = new Message("header", "body");
         Message message3 = new Message("header", "body");
 
-
+        queue.enqueue(message3);
         queue.enqueue(message1);
         queue.enqueue(message2);
         queue.enqueue(message1);
@@ -133,6 +119,8 @@ public class TestOrderedQueue {
             Message message = new Message("header", "body");
             queue.enqueue(message);
         }
+        assertEquals(10000, queue.getSize());
+
         for (int i = 0; i < numberOfMessages; i++) {
             queue.dequeue();
         }
