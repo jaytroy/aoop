@@ -10,7 +10,7 @@ ___
 
 **Answer**:
 
-I disagree support the idea. Logging holds significant importance in every application, irrespective of its scale. While testing is effective, it may not cover all real-world scenarios. Logging is indispensable for various purposes like monitoring, enhancing security, and facilitating debugging. Therefore, it should be implemented not only for its error-handling capabilities but also for the array of advantages it offers, as mentioned earlier.
+We disagree with the idea. Logging holds significant importance in every application, regardless of its scale. While testing is effective, it may not cover all real-world scenarios. Logging is indispensable for various purposes like monitoring, enhancing security, and facilitating debugging. Therefore, it should be implemented not only for its error-handling capabilities but also for the many advantages it offers, as mentioned earlier.
 ___
 
 # Question 2
@@ -43,24 +43,19 @@ public class UniqueLinkedList<T> {
     }
 
     public void delete(T value) {
-        if (head == null) {
-            return;
-        }
-
-        if (head.getValue().equals(value)) {
+        while (head != null && head.getValue().equals(value)) {
             head = head.getNext();
             size--;
-            return;
         }
 
         Node<T> current = head;
-        while (current.getNext() != null) {
+        while (current != null && current.getNext() != null) {
             if (current.getNext().getValue().equals(value)) {
                 current.setNext(current.getNext().getNext());
                 size--;
-                return;
+            } else {
+                current = current.getNext();
             }
-            current = current.getNext();
         }
     }
 
@@ -91,7 +86,7 @@ ___
 
 **Answer**:
 
-Continuous Integration is applied to our assignment through a Git. We enforce continuous integration by requiring that all code changes are tested locally before being pushed to the Git repository. This ensures that new code does not break existing functionality. Additionally, Git allows us to collaborate effectively with our team, share work, and merge changes seamlessly, enabling us to work faster and maintain code quality through automated testing.
+Continuous Integration is applied to our assignment through a Git. We enforce continuous integration by requiring that all code changes are tested locally before being pushed to the Git repository. This ensures that new code does not break existing functionality. Additionally, Git allows us to collaborate effectively with our team, share work, and merge changes seamlessly, enabling us to work faster and maintain code quality through testing.
 ___
 
 # Question 4
