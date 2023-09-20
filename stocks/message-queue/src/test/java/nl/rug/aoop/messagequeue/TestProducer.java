@@ -69,14 +69,14 @@ public class TestProducer {
     }
 
     @Test
-    public void testNonEmptyHeader() {
+    public void testEmptyHeader() {
         Message m = new Message("","Valid");
 
         producerOrd.putMessage(m);
         assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
     }
     @Test
-    public void testNonEmptyBody() {
+    public void testEmptyBody() {
         Message m = new Message("Valid","");
 
         producerOrd.putMessage(m);

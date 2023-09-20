@@ -27,8 +27,8 @@ public class TestUnorderedQueue {
     public void testQueueMethods() {
         List<Method> methods = List.of(queue.getClass().getDeclaredMethods());
 
-        assertEquals(methods.get(0).getName(), "enqueue"); //What if methods are switched around? Other option is a bunch of loops
-        assertEquals(methods.get(1).getName(), "getSize"); //If switched around it seems to work. getDeclaredMethods() comes up with hashtable entries which sort themselves I guess?
+        assertEquals(methods.get(0).getName(), "enqueue");
+        assertEquals(methods.get(1).getName(), "getSize");
         assertEquals(methods.get(2).getName(), "dequeue");
     }
 
