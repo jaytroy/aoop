@@ -14,7 +14,7 @@ public class TestProducer {
     private MessageQueue queueUnord;
     private MessageQueue queueOrd;
     @BeforeEach
-    void setup() {
+    public void setup() {
         queueUnord = new UnorderedQueue();
         producerUnord = new Producer(queueUnord);
         queueOrd = new OrderedQueue();
@@ -23,29 +23,29 @@ public class TestProducer {
     }
 
     @Test
-    void testProducerConstructorUnord() {
+    public void testProducerConstructorUnord() {
         assertEquals(queueUnord, producerUnord.getMessageQueue());
     }
 
     @Test
-    void testProducerConstructorOrd() {
+    public void testProducerConstructorOrd() {
         assertEquals(queueOrd, producerOrd.getMessageQueue());
     }
 
     @Test
-    void testPutMessageUnord() {
+    public void testPutMessageUnord() {
         producerUnord.putMessage(msg);
         assertSame(queueUnord.dequeue(), msg);
     }
 
     @Test
-    void testPutMessageOrd() {
+    public void testPutMessageOrd() {
         producerOrd.putMessage(msg);
         assertSame(queueOrd.dequeue(), msg);
     }
 
     @Test
-    void testMaxCharacters() {
+    public void testMaxCharacters() {
         MessageText m = new MessageText();
 
         Message messageLong = new Message(m.LONG_HEADER, m.LONG_BODY);
@@ -53,7 +53,7 @@ public class TestProducer {
     }
 
     @Test
-    void testPutMessageIllegalHeader() {
+    public void testPutMessageIllegalHeader() {
         Message m = new Message("1234", "Valid");
 
         producerOrd.putMessage(m);
@@ -61,8 +61,23 @@ public class TestProducer {
     }
 
     @Test
-    void testPutMessageIllegalBody() {
+    public void testPutMessageIllegalBody() {
         Message m = new Message("Valid","1234");
+
+        producerOrd.putMessage(m);
+        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+    }
+
+    @Test
+    public void testNonEmptyHeader() {
+        Message m = new Message("","Valid");
+
+        producerOrd.putMessage(m);
+        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+    }
+    @Test
+    public void testNonEmptyBody() {
+        Message m = new Message("Valid","");
 
         producerOrd.putMessage(m);
         assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued

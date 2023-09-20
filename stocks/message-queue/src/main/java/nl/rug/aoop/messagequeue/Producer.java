@@ -27,7 +27,7 @@ public class Producer implements MQProducer {
     @Override
     public void putMessage(Message message) {
         try {
-            Pattern pattern = Pattern.compile("^[a-z]*$", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^[a-z\s]+$", Pattern.CASE_INSENSITIVE);
             Matcher matchHeader = pattern.matcher(message.getHeader());
             Matcher matchBody = pattern.matcher(message.getBody());
 

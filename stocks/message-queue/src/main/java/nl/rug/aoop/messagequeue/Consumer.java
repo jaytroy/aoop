@@ -11,7 +11,7 @@ public class Consumer implements MQConsumer {
     private MessageQueue messageQueue;
 
     /**
-     * Constructor for comconsumer.
+     * Constructor for consumer.
      *
      * @param messageQueue the messagequeue.
      */

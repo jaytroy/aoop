@@ -21,7 +21,7 @@ public class TestMessage {
 
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         messageHeader = "header";
         messageBody = "body";
         message = new Message(messageHeader, messageBody);
@@ -29,14 +29,14 @@ public class TestMessage {
 
 
     @Test
-    void testMessageConstructor() {
+    public void testMessageConstructor() {
         assertEquals(messageHeader, message.getHeader());
         assertEquals(messageBody, message.getBody());
         assertNotNull(message.getTimestamp());
     }
 
     @Test
-    void testTimeStamp() { //checks if the current message is within 1 second of creating this test
+    public void testTimeStamp() { //checks if the current message is within 1 second of creating this test
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime timestamp = message.getTimestamp();
 
@@ -46,15 +46,8 @@ public class TestMessage {
         assertTrue(timestamp.isAfter(windowStart) && timestamp.isBefore(windowEnd));
     }
 
-    //Should this be moved out into producer tests
     @Test
-    void testNonEmptyHeaderAndBody() { // Test checks if either the header or body is empty
-        assertNotEquals("", message.getHeader());
-        assertNotEquals("", message.getBody());
-    }
-
-    @Test
-    void testMessageImmutable() {
+    public void testMessageImmutable() {
         List<Field> fields = List.of(Message.class.getDeclaredFields());
         fields.forEach(field -> {
             assertTrue(Modifier.isFinal(field.getModifiers()), field.getName() + " is not final");
