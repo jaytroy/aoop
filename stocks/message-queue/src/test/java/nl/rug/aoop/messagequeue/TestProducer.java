@@ -39,6 +39,12 @@ public class TestProducer {
     }
 
     @Test
+    void testPutMessageOrd() {
+        producerOrd.putMessage(msg);
+        assertSame(queueOrd.dequeue(), msg);
+    }
+
+    @Test
     void testMaxCharacters() {
         MessageText m = new MessageText();
 
@@ -60,10 +66,5 @@ public class TestProducer {
 
         producerOrd.putMessage(m);
         assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
-    }
-    @Test
-    void testPutMessageOrd() {
-        producerOrd.putMessage(msg);
-        assertSame(queueOrd.dequeue(), msg);
     }
 }

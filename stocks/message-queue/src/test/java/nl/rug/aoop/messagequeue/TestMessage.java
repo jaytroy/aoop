@@ -60,6 +60,4 @@ public class TestMessage {
             assertTrue(Modifier.isFinal(field.getModifiers()), field.getName() + " is not final");
         });
     }
-
-
 }

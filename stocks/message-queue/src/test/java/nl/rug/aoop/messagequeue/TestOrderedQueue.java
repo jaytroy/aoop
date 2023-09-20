@@ -20,6 +20,7 @@ public class TestOrderedQueue {
     @Test
     void testQueueConstructor() {
         assertNotNull(queue);
+        assertEquals(0, queue.getSize());
     }
 
     @Test
@@ -32,7 +33,7 @@ public class TestOrderedQueue {
     }
 
     @Test
-    void testEnqueueAndDequeueTimeStamps() {
+    void testEnqueueAndDequeueDifferentTimeStamps() {
         Message message1 = new Message("header", "body");
         Message message2 = new Message("header", "body");
         Message message3 = new Message("header", "body");
@@ -71,7 +72,7 @@ public class TestOrderedQueue {
     }
 
     @Test
-    void testOverallEnqueue() {
+    void testEnqueue() {
         Message validMessage = new Message("header", "body");
         queue.enqueue(validMessage);
         assertEquals(1, queue.getSize());
@@ -85,16 +86,16 @@ public class TestOrderedQueue {
     }
 
     @Test
-    void testDequeueNull() {
-        assertNull(queue.dequeue());
+    void testDequeue() {
+        Message validMessage = new Message("header", "body");
+        queue.enqueue(validMessage);
+        assertEquals(validMessage, queue.dequeue());
         assertEquals(0, queue.getSize());
     }
 
     @Test
-    void testQueueDequeue() {
-        Message validMessage = new Message("header", "body");
-        queue.enqueue(validMessage);
-        assertEquals(validMessage, queue.dequeue());
+    void testDequeueNull() {
+        assertNull(queue.dequeue());
         assertEquals(0, queue.getSize());
     }
 
