@@ -138,7 +138,7 @@ ___
 **Answer**:
 
 - Scanner Injection: We should inject scanner through the constructor, such that it will be easier to replace with a mock scanner when we are testing.
-- Split the concerns: The first improvement is to split the concerns and functionality by moving the menu options and actions into separate classes. This will make it easier to facilitate testing later on.
+- Split the concerns: The first improvement is to split the concerns and functionality by moving the menu options and actions into separate methods. This will make it easier to facilitate testing later on.
 
 
 Improved code:
