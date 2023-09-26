@@ -7,9 +7,11 @@ import java.net.InetSocketAddress;
 
 @Slf4j
 public class ClientMain {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             Client client = new Client(new InetSocketAddress("localhost", 8000));
+            client.connect();
+            client.setMessageHandler(new MessageLogger());
             client.run();
             log.info("Client connected to server");
         } catch (IOException e) {

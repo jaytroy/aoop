@@ -19,28 +19,28 @@ public class ClientHandler implements Runnable {
     public ClientHandler(Socket socket, int id) throws IOException {
         this.socket = socket;
         this.id = id;
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.out = new PrintWriter(socket.getOutputStream(), true);
     }
 
     @Override
     public void run() {
         running = true;
-        out.println("Hello, enter BYE to exit. You id : " + id);
-        while (running) {
-            try {
-                String fromClient = in.readLine();
-                if (fromClient == null || fromClient.trim().equalsIgnoreCase("BYE")) { //change this
+        out.println("Hello, enter 'quit' or 'QUIT' to exit. You id : " + id);
+        try {
+            while (running) {
+                String fromServer = in.readLine();
+                if (fromServer == null || "QUIT".equalsIgnoreCase(fromServer)) {
                     terminate();
                     break;
                 }
-                out.println(fromClient);
-                log.info("Recieved from client " + id + fromClient);
-            } catch (IOException e) {
-                log.error("Error reading string from client with id" + id, e);
+                log.info("Received from server: " + fromServer);
             }
+        } catch (IOException e) {
+            log.error("Error reading from server", e);
         }
     }
+
     public void terminate() {
         running = false;
         try {
