@@ -10,6 +10,7 @@ ___
 
 **Answer**:
 
+We disagree with the idea. Logging holds significant importance in every application, regardless of its scale. While testing is effective, it may not cover all real-world scenarios. Logging is indispensable for various purposes like monitoring, enhancing security, and facilitating debugging. Therefore, it should be implemented not only for its error-handling capabilities but also for the many advantages it offers, as mentioned earlier.
 ___
 
 # Question 2
@@ -22,9 +23,57 @@ How could you modify the `LinkedList` class so that the value could be any diffe
 ___
 
 **Answer**:
-
 ```java
-// write the code of the modified class here
+public class UniqueLinkedList<T> {
+    private Node<T> head;
+    private int size;
+
+    public UniqueLinkedList() {
+        head = null;
+        size = 0;
+    }
+
+    public void insert(T value) {
+        if (!contains(value)) {
+            Node<T> newNode = new Node<>(value);
+            newNode.setNext(head);
+            head = newNode;
+            size++;
+        }
+    }
+
+    public void delete(T value) {
+        while (head != null && head.getValue().equals(value)) {
+            head = head.getNext();
+            size--;
+        }
+
+        Node<T> current = head;
+        while (current != null && current.getNext() != null) {
+            if (current.getNext().getValue().equals(value)) {
+                current.setNext(current.getNext().getNext());
+                size--;
+            } else {
+                current = current.getNext();
+            }
+        }
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public boolean contains(T value) {
+        Node<T> current = head;
+        while (current != null) {
+            if (current.getValue().equals(value)) {
+                return true;
+            }
+            current = current.getNext();
+        }
+        return false;
+    }
+}
 ```
 
 ___
@@ -37,6 +86,7 @@ ___
 
 **Answer**:
 
+Continuous Integration is applied to our assignment through a Git. We enforce continuous integration by requiring that all code changes are tested locally before being pushed to the Git repository. This ensures that new code does not break existing functionality. Additionally, Git allows us to collaborate effectively with our team, share work, and merge changes seamlessly, enabling us to work faster and maintain code quality through testing.
 ___
 
 # Question 4
@@ -87,12 +137,51 @@ ___
 
 **Answer**:
 
--
--
+- Scanner Injection: We should inject scanner through the constructor, such that it will be easier to replace with a mock scanner when we are testing.
+- Split the concerns: The first improvement is to split the concerns and functionality by moving the menu options and actions into separate methods. This will make it easier to facilitate testing later on.
+
 
 Improved code:
 
 ```java
+import java.util.*;
+
+public class MyMenu {
+    private Map<Integer, PlayerAction> actions;
+    private Scanner scanner;
+
+    public MyMenu(Scanner scanner, Map<Integer, PlayerAction> actions) {
+        this.actions = actions;
+        this.scanner = scanner;
+    }
+
+    public void printMenuOptions(boolean isInCombat) {
+        List<String> menuOptions = getMenuOptions(isInCombat);
+        menuOptions.forEach(System.out::println);
+    }
+
+    public void doOption() {
+        int option = getNumber();
+        if (actions.containsKey(option)) {
+            actions.get(option).execute();
+        }
+    }
+
+    private List<String> getMenuOptions(boolean isInCombat) {
+        List<String> menuOptions = new ArrayList<>();
+        menuOptions.add("What do you want to?");
+        menuOptions.add("\t0) Do nothing");
+        menuOptions.add("\t1) Look around");
+        if (isInCombat) {
+            menuOptions.add("\t2) Fight!");
+        }
+        return menuOptions;
+    }
+
+    private int getNumber() {
+        return scanner.nextInt();
+    }
+}
 
 ```
 ___
