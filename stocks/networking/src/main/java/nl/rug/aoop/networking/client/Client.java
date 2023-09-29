@@ -6,12 +6,12 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 @Slf4j
-public class Client {
+public class Client implements Runnable {
     public static final int TIMEOUT = 1000;
     private InetSocketAddress address;
     private Socket socket;
     private boolean running = false;
-    private boolean connected = false;
+    private volatile boolean connected = false;
     private BufferedReader in;
     private PrintWriter out;
     private MessageHandler messageHandler;
@@ -30,6 +30,17 @@ public class Client {
         connected = true;
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         out = new PrintWriter(this.socket.getOutputStream());
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void sendMessage(String message) throws IllegalArgumentException {
+        if (message == null || message.equals("")) {
+            throw new IllegalArgumentException("Attempting to send an invalid message.");
+        }
+        out.println(message);
     }
 
     public void setMessageHandler(MessageHandler handler) {
