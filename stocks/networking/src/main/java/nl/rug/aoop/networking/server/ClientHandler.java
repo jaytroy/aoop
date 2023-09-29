@@ -15,7 +15,7 @@ public class ClientHandler implements Runnable {
     private int id;
     private final BufferedReader in;
     private final PrintWriter out;
-    private boolean running = true; // Initialize as true
+    private boolean running = true;
 
     public ClientHandler(Socket socket, int id) throws IOException {
         this.socket = socket;
@@ -36,7 +36,6 @@ public class ClientHandler implements Runnable {
                     break;
                 }
                 log.info("Received from client: " + fromClient);
-
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
