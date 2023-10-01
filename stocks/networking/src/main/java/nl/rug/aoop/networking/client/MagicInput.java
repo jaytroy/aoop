@@ -18,7 +18,6 @@ public class MagicInput implements InputGenerator {
         Scanner scanner = new Scanner(System.in);
         running = true;
         while (running) {
-            System.out.print("Message: ");
             String userInput = scanner.nextLine();
 
             if (userInput.trim().equalsIgnoreCase("quit")) {
