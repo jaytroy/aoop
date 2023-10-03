@@ -14,8 +14,9 @@ public class UnorderedQueue implements MessageQueue {
     public void enqueue(Message message) {
         if (message != null) {
             queue.offer(message);
+        } else {
+            throw new IllegalArgumentException("Message cannot be null");
         }
-        throw new IllegalArgumentException("Message cannot be null");
     }
 
     @Override
