@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable {
         try {
             this.socket.close();
         } catch (IOException e) {
-            log.error("Could not close the socket", e);
+            log.error("Could not close the socket ", e);
         }
     }
 

@@ -5,6 +5,9 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+/**
+ * The client class.
+ */
 @Slf4j
 public class Client implements Runnable {
     public static final int TIMEOUT = 1000;
@@ -19,7 +22,6 @@ public class Client implements Runnable {
     public Client(InetSocketAddress address) {
         this.address = address;
     }
-
     public void connect() throws IOException {
         this.socket = new Socket();
         this.socket.connect(address, TIMEOUT);
@@ -55,6 +57,7 @@ public class Client implements Runnable {
         running = true;
         try {
             while (running) {
+                System.out.println("running");
                 String fromServer = in.readLine();
                 if (fromServer == null) {
                     log.error("Server disconnected.");
@@ -62,6 +65,7 @@ public class Client implements Runnable {
                 }
                 log.info("Server sent: " + fromServer);
                 if (messageHandler != null) {
+                    System.out.println("handling messages");
                     messageHandler.handleMessage(fromServer);
                 }
             }

@@ -17,7 +17,7 @@ public class ServerMain {
                 System.out.println("Write 'QUIT' or 'quit' and Enter to terminate the server.");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 try {
-                    while (true) {
+                    while (true) { //While true? Seems a bit weird.
                         String input = reader.readLine();
                         if ("QUIT".equalsIgnoreCase(input)) {
                             server.terminate();
