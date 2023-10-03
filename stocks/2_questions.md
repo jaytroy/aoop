@@ -7,7 +7,6 @@ In the assignment, you had to create a `MessageHandler` interface. Please answer
 
 ___
 
-**Answer**:
 ___
 
 # Question 2
@@ -45,11 +44,42 @@ This code makes you angry. Briefly describe why it makes you angry and provide t
 
 ___
 
-**Answer**:
+**Answer**: This code makes me angry because it is ugly and bad!! I can use a switch statement to remove the hard-to-read if block.
 
 Improved code:
 
 ```java
+class ProfessionalImplementation {
+
+    private final Car car;
+
+    public ProfessionalImplementation(Car car) {
+        this.car = car;
+    }
+    
+    public void carEventFired(String carEvent) {
+        switch (carEvent) {
+            case "steer.left":
+                car.steerLeft();
+                break;
+			case "steer.right":
+                car.steerRight();
+                break; 
+			case "engine.start":
+                car.startEngine();
+                break;
+			case "engine.stop":
+                car.stopEngine();
+                break;
+			case "pedal.gas":
+                car.accelerate();
+                break;
+			case "pedal.brake":
+                car.brake();
+                break;
+        }
+	}
+}
 ```
 ___
 
@@ -132,7 +162,21 @@ ___
 1.
 
 2.
-	```java
-
-	```
+```java
+abstract class CommandHandler {
+    CommandHandler next;
+    
+    CommandHandler setNext(CommandHandler next) {
+        this.next = next;
+        return next;
+	}
+    
+    void handle(Config config) {
+        
+	}
+    
+    abstract boolean canHandle(Config config);
+    abstract void execute(Config config);
+}
+```
 ___

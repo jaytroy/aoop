@@ -6,18 +6,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Runs the server.
+ */
 @Slf4j
 public class ServerMain {
+    /**
+     * Main function. Runs the server.
+     * @param args Standard signature for main.
+     */
     public static void main(String[] args) {
         try {
             Server server = new Server(8000);
             server.start();
 
             Thread stopThread = new Thread(() -> {
-                System.out.println("Write 'QUIT' or 'quit' and Enter to terminate the server.");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 try {
-                    while (true) { //While true? Seems a bit weird.
+                    while (true) {
                         String input = reader.readLine();
                         if ("QUIT".equalsIgnoreCase(input)) {
                             server.terminate();

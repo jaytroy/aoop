@@ -5,8 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+/**
+ * Runs the client.
+ */
 @Slf4j
 public class ClientMain {
+    /**
+     * Main method of client.
+     * @param args Standard signature of main.
+     */
     public static void main(String[] args) {
         try {
             Client client = new Client(new InetSocketAddress("localhost", 8000));
@@ -22,7 +29,7 @@ public class ClientMain {
 
             log.info("Client connected to server");
 
-            InputGenerator inputGenerator = new MagicInput(client);
+            InputGenerator inputGenerator = new MagicInput();
             inputGenerator.run(client);
 
         } catch (IOException e) {

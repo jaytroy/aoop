@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-
+/**
+ * Handles the input from the client, serverside.
+ */
 @Slf4j
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -17,6 +19,12 @@ public class ClientHandler implements Runnable {
     private final PrintWriter out;
     private boolean running = true;
 
+    /**
+     * Constructor for class.
+     * @param socket The connection socket.
+     * @param id Cliesnt ID.
+     * @throws IOException Thrown for errors with input/output streams.
+     */
     public ClientHandler(Socket socket, int id) throws IOException {
         this.socket = socket;
         this.id = id;
@@ -31,7 +39,7 @@ public class ClientHandler implements Runnable {
         try {
             while (running) {
                 String fromClient = in.readLine();
-                if (fromClient == null || "QUIT".equalsIgnoreCase(fromClient)) {
+                if (fromClient == null || "QUIT".equalsIgnoreCase(fromClient)) { //Handler terminates if client terms.
                     terminate();
                     break;
                 }
@@ -42,7 +50,9 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
+    /**
+     * Terminates client handler.
+     */
     public void terminate() {
         running = false;
         try {

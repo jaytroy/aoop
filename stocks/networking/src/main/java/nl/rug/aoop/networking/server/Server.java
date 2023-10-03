@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Implements the TCP server.
+ */
 @Slf4j
 public class Server implements Runnable {
     @Getter
@@ -19,10 +22,18 @@ public class Server implements Runnable {
     private ExecutorService service;
     private int id = 0;
 
+    /**
+     * Server constructor.
+     * @param port The port to which the server connects to.
+     */
     public Server(int port) {
         this.port = port;
     }
 
+    /**
+     * Starts the server.
+     * @throws IOException When an I/O error occurs opening the socket.
+     */
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
         service = Executors.newCachedThreadPool();
@@ -48,6 +59,9 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * Terminates the server.
+     */
     public void terminate() {
         running = false;
         try {
