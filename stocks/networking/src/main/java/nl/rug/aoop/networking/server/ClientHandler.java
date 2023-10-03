@@ -1,5 +1,6 @@
 package nl.rug.aoop.networking.server;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -13,10 +14,13 @@ import java.net.Socket;
  */
 @Slf4j
 public class ClientHandler implements Runnable {
+    @Getter
     private Socket socket;
+    @Getter
     private int id;
     private final BufferedReader in;
     private final PrintWriter out;
+    @Getter
     private boolean running = true;
 
     /**

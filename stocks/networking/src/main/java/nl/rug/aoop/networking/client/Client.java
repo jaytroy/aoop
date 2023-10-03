@@ -1,5 +1,7 @@
 package nl.rug.aoop.networking.client;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -15,12 +17,16 @@ public class Client implements Runnable {
      * Sets the timeout length.
      */
     protected static final int TIMEOUT = 1000; //Is there any reason to keep this not private?
+    @Getter
     private InetSocketAddress address;
     private Socket socket;
+    @Getter
     private boolean running = false;
+    @Getter
     private volatile boolean connected = false;
     private BufferedReader in;
     private PrintWriter out;
+    @Setter
     private MessageHandler messageHandler;
 
     /**
@@ -49,10 +55,6 @@ public class Client implements Runnable {
         out = new PrintWriter(this.socket.getOutputStream()); //Allows us to write to the socket
     }
 
-    public boolean isConnected() {
-        return connected;
-    }
-
     /**
      * Sends a message to somewhere? It just prints it atm.
      * @param message The message being sent.
@@ -63,10 +65,6 @@ public class Client implements Runnable {
             throw new IllegalArgumentException("Attempting to send an invalid message.");
         }
         out.println(message);
-    }
-
-    public void setMessageHandler(MessageHandler handler) {
-        this.messageHandler = handler;
     }
 
     /**

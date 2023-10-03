@@ -33,6 +33,7 @@ public class TestServer {
         } catch (IOException e) {
             fail("Should not have thrown an exception.");
         }
+        server.terminate();
     }
 
     @Test
@@ -48,13 +49,12 @@ public class TestServer {
 
     @Test
     public void testServerTerminate() {
+        try {
+            server.start();
+        } catch(IOException e) {
+            fail("Should not have thrown an exception");
+        }
         server.terminate();
         assertFalse(server.isRunning());
-    }
-
-    //Does this need to be tested?
-    @Test
-    public void testServerTerminateFail() {
-        server.terminate();
     }
 }
