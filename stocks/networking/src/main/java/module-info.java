@@ -5,7 +5,6 @@ module networking {
     //   opens nl.rug.aoop.networking to messagequeue;
     // Again, sub-packages have to be explicitly opened as well. Any error messages should indicate this.
     // If you want to allow this module to be used in other modules, uncomment the following line:
-    //    exports nl.rug.aoop.networking;
     // Note that this will not include any sub-level packages. If you want to export more, then add those as well:
     //    exports exports nl.rug.aoop.networking.example;
     requires static lombok;

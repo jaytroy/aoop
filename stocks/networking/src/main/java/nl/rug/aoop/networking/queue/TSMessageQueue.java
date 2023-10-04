@@ -7,7 +7,14 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class TSMessageQueue implements MessageQueue {
     //This type of queue ensures thread safety, while ordering messages based on their timestamp
-    private PriorityBlockingQueue<Message> queue = new PriorityBlockingQueue<>();
+    private PriorityBlockingQueue<Message> queue;
+
+    /**
+     * Class constructor.
+     */
+    public TSMessageQueue() {
+        queue = new PriorityBlockingQueue<>();
+    }
 
     @Override
     public void enqueue(Message message) {

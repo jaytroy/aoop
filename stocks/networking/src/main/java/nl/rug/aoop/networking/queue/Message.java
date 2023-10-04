@@ -3,6 +3,7 @@ package nl.rug.aoop.networking.queue;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 public class Message implements Comparable<Message> {
     private final String header;
     private final String body;
-    private final LocalDateTime timestamp;
+    @Setter
+    private LocalDateTime timestamp;
 
     /**
      * Message constructor.
@@ -49,5 +51,6 @@ public class Message implements Comparable<Message> {
     @Override //Defined in Comparable interface.
     public int compareTo(Message m) { //Defines a function for comparing messages.
         return this.timestamp.compareTo(m.timestamp);
+
     }
 }
