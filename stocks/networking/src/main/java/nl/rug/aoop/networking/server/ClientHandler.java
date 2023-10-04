@@ -21,7 +21,7 @@ public class ClientHandler implements Runnable {
     private final BufferedReader in;
     private final PrintWriter out;
     @Getter
-    private boolean running = true;
+    private boolean running = false;
 
     /**
      * Constructor for class.
