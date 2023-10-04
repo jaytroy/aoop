@@ -26,7 +26,7 @@ public class ClientHandler implements Runnable {
     /**
      * Constructor for class.
      * @param socket The connection socket.
-     * @param id Cliesnt ID.
+     * @param id Client ID.
      * @throws IOException Thrown for errors with input/output streams.
      */
     public ClientHandler(Socket socket, int id) throws IOException {

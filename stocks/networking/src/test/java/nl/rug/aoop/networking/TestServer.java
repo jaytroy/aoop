@@ -31,6 +31,7 @@ public class TestServer {
             server.start();
             assertTrue(server.isRunning());
         } catch (IOException e) {
+            e.printStackTrace();
             fail("Should not have thrown an exception.");
         }
         server.terminate();
