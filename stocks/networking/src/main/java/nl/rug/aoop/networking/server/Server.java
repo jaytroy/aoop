@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Implements the TCP server.
+ * Implements the TCP server. AKA NetworkServer.
  */
 @Slf4j
 public class Server implements Runnable {
@@ -19,6 +19,7 @@ public class Server implements Runnable {
     private ServerSocket serverSocket;
     @Getter
     private volatile boolean running = false;
+    @Getter
     private ExecutorService service;
     private int id = 0;
 
@@ -48,15 +49,24 @@ public class Server implements Runnable {
         }
         while (running) {
             try {
-                Socket socket = this.serverSocket.accept();
+                Socket acceptedSocket = serverSocket.accept();
                 log.info("New connection from client");
-                ClientHandler clientHandler = new ClientHandler(socket, id);
-                service.submit(clientHandler);
+
+                Thread clientThread = new Thread(new ClientHandler(acceptedSocket, id));
+                clientThread.start();
+                //service.submit(clientHandler);
                 id++;
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
             }
         }
+    }
+
+    /**
+     * Should receive a message. Is this necessary?
+     */
+    public void receiveMessage() {
+
     }
 
     /**

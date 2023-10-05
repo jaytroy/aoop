@@ -1,4 +1,4 @@
-package nl.rug.aoop.networking.queue;
+package nl.rug.aoop.messagequeue.queues;
 
 import java.util.concurrent.PriorityBlockingQueue;
 

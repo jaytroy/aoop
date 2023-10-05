@@ -2,6 +2,9 @@ package nl.rug.aoop.networking.server;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
+import nl.rug.aoop.messagequeue.queues.TSMessageQueue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,10 +13,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Handles the input from the client, serverside.
+ * Handles the input from the client, serverside. AKA MessageHandler.
  */
 @Slf4j
-public class ClientHandler implements Runnable {
+public class ClientHandler implements Runnable, MessageHandler {
     @Getter
     private Socket socket;
     @Getter
@@ -22,6 +25,7 @@ public class ClientHandler implements Runnable {
     private final PrintWriter out;
     @Getter
     private boolean running = false;
+    private MessageQueue queue;
 
     /**
      * Constructor for class.
@@ -34,6 +38,7 @@ public class ClientHandler implements Runnable {
         this.id = id;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
+        queue = new TSMessageQueue();
     }
 
     @Override
@@ -42,12 +47,16 @@ public class ClientHandler implements Runnable {
         out.println("Hello, enter 'quit' or 'QUIT' to exit. Your id : " + id);
         try {
             while (running) {
-                String fromClient = in.readLine();
-                if (fromClient == null || "QUIT".equalsIgnoreCase(fromClient)) { //Handler terminates if client terms.
+                String received = in.readLine(); //Read what's been sent all the way from NetProducer
+                if (received == null || "QUIT".equalsIgnoreCase(received)) { //Handler terminates if client terms.
                     terminate();
                     break;
                 }
-                log.info("Received from client: " + fromClient);
+
+                Message msg = Message.fromJson(received); //Decompose the json into a message
+                log.info("Received from client: " + msg.getHeader() + msg.getBody());
+
+                handleMessage(msg);
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
@@ -66,4 +75,8 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    @Override
+    public void handleMessage(Message msg) {
+        queue.enqueue(msg);
+    }
 }

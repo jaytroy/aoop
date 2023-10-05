@@ -82,6 +82,8 @@ public class TestClient {
 
     @AfterAll
     public static void endServer() {
-        server.terminate();
+        if(server.getService() != null) {
+            server.terminate();
+        }
     }
 }

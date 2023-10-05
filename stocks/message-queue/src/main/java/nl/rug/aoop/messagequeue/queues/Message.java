@@ -1,24 +1,21 @@
-package nl.rug.aoop.messagequeue;
-
-import lombok.Getter;
-
-import java.time.LocalDateTime;
+package nl.rug.aoop.messagequeue.queues;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 /**
  * Message class that stores the different information on each message.
  */
 @Getter
-public class Message {
+public class Message implements Comparable<Message> {
     private final String header;
     private final String body;
-    private final LocalDateTime timestamp;
+    @Setter
+    private LocalDateTime timestamp;
 
     /**
      * Message constructor.
@@ -32,13 +29,27 @@ public class Message {
         this.timestamp = LocalDateTime.now();
     }
 
+    /**
+     * Turns a string into JSON.
+     * @return Returns the string converted to JSON.
+     */
     public String toJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
 
+    /**
+     * Turns a string from JSON to message.
+     * @param json The JSON string.
+     * @return Returns a message.
+     */
     public static Message fromJson(String json) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.fromJson(json, Message.class);
+    }
+
+    @Override //Defined in Comparable interface.
+    public int compareTo(Message m) { //Defines a function for comparing messages.
+        return this.timestamp.compareTo(m.timestamp);
     }
 }

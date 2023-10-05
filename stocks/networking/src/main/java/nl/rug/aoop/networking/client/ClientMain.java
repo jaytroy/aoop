@@ -15,10 +15,10 @@ public class ClientMain {
      * @param args Standard signature of main.
      */
     public static void main(String[] args) {
+        Client client = new Client(new InetSocketAddress("localhost", 8000));
+
         try {
-            Client client = new Client(new InetSocketAddress("localhost", 8000));
             client.connect();
-            client.setMessageHandler(new MessageLogger());
 
             Thread clientThread = new Thread(client);
             clientThread.start();
@@ -28,9 +28,6 @@ public class ClientMain {
             }
 
             log.info("Client connected to server");
-
-            InputGenerator inputGenerator = new MagicInput();
-            inputGenerator.run(client);
 
         } catch (IOException e) {
             log.error("Client could not connect to server", e);

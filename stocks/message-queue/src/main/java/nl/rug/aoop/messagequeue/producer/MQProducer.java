@@ -1,4 +1,6 @@
-package nl.rug.aoop.messagequeue;
+package nl.rug.aoop.messagequeue.producer;
+
+import nl.rug.aoop.messagequeue.queues.Message;
 
 /**
  * MQProducer interface.

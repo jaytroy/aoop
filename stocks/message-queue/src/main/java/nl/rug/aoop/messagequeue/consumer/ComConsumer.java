@@ -1,4 +1,7 @@
-package nl.rug.aoop.messagequeue;
+package nl.rug.aoop.messagequeue.consumer;
+
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
 
 /**
  * ComConsumer class that imlements MQConsumer.

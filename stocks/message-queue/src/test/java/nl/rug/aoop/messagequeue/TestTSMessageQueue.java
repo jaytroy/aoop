@@ -1,13 +1,11 @@
-package nl.rug.aoop.networking;
+package nl.rug.aoop.messagequeue;
 
-import nl.rug.aoop.networking.queue.Message;
-import nl.rug.aoop.networking.queue.TSMessageQueue;
-import org.junit.jupiter.api.BeforeAll;
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.queues.TSMessageQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.PriorityBlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

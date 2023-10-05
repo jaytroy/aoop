@@ -1,4 +1,4 @@
-package nl.rug.aoop.networking.client;
+package nl.rug.aoop.messagequeue.producer;
 
 /**
  * An interface for client classes which read input.
@@ -6,9 +6,9 @@ package nl.rug.aoop.networking.client;
 public interface InputGenerator {
     /**
      * Starts a function which allows us to read input.
-     * @param client The client for whom we are handling input.
+     * @param producer The producer to whom we'll relay the input.
      */
-    void run(Client client);
+    void run(NetProducer producer);
 
     /**
      * Terminates run() by setting bool running to false.
