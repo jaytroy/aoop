@@ -14,7 +14,7 @@ public class ServerMain {
      * @param args Standard signature for main.
      */
     public static void main(String[] args) {
-        try {
+        /*try {
             Server server = new Server(8000);
             server.start();
 
@@ -24,6 +24,6 @@ public class ServerMain {
 
         } catch (IOException e) {
             System.err.println("Could not start the server: " + e.getMessage());
-        }
+        }*/
     }
 }

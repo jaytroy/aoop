@@ -15,7 +15,7 @@ public class ClientMain {
      * @param args Standard signature of main.
      */
     public static void main(String[] args) {
-        Client client = new Client(new InetSocketAddress("localhost", 8000));
+        /*Client client = new Client(new InetSocketAddress("localhost", 8000));
 
         try {
             client.connect();
@@ -33,6 +33,6 @@ public class ClientMain {
             log.error("Client could not connect to server", e);
         } catch (InterruptedException e) {
             log.error("Interrupted while waiting for client connection", e);
-        }
+        }*/
     }
 }

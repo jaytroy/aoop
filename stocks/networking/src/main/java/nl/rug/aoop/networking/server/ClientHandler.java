@@ -2,9 +2,7 @@ package nl.rug.aoop.networking.server;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.messagequeue.queues.TSMessageQueue;
+import nl.rug.aoop.networking.MessageHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +23,6 @@ public class ClientHandler implements Runnable, MessageHandler {
     private final PrintWriter out;
     @Getter
     private boolean running = false;
-    private MessageQueue queue;
 
     /**
      * Constructor for class.
@@ -38,7 +35,6 @@ public class ClientHandler implements Runnable, MessageHandler {
         this.id = id;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        queue = new TSMessageQueue();
     }
 
     @Override
@@ -53,10 +49,7 @@ public class ClientHandler implements Runnable, MessageHandler {
                     break;
                 }
 
-                Message msg = Message.fromJson(received); //Decompose the json into a message
-                log.info("Received from client: " + msg.getHeader() + msg.getBody());
-
-                handleMessage(msg);
+                handleMessage(received);
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
@@ -76,7 +69,7 @@ public class ClientHandler implements Runnable, MessageHandler {
     }
 
     @Override
-    public void handleMessage(Message msg) {
-        queue.enqueue(msg);
+    public void handleMessage(String msg) {
+        log.info(msg); //Not an implementation, basic functionality test
     }
 }

@@ -3,9 +3,7 @@ package nl.rug.aoop.networking.client;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import nl.rug.aoop.messagequeue.producer.NetProducer;
-import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.networking.server.MessageHandler;
+import nl.rug.aoop.networking.MessageHandler;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -30,16 +28,15 @@ public class Client implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     @Setter
-    private MessageHandler messageHandler;
-    private NetProducer producer; //Change to MQProducer?
+    private MessageHandler msgHandler;
 
     /**
      * Client constructor.
      * @param address The socket host name and port address.
      */
-    public Client(InetSocketAddress address) {
+    public Client(MessageHandler handler, InetSocketAddress address) {
         this.address = address;
-        producer = new NetProducer();
+        this.msgHandler = handler;
     }
 
     /**
@@ -58,11 +55,10 @@ public class Client implements Runnable {
         connected = true;
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream())); //Allows us to read from socket
         out = new PrintWriter(this.socket.getOutputStream()); //Allows us to write to the socket
-
     }
 
     /**
-     * Sends a message to somewhere? It just prints it atm.
+     * Sends a message to the server.
      * @param message The message being sent.
      * @throws IllegalArgumentException Thrown when an invalid messages is passed.
      */
@@ -70,7 +66,8 @@ public class Client implements Runnable {
         if (message == null || message.equals("")) { //These checks could be done within message no?
             throw new IllegalArgumentException("Attempting to send an invalid message.");
         }
-        out.println(message);
+
+        out.println(message); //Sends a message to the server via socket
     }
 
     /**
@@ -85,20 +82,19 @@ public class Client implements Runnable {
         running = true;
         try {
             while (running) {
-                System.out.println("running");
-                String received = in.readLine(); //Reads the line from console
+                System.out.println("Running");
+                String received = in.readLine(); //Reads the line from server
                 if (received == null) {
                     log.error("Server disconnected.");
                     break;
                 }
 
-                Message msg = Message.fromJson(received);
-                log.info("Server sent: " + msg.getHeader() + msg.getBody()); //Completing the handshake
-
-                if (messageHandler != null) {
+                /*
+                if (messageHandler != null) { //This should not be here
                     System.out.println("handling messages");
                     messageHandler.handleMessage(msg);
                 }
+                 */
             }
         } catch (IOException e) {
             log.error("Error reading from server: " + e.getMessage());
@@ -119,6 +115,5 @@ public class Client implements Runnable {
         } catch (IOException e) {
             log.error("Error closing socket: " + e.getMessage());
         }
-        producer.stopInput();
     }
 }
