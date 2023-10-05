@@ -1,4 +1,5 @@
 module networking {
+    exports nl.rug.aoop.networking;
     // If you are using Mockito in another module to mock a networking item from this package,
     // then add "opens .. to ..". If we are mocking e.g. a NetworkClient interface
     // in the module messagequeue, then we need:
