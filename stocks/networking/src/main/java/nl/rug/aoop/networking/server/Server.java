@@ -72,14 +72,9 @@ public class Server implements Runnable {
      * Should receive a message. Is this necessary?
      */
     public void handleMessage() {
-        try {
-            String receivedMessage = readMessageFromSocket();
+        String receivedMessage = readMessageFromSocket();
 
-            msgHandler.handleMessage(receivedMessage);
-            
-        } catch (IOException e) {
-            log.error("Error handling message: " + e.getMessage());
-        }
+        msgHandler.handleMessage(receivedMessage);
     }
 
     private String readMessageFromSocket() {

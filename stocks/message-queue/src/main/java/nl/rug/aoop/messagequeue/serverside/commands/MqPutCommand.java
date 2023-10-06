@@ -18,8 +18,6 @@ public class MqPutCommand implements Command {
         String messageJson = (String) params.get("messageJson");
         Message message = Message.fromJson(messageJson);
 
-        // add more execution logic here, by batter is gonna run out so i cant do more now.
-
         // Enqueue the message into the message queue
         messageQueue.enqueue(message);
     }
