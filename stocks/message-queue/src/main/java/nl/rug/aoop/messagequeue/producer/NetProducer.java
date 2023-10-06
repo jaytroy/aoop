@@ -1,6 +1,7 @@
 package nl.rug.aoop.messagequeue.producer;
 
 import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.networking.client.Client;
 
 /**
  * The network producer. We take in and send input to the server through this class.
