@@ -1,4 +1,8 @@
-package nl.rug.aoop.command;
+package nl.rug.aoop.messagequeue.serverside.commands;
+
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
+import nl.rug.aoop.command.Command;
 
 import java.util.Map;
 

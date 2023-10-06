@@ -1,4 +1,7 @@
-package nl.rug.aoop.command;
+package nl.rug.aoop.messagequeue.serverside.commands;
+
+import nl.rug.aoop.command.CommandHandler;
+import nl.rug.aoop.networking.MessageHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +15,7 @@ public class CommandMessageHandler implements MessageHandler {
 
     @Override
     public void handleMessage(String messageJson) {
-        // cnvert the jso message to a Map
+        // convert the jso message to a Map
         Map<String, Object> params = new HashMap<>();
         params.put("messageJson", messageJson);
 

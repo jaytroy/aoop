@@ -1,4 +1,7 @@
-package nl.rug.aoop.messagequeue.queues;
+package nl.rug.aoop.messagequeue.serverside;
+
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
 
 import java.util.concurrent.PriorityBlockingQueue;
 

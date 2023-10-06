@@ -1,7 +1,7 @@
 package nl.rug.aoop.messagequeue;
 
 import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.messagequeue.queues.TSMessageQueue;
+import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
