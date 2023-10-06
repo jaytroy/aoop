@@ -23,6 +23,7 @@ public class ClientHandler implements Runnable, MessageHandler {
     private final PrintWriter out;
     @Getter
     private boolean running = false;
+    private MessageHandler msgHandler;
 
     /**
      * Constructor for class.
@@ -30,11 +31,12 @@ public class ClientHandler implements Runnable, MessageHandler {
      * @param id Client ID.
      * @throws IOException Thrown for errors with input/output streams.
      */
-    public ClientHandler(Socket socket, int id) throws IOException {
+    public ClientHandler(MessageHandler handler, Socket socket, int id) throws IOException {
         this.socket = socket;
         this.id = id;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.msgHandler = handler;
     }
 
     @Override
@@ -70,6 +72,6 @@ public class ClientHandler implements Runnable, MessageHandler {
 
     @Override
     public void handleMessage(String msg) {
-        log.info(msg); //Not an implementation, basic functionality test
+        msgHandler.handleMessage(msg);
     }
 }

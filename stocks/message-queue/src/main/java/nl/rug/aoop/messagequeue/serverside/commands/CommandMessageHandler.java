@@ -16,7 +16,7 @@ public class CommandMessageHandler implements MessageHandler {
 
     @Override
     public void handleMessage(String messageJson) {
-        // convert the jso message to a Map
+        // convert the json message to a Map
         Map<String, Object> params = new HashMap<>();
         params.put("messageJson", messageJson);
 

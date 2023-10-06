@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.MessageHandler;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.MessageDigest;
@@ -56,7 +58,7 @@ public class Server implements Runnable {
                 Socket acceptedSocket = serverSocket.accept();
                 log.info("New connection from client");
 
-                Thread clientThread = new Thread(new ClientHandler(acceptedSocket, id));
+                Thread clientThread = new Thread(new ClientHandler(msgHandler, acceptedSocket, id));
                 clientThread.start();
                 //service.submit(clientHandler);
                 id++;
@@ -69,9 +71,21 @@ public class Server implements Runnable {
     /**
      * Should receive a message. Is this necessary?
      */
-    public void receiveMessage() {
+    public void handleMessage() {
+        try {
+            String receivedMessage = readMessageFromSocket();
 
+            msgHandler.handleMessage(receivedMessage);
+            
+        } catch (IOException e) {
+            log.error("Error handling message: " + e.getMessage());
+        }
     }
+
+    private String readMessageFromSocket() {
+        return null;
+    }
+
 
     /**
      * Terminates the server.

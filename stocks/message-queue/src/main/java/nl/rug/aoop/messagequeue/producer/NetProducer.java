@@ -13,7 +13,8 @@ public class NetProducer implements MQProducer {
     /**
      * NetProducer constructor.
      */
-    public NetProducer() {
+    public NetProducer(Client client) {
+        this.client = client;
         input = new MagicInput();
         getInput();
     }
@@ -38,6 +39,7 @@ public class NetProducer implements MQProducer {
     public void getInput() {
         input.run(this);
     }
+
 
     /**
      * Stops the function in the MagicInput class which allows us to take in input.
