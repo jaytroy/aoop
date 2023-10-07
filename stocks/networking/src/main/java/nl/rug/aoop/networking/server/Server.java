@@ -27,6 +27,8 @@ public class Server implements Runnable {
     private ExecutorService service;
     private int id = 0;
     private MessageHandler msgHandler;
+    private ExecutorService threadPool;
+
 
     /**
      * Server constructor.
@@ -41,9 +43,10 @@ public class Server implements Runnable {
      * Starts the server.
      * @throws IOException When an I/O error occurs opening the socket.
      */
-    public void start() throws IOException { //Create a thread here which starts the server?
+
+    public void start() throws IOException {
         serverSocket = new ServerSocket(port);
-        service = Executors.newCachedThreadPool();
+        threadPool = Executors.newFixedThreadPool(10); // Adjust the pool size as needed
         running = true;
     }
 
@@ -58,14 +61,13 @@ public class Server implements Runnable {
                 Socket acceptedSocket = serverSocket.accept();
                 log.info("New connection from client");
 
-                Thread clientThread = new Thread(new ClientHandler(msgHandler, acceptedSocket, id));
-                clientThread.start();
-                //service.submit(clientHandler);
+                threadPool.submit(new ClientHandler(msgHandler, acceptedSocket, id));
                 id++;
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
             }
         }
+
     }
 
     /**
