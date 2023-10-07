@@ -3,19 +3,22 @@ package nl.rug.aoop.messagequeue.consumer;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 
+import lombok.Getter;
+
 /**
  * ComConsumer class that imlements MQConsumer.
  */
 
-public class ComConsumer implements MQConsumer {
+public class Consumer implements MQConsumer {
+    @Getter
     private MessageQueue messageQueue;
 
     /**
-     * Constructor for comconsumer.
+     * Constructor for consumer.
      *
      * @param messageQueue the messagequeue.
      */
-    public ComConsumer(MessageQueue messageQueue) {
+    public Consumer(MessageQueue messageQueue) {
         this.messageQueue = messageQueue;
     }
 

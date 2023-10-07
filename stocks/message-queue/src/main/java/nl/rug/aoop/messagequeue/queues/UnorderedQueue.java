@@ -27,7 +27,7 @@ public class UnorderedQueue implements MessageQueue {
         if (!queue.isEmpty()) {
             return queue.poll();
         }
-        throw new IllegalArgumentException("Queue has no elements");
+        return null;
     }
 
     @Override
