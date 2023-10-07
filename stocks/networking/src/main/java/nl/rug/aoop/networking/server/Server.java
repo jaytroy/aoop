@@ -23,8 +23,6 @@ public class Server implements Runnable {
     private ServerSocket serverSocket;
     @Getter
     private volatile boolean running = false;
-    @Getter
-    private ExecutorService service;
     private int id = 0;
     private MessageHandler msgHandler;
     private ExecutorService threadPool;
@@ -46,7 +44,7 @@ public class Server implements Runnable {
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
-        threadPool = Executors.newFixedThreadPool(10); // Adjust the pool size as needed
+        threadPool = Executors.newFixedThreadPool(10);
         running = true;
     }
 
@@ -87,6 +85,7 @@ public class Server implements Runnable {
     /**
      * Terminates the server.
      */
+
     public void terminate() {
         running = false;
         try {
@@ -96,7 +95,8 @@ public class Server implements Runnable {
         } catch (IOException e) {
             log.error("Error closing server socket: " + e.getMessage());
         }
-        service.shutdown();
+        threadPool.shutdown();
     }
+
 
 }
