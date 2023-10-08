@@ -16,12 +16,4 @@ public interface MQProducer {
      * @param message the message.
      */
     void putMessage(Message message);
-
-    /**
-     * maxCharacters checks if the message exceeds max characters.
-     *
-     * @param message the message.
-     */
-
-    void maxCharacters(Message message) throws IOException;
 }

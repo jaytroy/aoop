@@ -1,61 +1,75 @@
 package nl.rug.aoop.networking;
 
 import nl.rug.aoop.networking.server.Server;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestServer {
     private int port;
-    private int badPort;
-    private Server server;
-    private Server badServer;
+    private static Server server;
+
     @BeforeEach
     public void setup() {
         port = 8000;
-        badPort = 80;
-        server = new Server(port);
-        badServer = new Server(badPort);
+        server = new Server(new DummyMessageHandler(), port);
     }
+
     @Test
     public void testServerConstructor() {
         assertEquals(port, server.getPort());
     }
 
     @Test
-    public void testServerStart() {
+    public void testServerStartAndRun() {
+        Thread serverThread = new Thread(server::run);
+        serverThread.start();
+
         try {
-            server.start();
+            Thread.sleep(1000);
+
             assertTrue(server.isRunning());
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail("Should not have thrown an exception.");
+
+            try (Socket clientSocket = new Socket("localhost", port)) {
+                assertTrue(clientSocket.isConnected());
+
+                OutputStream outputStream = clientSocket.getOutputStream();
+                String messageToSend = "Hello, Server!";
+                outputStream.write(messageToSend.getBytes());
+
+                Thread.sleep(1000);
+
+                assertEquals("Received: Hello, Server!", DummyMessageHandler.lastReceivedMessage);
+            } catch (IOException e) {
+                fail("Should not have thrown an exception when connecting the client.");
+            }
+        } catch (InterruptedException e) {
+            fail("Interrupted while waiting for the server to start.");
+        } finally {
+            // Terminate the server
+            server.terminate();
+            serverThread.interrupt();
         }
-        server.terminate();
     }
+    static class DummyMessageHandler implements MessageHandler {
+        static String lastReceivedMessage;
 
-    @Test
-    public void testServerStartFail() {
-        assertThrows(IOException.class, () -> badServer.start());
-    }
-
-    //Part of runnable interface. Does it need to be tested? Can it be tested? Everything should work fine as long as running = true.
-    @Test
-    public void testSeverRun() {
-
-    }
-
-    @Test
-    public void testServerTerminate() {
-        try {
-            server.start();
-        } catch(IOException e) {
-            fail("Should not have thrown an exception");
+        @Override
+        public void handleMessage(String message) {
+            lastReceivedMessage = "Received: " + message;
         }
-        server.terminate();
-        assertFalse(server.isRunning());
+    }
+
+    @AfterAll
+    public static void endServer() {
+        if (server != null) {
+            server.terminate();
+        }
     }
 }
