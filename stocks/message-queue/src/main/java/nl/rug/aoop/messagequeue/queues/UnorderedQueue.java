@@ -1,8 +1,5 @@
 package nl.rug.aoop.messagequeue.queues;
 
-import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.messagequeue.queues.MessageQueue;
-
 import java.util.LinkedList;
 import java.util.Queue;
 

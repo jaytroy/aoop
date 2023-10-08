@@ -1,8 +1,5 @@
 package nl.rug.aoop.messagequeue.queues;
 
-import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.messagequeue.queues.MessageQueue;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

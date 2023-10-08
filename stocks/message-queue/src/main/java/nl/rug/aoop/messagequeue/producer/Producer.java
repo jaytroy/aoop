@@ -48,6 +48,13 @@ public class Producer implements MQProducer {
         }
     }
 
+    /**
+     * Checks if there is more than the max amount of character per message.
+     *
+     * @param message the message.
+     * @throws IOException IOException e.
+     */
+
     public void maxCharacters(Message message) throws IOException {
         String header = message.getHeader();
         String body = message.getBody();

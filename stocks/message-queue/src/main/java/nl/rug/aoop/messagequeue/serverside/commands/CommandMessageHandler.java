@@ -7,8 +7,19 @@ import nl.rug.aoop.networking.MessageHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The command message handler class.
+ *
+ */
+
 public class CommandMessageHandler implements MessageHandler {
     private final CommandHandler commandHandler;
+
+    /**
+     * Constructor.
+     *
+     * @param commandHandler the commandHandler you pass in.
+     */
 
     public CommandMessageHandler(CommandHandler commandHandler) {
         this.commandHandler = commandHandler;

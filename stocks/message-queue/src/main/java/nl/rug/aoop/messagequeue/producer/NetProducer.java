@@ -11,7 +11,9 @@ public class NetProducer implements MQProducer {
     private Client client;
 
     /**
-     * NetProducer constructor.
+     * Netproducer.
+     *
+     * @param client the client to pass in the producer.
      */
     public NetProducer(Client client) {
         this.client = client;
@@ -29,6 +31,7 @@ public class NetProducer implements MQProducer {
      * @param msg The message being converted.
      * @return Returns a JSON string.
      */
+
     public String toJson(Message msg) {
         return msg.toJson();
     }
@@ -39,7 +42,6 @@ public class NetProducer implements MQProducer {
     public void getInput() {
         input.run(this);
     }
-
 
     /**
      * Stops the function in the MagicInput class which allows us to take in input.

@@ -6,8 +6,18 @@ import nl.rug.aoop.command.Command;
 
 import java.util.Map;
 
+/**
+ * MQPutCommand class.
+ */
+
 public class MqPutCommand implements Command {
     private final MessageQueue messageQueue;
+
+    /**
+     * Constructor.
+     *
+     * @param messageQueue message queue you pass in.
+     */
 
     public MqPutCommand(MessageQueue messageQueue) {
         this.messageQueue = messageQueue;
