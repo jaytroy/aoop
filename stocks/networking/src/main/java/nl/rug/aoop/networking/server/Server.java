@@ -4,12 +4,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.MessageHandler;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.MessageDigest;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,9 +24,10 @@ public class Server implements Runnable {
     private MessageHandler msgHandler;
     private ExecutorService threadPool;
 
-
     /**
      * Server constructor.
+     *
+     * @param handler the message handler.
      * @param port The port to which the server connects to.
      */
     public Server(MessageHandler handler, int port) {
@@ -81,7 +79,6 @@ public class Server implements Runnable {
         return null;
     }
 
-
     /**
      * Terminates the server.
      */
@@ -97,6 +94,4 @@ public class Server implements Runnable {
         }
         threadPool.shutdown();
     }
-
-
 }

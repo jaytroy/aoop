@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.MessageHandler;
-
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Implements the TCP client. AKA NetworkClient.
@@ -27,11 +28,14 @@ public class Client implements Runnable {
     private volatile boolean connected = false;
     private BufferedReader in;
     private PrintWriter out;
+    private ExecutorService threadPool;
     @Setter
     private MessageHandler msgHandler;
 
     /**
      * Client constructor.
+     *
+     * @param handler the message handler.
      * @param address The socket host name and port address.
      */
     public Client(MessageHandler handler, InetSocketAddress address) {
@@ -55,6 +59,8 @@ public class Client implements Runnable {
         connected = true;
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream())); //Allows us to read from socket
         out = new PrintWriter(this.socket.getOutputStream()); //Allows us to write to the socket
+
+        threadPool = Executors.newFixedThreadPool(10);
     }
 
     /**
@@ -111,6 +117,9 @@ public class Client implements Runnable {
         try {
             if (socket != null && !socket.isClosed()) {
                 socket.close();
+            }
+            if (threadPool != null && !threadPool.isShutdown()) {
+                threadPool.shutdown();
             }
         } catch (IOException e) {
             log.error("Error closing socket: " + e.getMessage());

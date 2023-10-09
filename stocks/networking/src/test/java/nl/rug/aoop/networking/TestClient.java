@@ -138,10 +138,10 @@ public class TestClient {
             return receivedMessage;
         }
     }
+
     @Test
     public void testClientRun() {
         // Set up the test environment
-        // Initialize the client and connect it to the server
         try {
             client.connect();
             assertTrue(client.isConnected());
@@ -180,13 +180,13 @@ public class TestClient {
     @Test
     public void testClientTerminate() {
         try {
-            client.connect();
+            client.connect(); // Connect the client before terminating
             assertTrue(client.isConnected());
         } catch (IOException e) {
             fail("Should not have thrown an exception");
         }
 
-        client.terminate();
+        client.terminate(); // Terminate the client
 
         assertFalse(client.isRunning());
         assertFalse(client.isConnected());

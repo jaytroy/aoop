@@ -40,6 +40,5 @@ public class CommandMessageHandler implements MessageHandler {
 
         // Execute the command based on the header
         commandHandler.executeCommand(message.getHeader(), params);
-        
     }
 }

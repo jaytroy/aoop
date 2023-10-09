@@ -20,15 +20,17 @@ public class ClientHandler implements Runnable, MessageHandler {
     @Getter
     private int id;
     private final BufferedReader in;
-    private final PrintWriter out;
+    private final PrintWriter out;  // Use PrintWriter for sending responses
     @Getter
     private boolean running = false;
     private MessageHandler msgHandler;
 
     /**
      * Constructor for class.
+     *
      * @param socket The connection socket.
-     * @param id Client ID.
+     * @param id     Client ID.
+     * @param handler the message handler.
      * @throws IOException Thrown for errors with input/output streams.
      */
     public ClientHandler(MessageHandler handler, Socket socket, int id) throws IOException {
@@ -42,15 +44,14 @@ public class ClientHandler implements Runnable, MessageHandler {
     @Override
     public void run() {
         running = true;
-        out.println("Hello, enter 'quit' or 'QUIT' to exit. Your id : " + id);
+        sendMessage("Hello, enter 'quit' or 'QUIT' to exit. Your id : " + id);  // Send welcome message
         try {
             while (running) {
-                String received = in.readLine(); //Read what's been sent all the way from NetProducer
-                if (received == null || "QUIT".equalsIgnoreCase(received)) { //Handler terminates if client terms.
+                String received = in.readLine();
+                if (received == null || "QUIT".equalsIgnoreCase(received)) {
                     terminate();
                     break;
                 }
-
                 handleMessage(received);
             }
         } catch (IOException e) {
@@ -64,10 +65,19 @@ public class ClientHandler implements Runnable, MessageHandler {
     public void terminate() {
         running = false;
         try {
-            this.socket.close();
+            socket.close();
         } catch (IOException e) {
             log.error("Could not close the socket ", e);
         }
+    }
+
+    /**
+     * Send a message to the client.
+     *
+     * @param message The message to send.
+     */
+    public void sendMessage(String message) {
+        out.println(message);
     }
 
     @Override

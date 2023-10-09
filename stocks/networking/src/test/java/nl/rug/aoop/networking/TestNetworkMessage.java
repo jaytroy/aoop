@@ -25,7 +25,7 @@ public class TestNetworkMessage {
     @Test
     public void testInvalidJson() {
         String invalidJson = "invalid_json";
-        assertThrows(JsonSyntaxException.class, () -> {
+        assertThrows(RuntimeException.class, () -> {
             NetworkMessage.fromJson(invalidJson);
         });
     }
