@@ -21,7 +21,9 @@ public class Server implements Runnable {
     @Getter
     private volatile boolean running = false;
     private int id = 0;
+    @Getter
     private MessageHandler msgHandler;
+    @Getter
     private ExecutorService threadPool;
 
     /**

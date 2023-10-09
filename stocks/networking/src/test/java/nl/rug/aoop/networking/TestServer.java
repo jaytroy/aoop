@@ -1,9 +1,7 @@
 package nl.rug.aoop.networking;
 
 import nl.rug.aoop.networking.server.Server;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,22 +10,31 @@ import java.net.Socket;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestServer {
-    private int port;
+    private static int port;
+    private static MessageHandler handler;
     private static Server server;
 
-    @BeforeEach
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         port = 8000;
-        server = new Server(new DummyMessageHandler(), port);
+        handler = new DummyMessageHandler();
+        server = new Server(handler, port);
     }
 
     @Test
     public void testServerConstructor() {
         assertEquals(port, server.getPort());
+        assertEquals(handler, server.getMsgHandler());
     }
 
     @Test
     public void testServerStartAndRun() {
+        try {
+            server.start();
+        } catch (IOException e) {
+            fail("Server failed to start.");
+        }
+
         Thread serverThread = new Thread(server::run);
         serverThread.start();
 
@@ -53,7 +60,9 @@ public class TestServer {
             fail("Interrupted while waiting for the server to start.");
         } finally {
             // Terminate the server
-            server.terminate();
+            if(server.getThreadPool() != null) {
+                server.terminate();
+            }
             serverThread.interrupt();
         }
     }
@@ -68,7 +77,7 @@ public class TestServer {
 
     @AfterAll
     public static void endServer() {
-        if (server != null) {
+        if (server != null && server.getThreadPool() != null) {
             server.terminate();
         }
     }
