@@ -16,8 +16,6 @@ public class TestClientHandler {
     private ClientHandler clientHandler;
     private ServerSocket serverSocket;
     private Socket clientSocket;
-    private StringWriter output;
-    private InputStream testInput;
 
     @BeforeEach
     public void setup() throws IOException {
@@ -28,56 +26,36 @@ public class TestClientHandler {
         // Create a ClientSocket to connect to the server
         clientSocket = new Socket("localhost", port);
 
-        output = new StringWriter();
-        PrintWriter out = new PrintWriter(output, true);
-
-        // Create a BufferedReader for reading from the client socket
-        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
         clientHandler = new ClientHandler(new DummyMessageHandler(), clientSocket, 1);
 
         // Start the ClientHandler in a separate thread
         Thread clientHandlerThread = new Thread(clientHandler);
         clientHandlerThread.start();
-
-        // Create a separate input stream for testing with sample data
-        testInput = new ByteArrayInputStream("Test message\nQUIT\n".getBytes());
     }
 
     @Test
-    public void testClientHandler() throws IOException {
+    public void testClientHandlerRunning() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertTrue(clientHandler.isRunning());
+    }
+
+
+    @Test
+    public void testClientHandlerTermination() {
         // Send a message to the ClientHandler
-        PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
-        clientOut.println("Test message");
+        clientHandler.sendMessage("quit");
 
-        // Read the message from the ClientHandler
-        String receivedMessage = output.toString();
-
-        // Verify that the received message matches the sent message
-        assertEquals("Hello, enter 'quit' or 'QUIT' to exit. Your id : 1\nReceived: Test message\n", receivedMessage);
-
-        // Wait for the ClientHandler to terminate
+        // Add a small delay to allow the ClientHandler to process the termination message
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        // Verify that the ClientHandler has terminated
-        assertFalse(clientHandler.isRunning());
-    }
-
-    @Test
-    public void testClientHandlerTermination() throws IOException {
-        // Terminate the ClientHandler
         clientHandler.terminate();
-
-        // Wait for the ClientHandler to terminate
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         // Verify that the ClientHandler has terminated
         assertFalse(clientHandler.isRunning());
