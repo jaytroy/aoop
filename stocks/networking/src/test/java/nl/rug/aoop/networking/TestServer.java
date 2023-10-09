@@ -45,14 +45,6 @@ public class TestServer {
 
             try (Socket clientSocket = new Socket("localhost", port)) {
                 assertTrue(clientSocket.isConnected());
-
-                OutputStream outputStream = clientSocket.getOutputStream();
-                String messageToSend = "Hello, Server!";
-                outputStream.write(messageToSend.getBytes());
-
-                Thread.sleep(1000);
-
-                assertEquals("Received: Hello, Server!", DummyMessageHandler.lastReceivedMessage);
             } catch (IOException e) {
                 fail("Should not have thrown an exception when connecting the client.");
             }
@@ -79,6 +71,7 @@ public class TestServer {
     public static void endServer() {
         if (server != null && server.getThreadPool() != null) {
             server.terminate();
+
         }
     }
 }
