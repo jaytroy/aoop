@@ -20,7 +20,7 @@ public class TestClientHandler {
     @BeforeEach
     public void setup() throws IOException {
         // Create a ServerSocket for testing
-        serverSocket = new ServerSocket(0); // 0 means the system will choose a random available port
+        serverSocket = new ServerSocket(7600);
         int port = serverSocket.getLocalPort();
 
         // Create a ClientSocket to connect to the server
