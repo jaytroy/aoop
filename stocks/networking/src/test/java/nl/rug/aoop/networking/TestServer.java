@@ -31,6 +31,7 @@ public class TestServer {
     public void testServerStartAndRun() {
         try {
             server.start();
+            assertTrue(server.isRunning());
         } catch (IOException e) {
             fail("Server failed to start.");
         }
@@ -40,8 +41,6 @@ public class TestServer {
 
         try {
             Thread.sleep(1000);
-
-            assertTrue(server.isRunning());
 
             try (Socket clientSocket = new Socket("localhost", port)) {
                 assertTrue(clientSocket.isConnected());

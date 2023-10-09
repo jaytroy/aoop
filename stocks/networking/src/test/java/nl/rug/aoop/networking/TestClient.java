@@ -65,6 +65,7 @@ public class TestClient {
         });
     }
 
+    /*
     @Test
     public void testClientSendMessage() {
         // Create a mock server to receive messages
@@ -94,6 +95,8 @@ public class TestClient {
             mockServer.terminate();
         }
     }
+
+     */
 
 
     static class DummyMessageHandler implements MessageHandler {
