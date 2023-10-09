@@ -114,6 +114,7 @@ public class Client implements Runnable {
      */
     public void terminate() {
         running = false;
+        connected = false;
         try {
             if (socket != null && !socket.isClosed()) {
                 socket.close();

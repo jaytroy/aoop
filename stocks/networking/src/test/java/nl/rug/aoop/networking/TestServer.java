@@ -16,7 +16,7 @@ public class TestServer {
 
     @BeforeAll
     public static void setup() {
-        port = 8000;
+        port = 7500;
         handler = new DummyMessageHandler();
         server = new Server(handler, port);
     }
