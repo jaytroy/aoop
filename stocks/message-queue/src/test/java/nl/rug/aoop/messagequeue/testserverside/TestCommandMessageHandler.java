@@ -25,17 +25,14 @@ public class TestCommandMessageHandler {
         Message message = new Message("testHeader", "testBody");
         String messageJson = message.toJson();
 
-        // Define the expected parameters
         Map<String, Object> expectedParams = new HashMap<>();
         expectedParams.put("messageJson", messageJson);
         expectedParams.put("header", "testHeader");
         expectedParams.put("body", "testBody");
         expectedParams.put("timestamp", message.getTimestamp());
 
-        // Call the handleMessage method
         commandMessageHandler.handleMessage(messageJson);
 
-        // Verify that the commandHandler.executeCommand method was called with the expected parameters
         Mockito.verify(mockCommandHandler).executeCommand("testHeader", expectedParams);
     }
 }

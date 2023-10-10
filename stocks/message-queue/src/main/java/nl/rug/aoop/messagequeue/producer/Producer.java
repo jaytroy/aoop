@@ -25,9 +25,8 @@ public class Producer implements MQProducer {
         this.messageQueue = messageQueue;
     }
 
-    //Defines a test which checks whether the header is made out of english characters
     @Override
-    public void putMessage(Message message) {
+    public void putMessage(Message message) { //checks if the message contains proper english characters
         try {
             Pattern pattern = Pattern.compile("^[a-z\s]+$", Pattern.CASE_INSENSITIVE);
             Matcher matchHeader = pattern.matcher(message.getHeader());

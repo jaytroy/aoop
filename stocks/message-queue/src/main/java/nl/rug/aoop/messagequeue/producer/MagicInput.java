@@ -17,7 +17,7 @@ public class MagicInput implements InputGenerator {
     public void run(NetProducer producer) {
         Scanner scanner = new Scanner(System.in); //Initialize reading from console
         running = true;
-        while (running) { //While running the input reader?
+        while (running) {
             log.info("Enter a header");
             String header = scanner.nextLine(); //Read from console
             log.info("Enter a body");
@@ -25,14 +25,9 @@ public class MagicInput implements InputGenerator {
             Message msg = new Message(header,body);
 
             producer.putMessage(msg);
-            /* This should be sent to the client which would then terminate.
-            if (userInput.trim().equalsIgnoreCase("quit")) { //Quitting the reader
-                client.terminate(); //Terminates the client
-                terminate(); //Then terminates the actual input reader
-            } else {
-                client.sendMessage("Message: " + userInput); //Sends message to client
-                log.info("Message sent successfully");
-            }*/
+            if (header.trim().equalsIgnoreCase("quit") || body.trim().equalsIgnoreCase("quit")) {
+                terminate();
+            }
         }
         scanner.close();
     }

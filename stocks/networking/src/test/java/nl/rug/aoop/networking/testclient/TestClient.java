@@ -66,40 +66,6 @@ public class TestClient {
         });
     }
 
-    /*
-    @Test
-    public void testClientSendMessage() {
-        // Create a mock server to receive messages
-        MockServer mockServer = new MockServer();
-        mockServer.start();
-
-        try {
-            client.connect();
-
-            // Message to be sent
-            String messageToSend = "Test message";
-
-            // Send the message using the client
-            client.sendMessage(messageToSend);
-
-            // Wait for a short time to allow the message to be processed
-            Thread.sleep(100);
-
-            // Check if the message was received by the mock server
-            String receivedMessage = mockServer.getReceivedMessage();
-
-            // Verify that the received message matches the sent message
-            assertEquals(messageToSend, receivedMessage);
-        } catch (IOException | InterruptedException e) {
-            fail("Should not have thrown an exception: " + e.getMessage());
-        } finally {
-            mockServer.terminate();
-        }
-    }
-
-     */
-
-
     static class DummyMessageHandler implements MessageHandler {
         @Override
         public void handleMessage(String message) {
@@ -145,7 +111,6 @@ public class TestClient {
 
     @Test
     public void testClientRun() {
-        // Set up the test environment
         try {
             client.connect();
             assertTrue(client.isConnected());
@@ -153,30 +118,23 @@ public class TestClient {
             fail("Should not have thrown an exception");
         }
 
-        // Start a new thread to simulate the server sending messages
         Thread serverSimulator = new Thread(() -> {
-            // Simulate the server sending messages
             client.sendMessage("Message 1");
             client.sendMessage("Message 2");
-            // Simulate the server disconnecting
             client.terminate();
         });
 
-        // Start the server simulator thread
         serverSimulator.start();
 
-        // Start the client thread (this will execute the run method)
         Thread clientThread = new Thread(client);
         clientThread.start();
 
-        // Wait for the client thread to finish
         try {
             clientThread.join();
         } catch (InterruptedException e) {
             fail("Interrupted while waiting for client thread to finish");
         }
 
-        // Assert that the client is no longer running and is disconnected
         assertFalse(client.isRunning());
         assertFalse(client.isConnected());
     }
@@ -184,13 +142,13 @@ public class TestClient {
     @Test
     public void testClientTerminate() {
         try {
-            client.connect(); // Connect the client before terminating
+            client.connect();
             assertTrue(client.isConnected());
         } catch (IOException e) {
             fail("Should not have thrown an exception");
         }
 
-        client.terminate(); // Terminate the client
+        client.terminate();
 
         assertFalse(client.isRunning());
         assertFalse(client.isConnected());
@@ -199,7 +157,7 @@ public class TestClient {
     @AfterAll
     public static void endServer() {
         if (server != null) {
-            server.terminate(); // Terminate the server after all tests are done
+            server.terminate();
         }
     }
 

@@ -94,13 +94,6 @@ public class Client implements Runnable {
                     log.error("Server disconnected.");
                     break;
                 }
-
-                /*
-                if (messageHandler != null) { //This should not be here
-                    System.out.println("handling messages");
-                    messageHandler.handleMessage(msg);
-                }
-                 */
             }
         } catch (IOException e) {
             log.error("Error reading from server: " + e.getMessage());
