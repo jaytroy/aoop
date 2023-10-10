@@ -18,7 +18,7 @@ public class Client implements Runnable {
     /**
      * Sets the timeout length.
      */
-    protected static final int TIMEOUT = 1000; //Is there any reason to keep this not private?
+    protected static final int TIMEOUT = 1000;
     @Getter
     private InetSocketAddress address;
     private Socket socket;
@@ -48,8 +48,8 @@ public class Client implements Runnable {
      * @throws IOException Thrown when a connection to the socket cannot be established.
      */
     public void connect() throws IOException {
-        this.socket = new Socket(); //Creates a new socket. A socket allows for communication via a port
-        this.socket.connect(address, TIMEOUT); //Connects the socket to the address set in the constructor
+        this.socket = new Socket();
+        this.socket.connect(address, TIMEOUT);
 
         if (!this.socket.isConnected()) {
             log.error("Socket could not connect at port " + address.getPort());
@@ -57,8 +57,8 @@ public class Client implements Runnable {
         }
 
         connected = true;
-        in = new BufferedReader(new InputStreamReader(this.socket.getInputStream())); //Allows us to read from socket
-        out = new PrintWriter(this.socket.getOutputStream()); //Allows us to write to the socket
+        in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        out = new PrintWriter(this.socket.getOutputStream());
 
         threadPool = Executors.newFixedThreadPool(10);
     }
@@ -68,12 +68,12 @@ public class Client implements Runnable {
      * @param message The message being sent.
      * @throws IllegalArgumentException Thrown when an invalid messages is passed.
      */
-    public void sendMessage(String message) throws IllegalArgumentException {  //Actually send messages. Limited?
-        if (message == null || message.equals("")) { //These checks could be done within message no?
+    public void sendMessage(String message) throws IllegalArgumentException {
+        if (message == null || message.equals("")) {
             throw new IllegalArgumentException("Attempting to send an invalid message.");
         }
 
-        out.println(message); //Sends a message to the server via socket
+        out.println(message);
     }
 
     /**
@@ -89,7 +89,7 @@ public class Client implements Runnable {
         try {
             while (running) {
                 System.out.println("Running");
-                String received = in.readLine(); //Reads the line from server
+                String received = in.readLine();
                 if (received == null) {
                     log.error("Server disconnected.");
                     break;

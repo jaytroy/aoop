@@ -20,7 +20,7 @@ public class ClientHandler implements Runnable, MessageHandler {
     @Getter
     private int id;
     private final BufferedReader in;
-    private final PrintWriter out;  // Use PrintWriter for sending responses
+    private final PrintWriter out;
     @Getter
     private boolean running = false;
     private MessageHandler msgHandler;
@@ -44,7 +44,7 @@ public class ClientHandler implements Runnable, MessageHandler {
     @Override
     public void run() {
         running = true;
-        sendMessage("Hello, enter 'quit' or 'QUIT' to exit. Your id : " + id);  // Send welcome message
+        sendMessage("Hello, enter 'quit' or 'QUIT' to exit. Your id : " + id);
         try {
             while (running) {
                 String received = in.readLine();

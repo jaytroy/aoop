@@ -15,13 +15,13 @@ public class MagicInput implements InputGenerator {
 
     @Override
     public void run(NetProducer producer) {
-        Scanner scanner = new Scanner(System.in); //Initialize reading from console
+        Scanner scanner = new Scanner(System.in);
         running = true;
         while (running) {
             log.info("Enter a header");
-            String header = scanner.nextLine(); //Read from console
+            String header = scanner.nextLine();
             log.info("Enter a body");
-            String body = scanner.nextLine(); //Read from console
+            String body = scanner.nextLine();
             Message msg = new Message(header,body);
 
             producer.putMessage(msg);
