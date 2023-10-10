@@ -29,7 +29,7 @@ public class TSMessageQueue implements MessageQueue {
 
     @Override
     public Message dequeue() {
-        return queue.poll(); // Automatically returns the message with the earliest timestamp
+        return queue.poll();
     }
 
     @Override

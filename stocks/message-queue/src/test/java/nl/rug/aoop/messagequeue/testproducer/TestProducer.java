@@ -62,7 +62,7 @@ public class TestProducer {
         Message m = new Message("1234", "Valid");
 
         producerOrd.putMessage(m);
-        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+        assertNull(queueOrd.dequeue());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class TestProducer {
         Message m = new Message("Valid","1234");
 
         producerOrd.putMessage(m);
-        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+        assertNull(queueOrd.dequeue());
     }
 
     @Test
@@ -78,13 +78,13 @@ public class TestProducer {
         Message m = new Message("","Valid");
 
         producerOrd.putMessage(m);
-        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+        assertNull(queueOrd.dequeue());
     }
     @Test
     public void testEmptyBody() {
         Message m = new Message("Valid","");
 
         producerOrd.putMessage(m);
-        assertNull(queueOrd.dequeue()); //If null, no message was ever enqueued
+        assertNull(queueOrd.dequeue());
     }
 }

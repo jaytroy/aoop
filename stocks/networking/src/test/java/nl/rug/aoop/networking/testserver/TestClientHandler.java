@@ -20,16 +20,13 @@ public class TestClientHandler {
 
     @BeforeEach
     public void setup() throws IOException {
-        // Create a ServerSocket for testing
         serverSocket = new ServerSocket(7600);
         int port = serverSocket.getLocalPort();
 
-        // Create a ClientSocket to connect to the server
         clientSocket = new Socket("localhost", port);
 
         clientHandler = new ClientHandler(new DummyMessageHandler(), clientSocket, 1);
 
-        // Start the ClientHandler in a separate thread
         Thread clientHandlerThread = new Thread(clientHandler);
         clientHandlerThread.start();
     }
@@ -47,10 +44,8 @@ public class TestClientHandler {
 
     @Test
     public void testClientHandlerTermination() {
-        // Send a message to the ClientHandler
         clientHandler.sendMessage("quit");
 
-        // Add a small delay to allow the ClientHandler to process the termination message
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -58,13 +53,11 @@ public class TestClientHandler {
         }
         clientHandler.terminate();
 
-        // Verify that the ClientHandler has terminated
         assertFalse(clientHandler.isRunning());
     }
 
     @AfterEach
     public void tearDown() throws IOException {
-        // Close the client socket and server socket
         clientSocket.close();
         serverSocket.close();
     }
