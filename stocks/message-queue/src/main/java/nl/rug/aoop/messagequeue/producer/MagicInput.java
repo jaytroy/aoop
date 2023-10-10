@@ -2,6 +2,7 @@ package nl.rug.aoop.messagequeue.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.serverside.NetProducer;
 
 import java.util.Scanner;
 

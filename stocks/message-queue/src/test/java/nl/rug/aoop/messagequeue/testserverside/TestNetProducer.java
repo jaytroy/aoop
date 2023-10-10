@@ -1,7 +1,7 @@
-package nl.rug.aoop.messagequeue.testproducer;
+package nl.rug.aoop.messagequeue.testserverside;
 
 import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.messagequeue.producer.NetProducer;
+import nl.rug.aoop.messagequeue.serverside.NetProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import nl.rug.aoop.networking.client.Client;
@@ -21,5 +21,9 @@ public class TestNetProducer {
     public void testPutMessage() {
         Message message = new Message("header", "body");
 
+        netProducer.putMessage(message);
+
+        String expectedJson = message.toJson();
+        Mockito.verify(mockClient).sendMessage(expectedJson);
     }
 }

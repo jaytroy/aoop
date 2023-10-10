@@ -4,7 +4,6 @@ import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 

@@ -1,5 +1,7 @@
 package nl.rug.aoop.messagequeue.producer;
 
+import nl.rug.aoop.messagequeue.serverside.NetProducer;
+
 /**
  * An interface for client classes which read input.
  */
