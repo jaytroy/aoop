@@ -73,42 +73,6 @@ public class TestClient {
         }
     }
 
-    // MockServer class to simulate a server that listens for messages
-    static class MockServer {
-        private final ExecutorService executorService;
-        private String receivedMessage;
-
-        public MockServer() {
-            executorService = Executors.newSingleThreadExecutor();
-        }
-
-        public void start() {
-            executorService.submit(() -> {
-                try (ServerSocket serverSocket = new ServerSocket(8000)) {
-                    Socket socket = serverSocket.accept();
-                    receivedMessage = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
-                } catch (IOException e) {
-                    log.error("MockServer error: " + e.getMessage());
-                }
-            });
-        }
-
-        public void terminate() {
-            executorService.shutdown();
-            try {
-                if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
-                    log.error("MockServer did not terminate gracefully");
-                }
-            } catch (InterruptedException e) {
-                log.error("MockServer termination interrupted");
-            }
-        }
-
-        public String getReceivedMessage() {
-            return receivedMessage;
-        }
-    }
-
     @Test
     public void testClientRun() {
         try {
