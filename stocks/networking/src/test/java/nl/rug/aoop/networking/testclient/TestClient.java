@@ -1,5 +1,6 @@
-package nl.rug.aoop.networking;
+package nl.rug.aoop.networking.testclient;
 
+import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.server.Server;

@@ -1,5 +1,10 @@
-package nl.rug.aoop.messagequeue;
+package nl.rug.aoop.messagequeue.testproducer;
 
+import nl.rug.aoop.messagequeue.producer.Producer;
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
+import nl.rug.aoop.messagequeue.queues.OrderedQueue;
+import nl.rug.aoop.messagequeue.queues.UnorderedQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

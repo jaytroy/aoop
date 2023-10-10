@@ -1,4 +1,4 @@
-package nl.rug.aoop.messagequeue;
+package nl.rug.aoop.messagequeue.testproducer;
 
 public class MessageText {
     protected final String LONG_HEADER = "This is more than two hundred and eighty characters This is more than two hundred and " +

@@ -1,5 +1,6 @@
-package nl.rug.aoop.networking;
+package nl.rug.aoop.networking.testserver;
 
+import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.server.Server;
 import org.junit.jupiter.api.*;
 

@@ -1,4 +1,4 @@
-package nl.rug.aoop.messagequeue;
+package nl.rug.aoop.messagequeue.testqueues;
 
 import nl.rug.aoop.messagequeue.queues.Message;
 import org.junit.jupiter.api.BeforeEach;
