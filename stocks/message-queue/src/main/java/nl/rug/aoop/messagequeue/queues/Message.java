@@ -15,7 +15,7 @@ public class Message implements Comparable<Message> {
     private final String header;
     private final String body;
     @Setter
-    private LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
 
     /**
      * Message constructor.
@@ -52,4 +52,14 @@ public class Message implements Comparable<Message> {
     public int compareTo(Message m) { //Defines a function for comparing messages.
         return this.timestamp.compareTo(m.timestamp);
     }
+
+    /**
+     * Update a message timestamp to now.
+     *
+     * @return a new message with a timestamp set to now.
+     */
+    public Message updateTimestamp() {
+        return new Message(this.header, this.body);
+    }
+
 }
