@@ -1,5 +1,8 @@
-package nl.rug.aoop.messagequeue.producer;
+package nl.rug.aoop.messagequeue.serverside;
 
+import nl.rug.aoop.messagequeue.producer.InputGenerator;
+import nl.rug.aoop.messagequeue.producer.MQProducer;
+import nl.rug.aoop.messagequeue.producer.MagicInput;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.client.Client;
 
@@ -18,7 +21,7 @@ public class NetProducer implements MQProducer {
     public NetProducer(Client client) {
         this.client = client;
         input = new MagicInput();
-        getInput();
+        //getInput();
     }
 
     @Override
