@@ -40,17 +40,16 @@ public class TestTSMessageQueue {
 
 
     @Test
-    public void testCorrectlySorted() { //Naming follows: Message 1 Time 1 -> M1T1
-        Message M1T1 = new Message("123","123");
-        Message M2T2 = new Message("123","123");
-        Message M3T3 = new Message("123","123");
+    public void testCorrectlySorted() {
+        Message M1 = new Message("M1","M1");
+        Message M2 = new Message("M2","M2");
 
-        queue.enqueue(M1T1);
-        queue.enqueue(M2T2);
-        queue.enqueue(M3T3);
+        queue.enqueue(M1);
+        queue.enqueue(M2);
+        queue.enqueue(M1);
 
-        assertEquals(queue.dequeue(), M1T1);
-        assertEquals(queue.dequeue(), M2T2);
-        assertEquals(queue.dequeue(), M3T3);
+        assertEquals(queue.dequeue(), M1);
+        assertEquals(queue.dequeue(), M1);
+        assertEquals(queue.dequeue(), M2);
     }
 }

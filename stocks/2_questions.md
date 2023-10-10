@@ -3,7 +3,11 @@
 In the assignment, you had to create a `MessageHandler` interface. Please answer the following two questions:
 
 1. Describe the benefits of using this `MessageHandler` interface. (~50-100 words)
+
+Using the MessageHandler interface allows us to define different behaviours for different types of message handlers across multiple modules through some handleMessage() method. This allows us to decouple modules from one another, as well as providing a way to abstract and generalize our code.
 2. Instead of creating an implementation of `MessageHandler` that invokes a command handler, we could also pass the command handler to the client/server directly without the middle man of the `MessageHandler` implementation. What are the implications of this? (~50-100 words)
+
+This would end up in us coupling the modules, which we do not want. For example, Networking should stay independent of any other modules to ensure potential future re-usability. In order to pass the command handler directly into the client/server, we'd need to add a dependency on the command module into networking. By implementing a CommandHandler via a MessageHandler, we can bypass this dependency by passing the MessageHandler, defined in Networking, as a parameter to either client or server.
 
 ___
 
@@ -58,27 +62,27 @@ class ProfessionalImplementation {
     }
     
     public void carEventFired(String carEvent) {
-        switch (carEvent) {
+        switch(carEvent) {
             case "steer.left":
                 car.steerLeft();
-                break;
-			case "steer.right":
+                break; 
+            case "steer.right": 
                 car.steerRight();
                 break; 
-			case "engine.start":
+            case "engine.start":
                 car.startEngine();
                 break;
-			case "engine.stop":
+            case "engine.stop":
                 car.stopEngine();
                 break;
-			case "pedal.gas":
+            case "pedal.gas":
                 car.accelerate();
-                break;
-			case "pedal.brake":
+                break; 
+            case "pedal.brake":
                 car.brake();
                 break;
         }
-	}
+    }
 }
 ```
 ___
@@ -94,7 +98,7 @@ class Experiments {
     public static Model runExperimentA(DataTable dt) {
         CommandHandler commandSequence = new CleanDataTableCommand()
             .setNext(new RemoveCorrelatedColumnsCommand())
-            .setNext(new TrainSVMCommand())
+            .setNext(new TrainSVMCommand());
 
         Config config = new Options();
         config.set("broadcast", true);
@@ -107,7 +111,7 @@ class Experiments {
 
     public static Model runExperimentB() {
         CommandHandler commandSequence = new CleanDataTableCommand()
-            .setNext(new TrainSGDCommand())
+            .setNext(new TrainSGDCommand());
 
         Config config = new Options();
         config.set("broadcast", true);
@@ -128,7 +132,7 @@ class Processor {
         CommandHandler commandSequence = new TrainSVMCommand()
             .setNext(new TrainSDGCommand())
             .setNext(new TrainRFCommand())
-            .setNext(new TrainNNCommand())
+            .setNext(new TrainNNCommand());
 
         Config config = new Options();
         config.set("broadcast", false);
@@ -146,6 +150,8 @@ class Processor {
 > **Colleague**: "Yeah. But look again. There is more; she uses another pattern on top of it. I wonder how it works."
 
 1. What is this other pattern? What advantage does it provide to the solution? (~50-100 words)
+
+Jane is also using the factory pattern. 
 
 2. You know the code for `CommandHandler` has to be a simple abstract class in this case, probably containing four methods:
 - `CommandHandler setNext(CommandHandler next)` (implemented in `CommandHandler`),
@@ -172,8 +178,12 @@ abstract class CommandHandler {
 	}
     
     void handle(Config config) {
-        
-	}
+        if (canHandle(config)) {
+            execute(config);
+        } else if (nextHandler != null) {
+            nextHandler.handle(config);
+        }
+    }
     
     abstract boolean canHandle(Config config);
     abstract void execute(Config config);
