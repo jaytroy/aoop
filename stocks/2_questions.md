@@ -151,8 +151,6 @@ class Processor {
 
 1. What is this other pattern? What advantage does it provide to the solution? (~50-100 words)
 
-Jane is also using the factory pattern. 
-
 2. You know the code for `CommandHandler` has to be a simple abstract class in this case, probably containing four methods:
 - `CommandHandler setNext(CommandHandler next)` (implemented in `CommandHandler`),
 - `void handle(Config config)` (implemented in `CommandHandler`),
@@ -166,6 +164,7 @@ ___
 **Answer**:
 
 1.
+The other pattern Jane is using on top of the command pattern is the Factory Method pattern.
 
 2.
 ```java
