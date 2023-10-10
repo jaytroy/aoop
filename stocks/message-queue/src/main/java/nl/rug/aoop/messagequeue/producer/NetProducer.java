@@ -18,7 +18,7 @@ public class NetProducer implements MQProducer {
     public NetProducer(Client client) {
         this.client = client;
         input = new MagicInput();
-        getInput();
+        //getInput();
     }
 
     @Override

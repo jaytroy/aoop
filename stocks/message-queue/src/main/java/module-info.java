@@ -4,4 +4,5 @@ module messagequeue {
     requires command;
     requires networking;
     requires org.slf4j;
+    requires org.mockito;
 }
