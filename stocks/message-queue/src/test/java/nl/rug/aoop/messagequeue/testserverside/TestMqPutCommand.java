@@ -9,6 +9,10 @@ import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.argThat;
+
 public class TestMqPutCommand {
 
     private MqPutCommand mqPutCommand;
@@ -30,6 +34,19 @@ public class TestMqPutCommand {
 
         mqPutCommand.execute(params);
 
-        Mockito.verify(mockMessageQueue).enqueue(message);
+        Mockito.verify(mockMessageQueue).enqueue(argThat(m ->
+                m.getHeader().equals(message.getHeader()) &&
+                        m.getBody().equals(message.getBody()) &&
+                        m.getTimestamp().equals(message.getTimestamp())
+        ));
+
+        assertNotNull(message.getTimestamp());
+
+        // Check if the JSON parsing works correctly
+        Message parsedMessage = Message.fromJson(messageJson);
+        assertEquals(message.getHeader(), parsedMessage.getHeader());
+        assertEquals(message.getBody(), parsedMessage.getBody());
     }
+
+
 }

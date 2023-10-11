@@ -30,6 +30,7 @@ public class Message implements Comparable<Message> {
 
     /**
      * Turns a string into JSON.
+     *
      * @return Returns the string converted to JSON.
      */
     public String toJson() {
@@ -39,6 +40,7 @@ public class Message implements Comparable<Message> {
 
     /**
      * Turns a string from JSON to message.
+     *
      * @param json The JSON string.
      * @return Returns a message.
      */
@@ -47,8 +49,8 @@ public class Message implements Comparable<Message> {
         return gson.fromJson(json, Message.class);
     }
 
-    @Override //Defined in Comparable interface.
-    public int compareTo(Message m) { //Defines a function for comparing messages.
+    @Override
+    public int compareTo(Message m) {
         return this.timestamp.compareTo(m.timestamp);
     }
 }
