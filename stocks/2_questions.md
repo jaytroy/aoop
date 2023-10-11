@@ -151,7 +151,7 @@ class Processor {
 
 1. What is this other pattern? What advantage does it provide to the solution? (~50-100 words)
 
-Jane is also using the factory pattern. 
+Jane is also using the chain of responsibility pattern. She chains commands together using `setNext` to create a chain of command.
 
 2. You know the code for `CommandHandler` has to be a simple abstract class in this case, probably containing four methods:
 - `CommandHandler setNext(CommandHandler next)` (implemented in `CommandHandler`),
