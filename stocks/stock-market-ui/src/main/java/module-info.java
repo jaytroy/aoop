@@ -5,4 +5,7 @@ module stock.market.ui {
     requires org.slf4j;
     requires java.desktop;
     requires com.formdev.flatlaf;
+    requires networking;
+    requires util;
+    requires messagequeue;
 }

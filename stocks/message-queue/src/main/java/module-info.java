@@ -1,4 +1,5 @@
 module messagequeue {
+    exports nl.rug.aoop.messagequeue.queues;
     requires static lombok;
     requires com.google.gson;
     requires command;
