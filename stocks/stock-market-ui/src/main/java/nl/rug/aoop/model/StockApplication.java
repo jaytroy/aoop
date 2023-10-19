@@ -3,7 +3,11 @@ package nl.rug.aoop.model;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.OrderedQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
+import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
+import nl.rug.aoop.simpleview.Stock;
+import nl.rug.aoop.simpleview.Trader;
 import nl.rug.aoop.util.YamlLoader;
 
 import java.io.IOException;
@@ -13,7 +17,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StockApplication {
+public class StockApplication implements MessageHandler {
     private List<Client> connectedClients;
     private List<StockDataModel> stocks;
     private List<TraderDataModel> traders;
@@ -49,12 +53,13 @@ public class StockApplication {
     }
 
     public void startMessageQueue() {
-        messageQueue = new OrderedQueue();
+        messageQueue = new TSMessageQueue();
         Thread messageQueueThread = new Thread(() -> {
             while (true) {
                 Message message = messageQueue.dequeue();
+                String messageJson = message.toJson();
                 if (message != null) {
-                    //handleIncomingMessage(message);
+                    handleMessage(messageJson);
                 }
             }
         });
@@ -62,11 +67,11 @@ public class StockApplication {
     }
 
 
-    public void handleBuyOrder(Client client, String stockSymbol, int quantity) {
+    public void handleBuyOrder(Client client, Trader trader, Stock stock, String stockSymbol, int quantity) {
 
     }
 
-    public void handleSellOrder(Client client, String stockSymbol, int quantity) {
+    public void handleSellOrder(Client client, Trader trader, Stock stock, String stockSymbol, int quantity) {
 
     }
 
@@ -119,5 +124,10 @@ public class StockApplication {
             traderInfo.append(trader.getName()).append(": ").append(trader.getFunds()).append("\n");
         }
         return traderInfo.toString();
+    }
+
+    @Override
+    public void handleMessage(String message) {
+
     }
 }

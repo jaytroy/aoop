@@ -9,7 +9,6 @@ For this assignment, there are three deadlines:
 - **Intermediate deadline**
 
   If you create a pull request, we expect you to show up for the corresponding demo and this will be your opportunity to get some feedback on your progress. Indicate whether you want a demo as well and whether you would like a code review. Also, indicate specifically what you would like feedback on. Again, this deadline is optional, but you are highly recommended to make use of it due to the complexity of the assignment. Try to complete as much as possible before this deadline. Your pull request doesn't need to pass the checks, since your pull request will be closed afterwards.
-
 - **Soft Deadline**
 
 	If you fully complete your project and create a valid pull request before this deadline, you will automatically receive a 0.5 bonus. Note that this is in addition to the potential bonus point, so you can earn 1.5 bonus points in total. You should aim for this deadline, as the hard deadline is during the exam week.
