@@ -57,7 +57,7 @@ public class StockApplication implements MessageHandler {
                 if (message != null) {
                     handleMessage(messageJson);
                 }
-                
+
                 Thread.sleep(1000);
             }
         });
