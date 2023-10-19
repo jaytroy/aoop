@@ -1,4 +1,4 @@
-package nl.rug.aoop.simpleview;
+package nl.rug.aoop;
 
 import nl.rug.aoop.model.*;
 
