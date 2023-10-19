@@ -1,6 +1,8 @@
-package nl.rug.aoop.simpleview;
+package nl.rug.aoop.basic;
 
-public class Stock implements StockDataModel {
+import nl.rug.aoop.model.StockDataModel;
+
+public class Stock implements StockDataModel { //Should this be here? Stocks-app should have no knowledge of stock-market-ui
     private String symbol;
     private String name;
     private long sharesOutstanding;

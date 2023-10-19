@@ -2,6 +2,8 @@ package nl.rug.aoop;
 
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
+import nl.rug.aoop.network.OrderHandler;
+import nl.rug.aoop.network.StockApplication;
 import nl.rug.aoop.networking.MessageHandler;
 
 public class StockAppMain {
