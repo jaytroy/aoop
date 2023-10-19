@@ -1,4 +1,4 @@
-package nl.rug.aoop;
+package nl.rug.aoop.network;
 
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
@@ -29,7 +29,7 @@ public class StockApplication extends Server implements MessageHandler {
         stocks = new ArrayList<>();
         traders = new ArrayList<>();
 
-        initializeStocks();
+        initializeStocks(); //Part of the view?
         initializeTraders();
     }
 
@@ -52,19 +52,22 @@ public class StockApplication extends Server implements MessageHandler {
     }
 
     public void startMessageQueue() {
+        Thread messageQueueThread = new Thread(() -> {
+            while (true) {
+                Message message = messageQueue.dequeue();
+                String messageJson = message.toJson();
+                if (message != null) { //Remove this? We have the check in messageQueue itself
+                    handleMessage(messageJson);
+                }
 
-    }
-
-    public void pollMessages() {
-        while(true) {
-            Message message = messageQueue.dequeue();
-            String messageJson = message.toJson();
-            if (message != null) {
-                handleMessage(messageJson);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
-
-
-        }
+        });
+        messageQueueThread.start();
     }
 
 
