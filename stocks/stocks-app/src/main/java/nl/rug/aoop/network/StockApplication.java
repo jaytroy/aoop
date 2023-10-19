@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StockApplication extends Server implements MessageHandler {
+public class StockApplication extends Server {
     private List<Client> connectedClients;
     private List<StockDataModel> stocks;
     private List<TraderDataModel> traders;
@@ -56,10 +56,9 @@ public class StockApplication extends Server implements MessageHandler {
             while (true) {
                 Message message = messageQueue.dequeue();
                 String messageJson = message.toJson();
-                if (message != null) { //Remove this? We have the check in messageQueue itself
-                    handleMessage(messageJson);
+                if (message != null) {
+                    super.getMsgHandler().handleMessage(messageJson);
                 }
-
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -128,10 +127,5 @@ public class StockApplication extends Server implements MessageHandler {
             traderInfo.append(trader.getName()).append(": ").append(trader.getFunds()).append("\n");
         }
         return traderInfo.toString();
-    }
-
-    @Override
-    public void handleMessage(String message) {
-
     }
 }
