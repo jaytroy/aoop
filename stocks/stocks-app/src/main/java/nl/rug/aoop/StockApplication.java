@@ -17,19 +17,18 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StockApplication implements MessageHandler {
+public class StockApplication extends Server implements MessageHandler {
     private List<Client> connectedClients;
     private List<StockDataModel> stocks;
     private List<TraderDataModel> traders;
     private MessageQueue messageQueue;
-    private int messageQueuePort;
 
-    public StockApplication(MessageQueue queue) {
+    public StockApplication(MessageQueue queue, MessageHandler messageHandler, int messageQueuePort) {
+        super(messageHandler, messageQueuePort);
         this.messageQueue = queue;
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>();
-        traders = new ArrayList();
-        messageQueuePort = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
+        traders = new ArrayList<>();
 
         initializeStocks();
         initializeTraders();
@@ -54,18 +53,7 @@ public class StockApplication implements MessageHandler {
     }
 
     public void startMessageQueue() {
-        Thread messageQueueThread = new Thread(() -> {
-            while (true) {
-                Message message = messageQueue.dequeue();
-                String messageJson = message.toJson();
-                if (message != null) {
-                    handleMessage(messageJson);
-                }
 
-                Thread.sleep(1000);
-            }
-        });
-        messageQueueThread.start();
     }
 
     public void pollMessages() {
