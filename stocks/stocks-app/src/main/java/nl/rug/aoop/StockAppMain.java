@@ -1,10 +1,17 @@
 package nl.rug.aoop;
 
+import nl.rug.aoop.basic.StockExchange;
+import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.network.OrderHandler;
 import nl.rug.aoop.network.StockApplication;
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.model.StockDataModel;
+import nl.rug.aoop.model.TraderDataModel;
+import nl.rug.aoop.model.StockExchangeDataModel;
+
+import java.util.List;
 
 public class StockAppMain {
     public static void main(String[] args) {
@@ -15,7 +22,12 @@ public class StockAppMain {
         app.startMessageQueue();
         app.trackConnectedClients();
 
+        List<StockDataModel> stocks = app.initializeStocks();
+        List<TraderDataModel> traders = app.initializeTraders();
 
-        //Logic that calls the UI
+        StockExchangeDataModel stockExchange = new StockExchange(stocks, traders);
+
+        SimpleViewFactory viewFactory = new SimpleViewFactory();
+        viewFactory.createView(stockExchange);
     }
 }

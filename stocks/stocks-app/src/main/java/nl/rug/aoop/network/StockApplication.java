@@ -28,12 +28,9 @@ public class StockApplication extends Server {
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>();
         traders = new ArrayList<>();
-
-        initializeStocks(); //Part of the view?
-        initializeTraders();
     }
 
-    private void initializeStocks() {
+    public List<StockDataModel> initializeStocks() {
         try {
             YamlLoader stockLoader = new YamlLoader(Path.of("stocks/data/stocks.yaml"));
             StockDataModel stockData = stockLoader.load(StockDataModel.class);
@@ -41,9 +38,10 @@ public class StockApplication extends Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return stocks;
     }
 
-    private void initializeTraders() {
+    public List<TraderDataModel> initializeTraders() {
         try {
             YamlLoader traderLoader = new YamlLoader(Path.of("stocks/data/traders.yaml"));
             TraderDataModel traderData = traderLoader.load(TraderDataModel.class);
@@ -51,6 +49,7 @@ public class StockApplication extends Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return traders;
     }
     public void startMessageQueue() {
         Thread messageQueueThread = new Thread(() -> {
