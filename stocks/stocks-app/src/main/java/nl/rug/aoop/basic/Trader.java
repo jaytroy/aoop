@@ -36,4 +36,32 @@ public class Trader implements TraderDataModel {
     public List<String> getOwnedStocks() {
         return ownedStocks;
     }
+    public void setFunds(double newFunds) {
+        funds = newFunds;
+    }
+
+    public void addOwnedStock(String stockSymbol, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            ownedStocks.add(stockSymbol);
+        }
+    }
+
+    public void removeOwnedStock(String stockSymbol, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            ownedStocks.remove(stockSymbol);
+        }
+    }
+
+    public boolean hasEnoughStock(String stockSymbol, int quantity) {
+        int count = 0;
+        for (String ownedStock : ownedStocks) {
+            if (ownedStock.equals(stockSymbol)) {
+                count++;
+                if (count >= quantity) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

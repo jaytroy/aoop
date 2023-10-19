@@ -36,7 +36,8 @@ public class StockApplication extends Server {
     private void initializeStocks() {
         try {
             YamlLoader stockLoader = new YamlLoader(Path.of("stocks/data/stocks.yaml"));
-            stocks = (List<StockDataModel>) stockLoader.load(StockDataModel.class);
+            StockDataModel stockData = stockLoader.load(StockDataModel.class);
+            stocks = (List<StockDataModel>) stockData;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,12 +46,12 @@ public class StockApplication extends Server {
     private void initializeTraders() {
         try {
             YamlLoader traderLoader = new YamlLoader(Path.of("stocks/data/traders.yaml"));
-            traders = (List<TraderDataModel>) traderLoader.load(TraderDataModel.class);
+            TraderDataModel traderData = traderLoader.load(TraderDataModel.class);
+            traders = (List<TraderDataModel>) traderData;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public void startMessageQueue() {
         Thread messageQueueThread = new Thread(() -> {
             while (true) {
@@ -69,21 +70,10 @@ public class StockApplication extends Server {
         messageQueueThread.start();
     }
 
-
-    public void handleBuyOrder(Client client, String ticker, int quantity) {
-
-    }
-
-    public void handleSellOrder(Client client, String ticker, int quantity) {
-
-    }
-
     public void trackConnectedClients() {
         for (Client client : connectedClients) {
             if(client.isConnected()) {
-                //keeping track of connected clients, not sure what to put in ehre
-            } else {
-                //not connected.
+                sendPeriodicUpdates();
             }
         }
     }
@@ -127,5 +117,9 @@ public class StockApplication extends Server {
             traderInfo.append(trader.getName()).append(": ").append(trader.getFunds()).append("\n");
         }
         return traderInfo.toString();
+    }
+
+    public void addClient(Client client) {
+        connectedClients.add(client);
     }
 }

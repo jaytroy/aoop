@@ -13,6 +13,8 @@ public class StockAppMain {
         MessageHandler messageHandler = new OrderHandler();
         StockApplication app = new StockApplication(queue, messageHandler, port);
         app.startMessageQueue();
+        app.trackConnectedClients();
+
 
         //Logic that calls the UI
     }
