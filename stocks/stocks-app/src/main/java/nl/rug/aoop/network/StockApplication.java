@@ -1,5 +1,6 @@
 package nl.rug.aoop.network;
 
+import nl.rug.aoop.basic.Stock;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.model.StockDataModel;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StockApplication extends Server implements MessageHandler {
+public class StockApplication extends Server {
     private List<Client> connectedClients;
     private List<StockDataModel> stocks;
     private List<TraderDataModel> traders;
@@ -28,38 +29,39 @@ public class StockApplication extends Server implements MessageHandler {
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>();
         traders = new ArrayList<>();
-
-        initializeStocks(); //Part of the view?
-        initializeTraders();
     }
 
-    private void initializeStocks() {
+    public List<StockDataModel> initializeStocks() {
         try {
-            YamlLoader stockLoader = new YamlLoader(Path.of("stocks/data/stocks.yaml"));
-            stocks = (List<StockDataModel>) stockLoader.load(StockDataModel.class);
+            YamlLoader stockLoader = new YamlLoader(Path.of("./data/stocks.yaml"));
+            //ArrayList stocks = new rrayList<StockDataModel>();
+            Stock stocks = stockLoader.load(Stock.class);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return stocks;
     }
 
-    private void initializeTraders() {
+    public List<TraderDataModel> initializeTraders() {
         try {
-            YamlLoader traderLoader = new YamlLoader(Path.of("stocks/data/traders.yaml"));
-            traders = (List<TraderDataModel>) traderLoader.load(TraderDataModel.class);
+            YamlLoader traderLoader = new YamlLoader(Path.of("./data/traders.yaml"));
+            TraderDataModel traderData = traderLoader.load(TraderDataModel.class);
+            traders = (List<TraderDataModel>) traderData;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return traders;
     }
-
     public void startMessageQueue() {
         Thread messageQueueThread = new Thread(() -> {
             while (true) {
                 Message message = messageQueue.dequeue();
-                String messageJson = message.toJson();
-                if (message != null) { //Remove this? We have the check in messageQueue itself
+
+                if (message != null) {
+                    String messageJson = message.toJson(); //This should ideally be in the handler
                     super.getMsgHandler().handleMessage(messageJson);
                 }
-
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -70,21 +72,10 @@ public class StockApplication extends Server implements MessageHandler {
         messageQueueThread.start();
     }
 
-
-    public void handleBuyOrder(Client client, String ticker, int quantity) {
-
-    }
-
-    public void handleSellOrder(Client client, String ticker, int quantity) {
-
-    }
-
     public void trackConnectedClients() {
         for (Client client : connectedClients) {
             if(client.isConnected()) {
-                //keeping track of connected clients, not sure what to put in ehre
-            } else {
-                //not connected.
+                sendPeriodicUpdates();
             }
         }
     }
@@ -130,8 +121,7 @@ public class StockApplication extends Server implements MessageHandler {
         return traderInfo.toString();
     }
 
-    @Override
-    public void handleMessage(String message) {
-
+    public void addClient(Client client) {
+        connectedClients.add(client);
     }
 }

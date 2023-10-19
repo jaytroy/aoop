@@ -1,5 +1,7 @@
 package nl.rug.aoop.basic;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import nl.rug.aoop.model.StockDataModel;
 
 public class Stock implements StockDataModel { //Should this be here? Stocks-app should have no knowledge of stock-market-ui
@@ -9,13 +11,18 @@ public class Stock implements StockDataModel { //Should this be here? Stocks-app
     private double marketCap;
     private double price;
 
-    public Stock(String symbol, String name, long sharesOutstanding, double price) {
+    @JsonCreator
+    public Stock(@JsonProperty("symbol") String symbol,
+                 @JsonProperty("name") String name,
+                 @JsonProperty("sharesOutstanding") long sharesOutstanding,
+                 @JsonProperty("initialPrice") double initialPrice) {
         this.symbol = symbol;
         this.name = name;
         this.sharesOutstanding = sharesOutstanding;
-        this.marketCap = sharesOutstanding * price;
-        this.price = price;
+        this.price = initialPrice;
+        marketCap = sharesOutstanding * initialPrice;
     }
+
 
     @Override
     public String getSymbol() {

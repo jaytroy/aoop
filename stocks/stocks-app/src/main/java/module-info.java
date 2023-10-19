@@ -7,4 +7,6 @@ module stocksapp {
     requires util;
     requires messagequeue;
     requires stock.market.ui;
+    opens nl.rug.aoop.basic;   // Open the package for reflection
+    requires com.fasterxml.jackson.annotation;
 }
