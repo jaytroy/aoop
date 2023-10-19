@@ -57,7 +57,7 @@ public class StockApplication extends Server implements MessageHandler {
                 Message message = messageQueue.dequeue();
                 String messageJson = message.toJson();
                 if (message != null) { //Remove this? We have the check in messageQueue itself
-                    handleMessage(messageJson);
+                    super.getMsgHandler().handleMessage(messageJson);
                 }
 
                 try {
