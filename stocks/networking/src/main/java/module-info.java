@@ -5,6 +5,7 @@ module networking {
     // in the module messagequeue, then we need:
     opens nl.rug.aoop.networking to messagequeue;
     exports nl.rug.aoop.networking.client;
+    exports nl.rug.aoop.networking.server;
     // Again, sub-packages have to be explicitly opened as well. Any error messages should indicate this.
     // If you want to allow this module to be used in other modules, uncomment the following line:
     // Note that this will not include any sub-level packages. If you want to export more, then add those as well:

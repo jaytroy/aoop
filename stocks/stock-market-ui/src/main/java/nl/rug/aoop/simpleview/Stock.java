@@ -1,6 +1,5 @@
 package nl.rug.aoop.simpleview;
 
-import nl.rug.aoop.model.*;
 public class Stock implements StockDataModel {
     private String symbol;
     private String name;

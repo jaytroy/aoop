@@ -1,13 +1,13 @@
-package nl.rug.aoop.model;
+package nl.rug.aoop;
 
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.messagequeue.queues.OrderedQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
+import nl.rug.aoop.model.StockDataModel;
+import nl.rug.aoop.model.TraderDataModel;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
-import nl.rug.aoop.simpleview.Stock;
-import nl.rug.aoop.simpleview.Trader;
+import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.util.YamlLoader;
 
 import java.io.IOException;
@@ -24,7 +24,8 @@ public class StockApplication implements MessageHandler {
     private MessageQueue messageQueue;
     private int messageQueuePort;
 
-    public StockApplication() {
+    public StockApplication(MessageQueue queue) {
+        this.messageQueue = queue;
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>();
         traders = new ArrayList();
@@ -53,7 +54,6 @@ public class StockApplication implements MessageHandler {
     }
 
     public void startMessageQueue() {
-        messageQueue = new TSMessageQueue();
         Thread messageQueueThread = new Thread(() -> {
             while (true) {
                 Message message = messageQueue.dequeue();
@@ -61,17 +61,31 @@ public class StockApplication implements MessageHandler {
                 if (message != null) {
                     handleMessage(messageJson);
                 }
+
+                Thread.sleep(1000);
             }
         });
         messageQueueThread.start();
     }
 
+    public void pollMessages() {
+        while(true) {
+            Message message = messageQueue.dequeue();
+            String messageJson = message.toJson();
+            if (message != null) {
+                handleMessage(messageJson);
+            }
 
-    public void handleBuyOrder(Client client, Trader trader, Stock stock, String stockSymbol, int quantity) {
+
+        }
+    }
+
+
+    public void handleBuyOrder(Client client, String ticker, int quantity) {
 
     }
 
-    public void handleSellOrder(Client client, Trader trader, Stock stock, String stockSymbol, int quantity) {
+    public void handleSellOrder(Client client, String ticker, int quantity) {
 
     }
 
