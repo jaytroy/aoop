@@ -2,8 +2,11 @@ package nl.rug.aoop;
 
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.model.StockDataModel;
+import nl.rug.aoop.model.TraderDataModel;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
+import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.util.YamlLoader;
 
 import java.io.IOException;
