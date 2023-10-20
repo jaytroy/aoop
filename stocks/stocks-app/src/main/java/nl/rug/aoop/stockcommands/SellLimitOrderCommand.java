@@ -1,4 +1,4 @@
-package nl.rug.aoop.command;
+package nl.rug.aoop.stock.command;
 
 import nl.rug.aoop.basic.Trader;
 import nl.rug.aoop.model.StockDataModel;
