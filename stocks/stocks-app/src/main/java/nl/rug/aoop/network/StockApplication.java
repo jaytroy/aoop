@@ -1,5 +1,6 @@
 package nl.rug.aoop.network;
 
+import nl.rug.aoop.basic.Stock;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.model.StockDataModel;
@@ -32,9 +33,10 @@ public class StockApplication extends Server {
 
     public List<StockDataModel> initializeStocks() {
         try {
-            YamlLoader stockLoader = new YamlLoader(Path.of("stocks/data/stocks.yaml"));
-            StockDataModel stockData = stockLoader.load(StockDataModel.class);
-            stocks = (List<StockDataModel>) stockData;
+            YamlLoader stockLoader = new YamlLoader(Path.of("./data/stocks.yaml"));
+            //ArrayList stocks = new rrayList<StockDataModel>();
+            Stock stocks = stockLoader.load(Stock.class);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +45,7 @@ public class StockApplication extends Server {
 
     public List<TraderDataModel> initializeTraders() {
         try {
-            YamlLoader traderLoader = new YamlLoader(Path.of("stocks/data/traders.yaml"));
+            YamlLoader traderLoader = new YamlLoader(Path.of("./data/traders.yaml"));
             TraderDataModel traderData = traderLoader.load(TraderDataModel.class);
             traders = (List<TraderDataModel>) traderData;
         } catch (IOException e) {
@@ -57,8 +59,9 @@ public class StockApplication extends Server {
         Thread messageQueueThread = new Thread(() -> {
             while (true) {
                 Message message = messageQueue.dequeue();
-                String messageJson = message.toJson();
+
                 if (message != null) {
+                    String messageJson = message.toJson(); //This should ideally be in the handler
                     super.getMsgHandler().handleMessage(messageJson);
                 }
                 try {

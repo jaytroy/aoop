@@ -29,7 +29,7 @@ public class TerminalFrame extends JFrame {
      * @param stockExchange A data model of the stock exchange.
      */
     public TerminalFrame(StockExchangeDataModel stockExchange) {
-        super("Stonks Terminal");
+        super("Bloomberg Terminal 2.0");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         JTable stockTable = new StockTerminalTable(new StockTableModel(stockExchange));

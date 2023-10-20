@@ -15,9 +15,22 @@ import java.util.List;
 
 public class StockAppMain {
     public static void main(String[] args) {
+<<<<<<< HEAD
         MessageQueue queue = new TSMessageQueue();
         //int port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
         int port = 8080;
+=======
+         MessageQueue queue = new TSMessageQueue(); //Does this have to be started up on a thread or just initailized
+
+        int port;
+        int BACKUP_PORT = 8080;
+        if(System.getenv("MESSAGE_QUEUE_PORT") != null) {
+            port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
+        } else {
+            port = BACKUP_PORT;
+        }
+
+>>>>>>> refs/remotes/origin/stonks
         MessageHandler messageHandler = new OrderHandler();
         StockApplication app = new StockApplication(queue, messageHandler, port);
         app.startMessageQueue();
@@ -29,6 +42,6 @@ public class StockAppMain {
         StockExchangeDataModel stockExchange = new StockExchange(stocks, traders);
 
         SimpleViewFactory viewFactory = new SimpleViewFactory();
-        viewFactory.createView(stockExchange);
+        //viewFactory.createView(stockExchange);
     }
 }
