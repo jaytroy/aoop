@@ -1,61 +1,50 @@
 package nl.rug.aoop.basic;
 
-import nl.rug.aoop.model.*;
+import java.util.Map;
 
 import java.util.List;
 
-public class Trader implements TraderDataModel {
+public class Trader {
     private String id;
     private String name;
     private double funds;
-    private List<String> ownedStocks;
+    private List<Stock> ownedStocks;
 
-    public Trader(String id, String name, double funds, List<String> ownedStocks) {
-        this.id = id;
-        this.name = name;
-        this.funds = funds;
-        this.ownedStocks = ownedStocks;
+    public Trader() {
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public double getFunds() {
         return funds;
     }
 
-    @Override
-    public List<String> getOwnedStocks() {
+    public List<Stock> getOwnedStocks() {
         return ownedStocks;
     }
+
     public void setFunds(double newFunds) {
         funds = newFunds;
     }
 
-    public void addOwnedStock(String stockSymbol, int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            ownedStocks.add(stockSymbol);
-        }
+    public void addOwnedStock(Stock stock) {
+        ownedStocks.add(stock);
     }
 
-    public void removeOwnedStock(String stockSymbol, int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            ownedStocks.remove(stockSymbol);
-        }
+    public void removeOwnedStock(Stock stock) {
+        ownedStocks.remove(stock);
     }
 
-    public boolean hasEnoughStock(String stockSymbol, int quantity) {
+    public boolean hasEnoughStock(Stock stock, int quantity) {
         int count = 0;
-        for (String ownedStock : ownedStocks) {
-            if (ownedStock.equals(stockSymbol)) {
+        for (Stock ownedStock : ownedStocks) {
+            if (ownedStock.equals(stock)) {
                 count++;
                 if (count >= quantity) {
                     return true;

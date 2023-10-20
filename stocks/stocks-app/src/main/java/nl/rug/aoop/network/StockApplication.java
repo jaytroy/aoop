@@ -1,6 +1,9 @@
 package nl.rug.aoop.network;
 
 import nl.rug.aoop.basic.Stock;
+import nl.rug.aoop.basic.StockList;
+import nl.rug.aoop.basic.Trader;
+import nl.rug.aoop.basic.TraderList;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.model.StockDataModel;
@@ -12,46 +15,42 @@ import nl.rug.aoop.util.YamlLoader;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class StockApplication extends Server {
     private List<Client> connectedClients;
-    private List<StockDataModel> stocks;
-    private List<TraderDataModel> traders;
+    private List<Stock> stocks; // Change to List
+    private List<Trader> traders; // Change to List
     private MessageQueue messageQueue;
 
     public StockApplication(MessageQueue queue, MessageHandler messageHandler, int messageQueuePort) {
         super(messageHandler, messageQueuePort);
         this.messageQueue = queue;
         connectedClients = new ArrayList<>();
-        stocks = new ArrayList<>();
-        traders = new ArrayList<>();
+        stocks = new ArrayList<>(); // Initialize as ArrayList
+        traders = new ArrayList<>(); // Initialize as ArrayList
     }
 
-    public List<StockDataModel> initializeStocks() {
+    public List<Stock> initializeStocks() {
         try {
             YamlLoader stockLoader = new YamlLoader(Path.of("./data/stocks.yaml"));
-            //ArrayList stocks = new rrayList<StockDataModel>();
-            Stock stocks = stockLoader.load(Stock.class);
-
+            StockList stockList = stockLoader.load(StockList.class);
+            return stockList.getStocks();
         } catch (IOException e) {
             e.printStackTrace();
+            return new ArrayList<>(); // Return an empty list
         }
-        return stocks;
     }
 
-    public List<TraderDataModel> initializeTraders() {
+    public List<Trader> initializeTraders() {
         try {
             YamlLoader traderLoader = new YamlLoader(Path.of("./data/traders.yaml"));
-            TraderDataModel traderData = traderLoader.load(TraderDataModel.class);
-            traders = (List<TraderDataModel>) traderData;
+            TraderList traderList = traderLoader.load(TraderList.class);
+            return traderList.getTraders();
         } catch (IOException e) {
             e.printStackTrace();
+            return new ArrayList<>(); // Return an empty list
         }
-        return traders;
     }
 
     public void startMessageQueue() {
@@ -111,7 +110,7 @@ public class StockApplication extends Server {
 
     private String generateStockInformationForClient(Client client) {
         StringBuilder stockInfo = new StringBuilder();
-        for (StockDataModel stock : stocks) {
+        for (Stock stock : stocks) {
             stockInfo.append(stock.getSymbol()).append(": ").append(stock.getPrice()).append("\n");
         }
         return stockInfo.toString();
@@ -119,7 +118,7 @@ public class StockApplication extends Server {
 
     private String generateTraderInformationForClient(Client client) {
         StringBuilder traderInfo = new StringBuilder();
-        for (TraderDataModel trader : traders) {
+        for (Trader trader : traders) {
             traderInfo.append(trader.getName()).append(": ").append(trader.getFunds()).append("\n");
         }
         return traderInfo.toString();

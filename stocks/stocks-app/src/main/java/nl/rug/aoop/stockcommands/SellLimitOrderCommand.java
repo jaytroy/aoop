@@ -15,16 +15,17 @@ public class SellLimitOrderCommand {
         this.limitPrice = limitPrice;
         this.quantity = quantity;
     }
-
+/*
     public void execute() {
         if (stock != null && stock.getPrice() >= limitPrice && trader.hasEnoughStock(stock.getSymbol(), quantity)) {
             double totalRevenue = stock.getPrice() * quantity;
             trader.setFunds(trader.getFunds() + totalRevenue);
-            trader.removeOwnedStock(stock.getSymbol(), quantity);
+            //trader.removeOwnedStock(stock.getSymbol(), quantity);
 
             System.out.println(trader.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + limitPrice);
         } else {
             System.out.println("Stock not found, the stock's price is below the specified limit price, or the trader does not own enough shares to sell.");
         }
     }
+    */
 }
