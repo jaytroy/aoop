@@ -3,7 +3,7 @@ package nl.rug.aoop.stockcommands;
 import nl.rug.aoop.basic.Trader;
 import nl.rug.aoop.model.StockDataModel;
 
-public class BuyLimitOrderCommand{
+public class BuyLimitOrderCommand {
     private Trader trader;
     private StockDataModel stock;
     private double limitPrice;
