@@ -16,7 +16,8 @@ import java.util.List;
 public class StockAppMain {
     public static void main(String[] args) {
         MessageQueue queue = new TSMessageQueue();
-        int port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
+        //int port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
+        int port = 8080;
         MessageHandler messageHandler = new OrderHandler();
         StockApplication app = new StockApplication(queue, messageHandler, port);
         app.startMessageQueue();

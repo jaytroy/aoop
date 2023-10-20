@@ -51,7 +51,9 @@ public class StockApplication extends Server {
         }
         return traders;
     }
+
     public void startMessageQueue() {
+        /*
         Thread messageQueueThread = new Thread(() -> {
             while (true) {
                 Message message = messageQueue.dequeue();
@@ -67,6 +69,8 @@ public class StockApplication extends Server {
             }
         });
         messageQueueThread.start();
+        */
+
     }
 
     public void trackConnectedClients() {
