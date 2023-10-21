@@ -1,14 +1,16 @@
 package nl.rug.aoop.basic;
 
+import nl.rug.aoop.model.TraderDataModel;
+
 import java.util.Map;
 
 import java.util.List;
 
-public class Trader {
+public class Trader implements TraderDataModel {
     private String id;
     private String name;
     private double funds;
-    private List<Stock> ownedStocks;
+    private List<String> ownedStocks;
 
     public Trader() {
     }
@@ -25,7 +27,7 @@ public class Trader {
         return funds;
     }
 
-    public List<Stock> getOwnedStocks() {
+    public List<String> getOwnedStocks() {
         return ownedStocks;
     }
 
@@ -33,24 +35,4 @@ public class Trader {
         funds = newFunds;
     }
 
-    public void addOwnedStock(Stock stock) {
-        ownedStocks.add(stock);
-    }
-
-    public void removeOwnedStock(Stock stock) {
-        ownedStocks.remove(stock);
-    }
-
-    public boolean hasEnoughStock(Stock stock, int quantity) {
-        int count = 0;
-        for (Stock ownedStock : ownedStocks) {
-            if (ownedStock.equals(stock)) {
-                count++;
-                if (count >= quantity) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

@@ -1,10 +1,9 @@
 package nl.rug.aoop.basic;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import nl.rug.aoop.model.StockDataModel;
 
-public class Stock {
+public class Stock implements StockDataModel {
     private String symbol;
     private String name;
     private long sharesOutstanding;
