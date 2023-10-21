@@ -3,7 +3,7 @@ package nl.rug.aoop.basic;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class StockInPortfolio {
+public class StockInPortfolio { //Dont meed this class anymore
     private String stockSymbol;
     private int quantity;
 

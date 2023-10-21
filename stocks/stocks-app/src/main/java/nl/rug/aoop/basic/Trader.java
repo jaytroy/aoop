@@ -34,5 +34,45 @@ public class Trader implements TraderDataModel {
     public void setFunds(double newFunds) {
         funds = newFunds;
     }
+    public void addOwnedStock(String stockSymbol, int quantity) {
+        for (String stockEntry : ownedStocks) {
+            if (stockEntry.startsWith(stockSymbol)) {
+                int currentQuantity = Integer.parseInt(stockEntry.split(" : ")[1]);
+                int newQuantity = currentQuantity + quantity;
+                ownedStocks.remove(stockEntry);
+                ownedStocks.add(stockSymbol + " : " + newQuantity);
+                return;
+            }
+        }
+        ownedStocks.add(stockSymbol + " : " + quantity);
+    }
+
+
+    // Method to remove owned stock
+    public void removeOwnedStock(String stockSymbol, int quantity) {
+        for (String stockEntry : ownedStocks) {
+            if (stockEntry.startsWith(stockSymbol)) {
+                int currentQuantity = Integer.parseInt(stockEntry.split(" : ")[1]);
+                if (currentQuantity > quantity) {
+                    int newQuantity = currentQuantity - quantity;
+                    ownedStocks.remove(stockEntry);
+                    ownedStocks.add(stockSymbol + " : " + newQuantity);
+                } else if (currentQuantity == quantity) {
+                    ownedStocks.remove(stockEntry);
+                }
+                return;
+            }
+        }
+    }
+
+    public boolean hasEnoughStock(String stockSymbol, int quantity) {
+        for (String stockEntry : ownedStocks) {
+            if (stockEntry.startsWith(stockSymbol)) {
+                int currentQuantity = Integer.parseInt(stockEntry.split(" : ")[1]);
+                return currentQuantity >= quantity;
+            }
+        }
+        return false;
+    }
 
 }

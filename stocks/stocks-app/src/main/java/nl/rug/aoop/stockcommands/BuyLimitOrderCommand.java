@@ -22,7 +22,7 @@ public class BuyLimitOrderCommand {
 
             if (trader.getFunds() >= totalCost) {
                 trader.setFunds(trader.getFunds() - totalCost);
-                //trader.addOwnedStock(stock.getSymbol(), quantity);
+                trader.addOwnedStock(stock.getSymbol(), quantity);
 
                 System.out.println(trader.getName() + " has bought " + quantity + " shares of " + stock.getSymbol() + " at or below the specified limit price of " + limitPrice);
             } else {
