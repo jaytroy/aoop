@@ -30,11 +30,6 @@ public class Stock implements StockDataModel {
     public double getMarketCap() {
         return marketCap;
     }
-
-    public double getInitialPrice() {
-        return initialPrice;
-    }
-
     public double getPrice() {
         return price;
     }
