@@ -1,20 +1,16 @@
 package nl.rug.aoop;
 
-import nl.rug.aoop.basic.Stock;
-import nl.rug.aoop.basic.StockExchange;
-import nl.rug.aoop.basic.Trader;
+import nl.rug.aoop.ui.Stock;
+import nl.rug.aoop.ui.StockExchange;
+import nl.rug.aoop.ui.Trader;
 import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.network.OrderHandler;
 import nl.rug.aoop.network.StockApplication;
 import nl.rug.aoop.networking.MessageHandler;
-import nl.rug.aoop.model.StockDataModel;
-import nl.rug.aoop.model.TraderDataModel;
-import nl.rug.aoop.model.StockExchangeDataModel;
 
 import java.util.List;
-import java.util.Map;
 
 public class StockAppMain {
     public static void main(String[] args) {

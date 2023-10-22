@@ -1,9 +1,6 @@
-package nl.rug.aoop.basic;
-
-import nl.rug.aoop.model.StockDataModel;
+package nl.rug.aoop.ui;
 
 import java.util.List;
-import java.util.Map;
 
 public class StockList {
     private List<Stock> stocks;

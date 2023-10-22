@@ -1,8 +1,6 @@
-package nl.rug.aoop.basic;
+package nl.rug.aoop.ui;
 
 import nl.rug.aoop.model.TraderDataModel;
-
-import java.util.Map;
 
 import java.util.List;
 

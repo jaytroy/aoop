@@ -1,6 +1,6 @@
 package nl.rug.aoop.stockcommands;
 
-import nl.rug.aoop.basic.Trader;
+import nl.rug.aoop.ui.Trader;
 import nl.rug.aoop.model.StockDataModel;
 
 public class BuyLimitOrderCommand {

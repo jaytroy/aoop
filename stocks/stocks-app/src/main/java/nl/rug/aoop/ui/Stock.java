@@ -1,4 +1,4 @@
-package nl.rug.aoop.basic;
+package nl.rug.aoop.ui;
 
 
 import nl.rug.aoop.model.StockDataModel;

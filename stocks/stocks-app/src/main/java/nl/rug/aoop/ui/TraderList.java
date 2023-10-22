@@ -1,7 +1,6 @@
-package nl.rug.aoop.basic;
+package nl.rug.aoop.ui;
 
 import java.util.List;
-import java.util.Map;
 
 public class TraderList {
     private List<Trader> traders; // Change the type to List<Trader>

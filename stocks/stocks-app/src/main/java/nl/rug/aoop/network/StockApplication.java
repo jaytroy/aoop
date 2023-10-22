@@ -1,13 +1,10 @@
 package nl.rug.aoop.network;
 
-import nl.rug.aoop.basic.Stock;
-import nl.rug.aoop.basic.StockList;
-import nl.rug.aoop.basic.Trader;
-import nl.rug.aoop.basic.TraderList;
+import nl.rug.aoop.ui.Stock;
+import nl.rug.aoop.ui.StockList;
+import nl.rug.aoop.ui.Trader;
+import nl.rug.aoop.ui.TraderList;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.model.StockDataModel;
-import nl.rug.aoop.model.TraderDataModel;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 import nl.rug.aoop.networking.server.Server;
