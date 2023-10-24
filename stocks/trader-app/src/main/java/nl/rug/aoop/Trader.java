@@ -3,13 +3,13 @@ package nl.rug.aoop;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TraderInfo {
+public class Trader {
     private String name;
     private String id;
     private double availableFunds;
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol -> quantity)
 
-    public TraderInfo(String name, String id, double availableFunds) {
+    public Trader(String name, String id, double availableFunds) {
         this.name = name;
         this.id = id;
         this.availableFunds = availableFunds;
@@ -38,7 +38,7 @@ public class TraderInfo {
         availableFunds = funds;
     }
 
-    // Method to add owned stocks
+    // Method to add owned stocks. Is this buying?
     public void addOwnedStock(String stockSymbol, int quantity) {
         ownedStocks.put(stockSymbol, ownedStocks.getOrDefault(stockSymbol, 0) + quantity);
     }
