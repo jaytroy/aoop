@@ -28,7 +28,6 @@ public class Client implements Runnable {
     private volatile boolean connected = false;
     private BufferedReader in;
     private PrintWriter out;
-    private ExecutorService threadPool;
     @Setter
     private MessageHandler msgHandler;
 
@@ -53,14 +52,12 @@ public class Client implements Runnable {
 
         if (!this.socket.isConnected()) {
             log.error("Socket could not connect at port " + address.getPort());
-            throw new IOException("Socket could not connect");
+            throw new IOException("Socket could not connect at Client");
         }
 
         connected = true;
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         out = new PrintWriter(this.socket.getOutputStream());
-
-        threadPool = Executors.newFixedThreadPool(10);
     }
 
     /**
@@ -76,6 +73,10 @@ public class Client implements Runnable {
         out.println(message);
     }
 
+    public void receiveMessage() {
+
+    }
+
     /**
      * Runs the TCP client.
       */
@@ -88,7 +89,7 @@ public class Client implements Runnable {
         running = true;
         try {
             while (running) {
-                System.out.println("Running");
+                System.out.println("Client is running at Client");
                 String received = in.readLine();
                 if (received == null) {
                     log.error("Server disconnected.");
@@ -111,9 +112,6 @@ public class Client implements Runnable {
         try {
             if (socket != null && !socket.isClosed()) {
                 socket.close();
-            }
-            if (threadPool != null && !threadPool.isShutdown()) {
-                threadPool.shutdown();
             }
         } catch (IOException e) {
             log.error("Error closing socket: " + e.getMessage());

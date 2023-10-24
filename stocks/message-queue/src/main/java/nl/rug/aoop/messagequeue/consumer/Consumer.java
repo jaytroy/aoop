@@ -11,7 +11,7 @@ import lombok.Getter;
 
 public class Consumer implements MQConsumer {
     @Getter
-    private MessageQueue messageQueue;
+    private MessageQueue queue;
 
     /**
      * Constructor for consumer.
@@ -19,11 +19,11 @@ public class Consumer implements MQConsumer {
      * @param messageQueue the messagequeue.
      */
     public Consumer(MessageQueue messageQueue) {
-        this.messageQueue = messageQueue;
+        this.queue = messageQueue;
     }
 
     @Override
     public Message pollMessage() {
-        return messageQueue.dequeue();
+        return queue.dequeue();
     }
 }

@@ -1,5 +1,7 @@
 package nl.rug.aoop.network;
 
+import nl.rug.aoop.messagequeue.consumer.MQConsumer;
+import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.ui.Stock;
 import nl.rug.aoop.ui.StockList;
 import nl.rug.aoop.ui.Trader;
@@ -14,18 +16,23 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-public class StockApplication extends Server {
+public class StockApp extends Server {
     private List<Client> connectedClients;
     private List<Stock> stocks; // Change to List
     private List<Trader> traders; // Change to List
     private MessageQueue messageQueue;
+    private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
 
-    public StockApplication(MessageQueue queue, MessageHandler messageHandler, int messageQueuePort) {
+    public StockApp(MessageHandler messageHandler, int messageQueuePort) {
         super(messageHandler, messageQueuePort);
-        this.messageQueue = queue;
+        this.messageQueue = new TSMessageQueue();
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>(); // Initialize as ArrayList
         traders = new ArrayList<>(); // Initialize as ArrayList
+
+        consumer = new NetConsumer(messageQueue); //This thread will continuously poll messages
+        Thread consumerThread = new Thread(consumer);
+        consumerThread.start();
     }
 
     public List<Stock> initializeStocks() {
@@ -50,26 +57,15 @@ public class StockApplication extends Server {
         }
     }
 
-    public void startMessageQueue() {
-        /*
-        Thread messageQueueThread = new Thread(() -> {
-            while (true) {
-                Message message = messageQueue.dequeue();
-
-                if (message != null) {
-                    String messageJson = message.toJson(); //This should ideally be in the handler
-                    super.getMsgHandler().handleMessage(messageJson);
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        messageQueueThread.start();
-        */
-
+    public void runStockApp() {
+        try {
+            super.start();
+        } catch(IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to start server at StockAppMain");
+            return;
+        }
+        super.run(); //It doesn't run without this
     }
 
     public void trackConnectedClients() {

@@ -41,8 +41,6 @@ public class Server implements Runnable {
      * Starts the server.
      * @throws IOException When an I/O error occurs opening the socket.
      */
-
-
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
         threadPool = Executors.newFixedThreadPool(10);
@@ -51,6 +49,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Server is running");
         if (!running) {
             log.error("Server is not started. Call start() before running.");
             return;
@@ -58,7 +57,7 @@ public class Server implements Runnable {
         while (running) {
             try {
                 Socket acceptedSocket = serverSocket.accept();
-                log.info("New connection from client");
+                log.info("New connection from client: " + acceptedSocket.getRemoteSocketAddress()); //Log which client exactly?
 
                 threadPool.submit(new ClientHandler(msgHandler, acceptedSocket, id));
                 id++;
@@ -78,6 +77,7 @@ public class Server implements Runnable {
         msgHandler.handleMessage(receivedMessage);
     }
 
+    //This doesn't do anything?
     private String readMessageFromSocket() {
         return null;
     }
@@ -85,7 +85,6 @@ public class Server implements Runnable {
     /**
      * Terminates the server.
      */
-
     public void terminate() {
         running = false;
         try {

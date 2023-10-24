@@ -12,7 +12,7 @@ public class Stock implements StockDataModel {
     private double initialPrice;
 
     public Stock() {
-
+        this.price = this.initialPrice;
     }
 
     public String getSymbol() {
@@ -28,7 +28,7 @@ public class Stock implements StockDataModel {
     }
 
     public double getMarketCap() {
-        return marketCap;
+        return price * sharesOutstanding;
     }
     public double getPrice() {
         return price;
