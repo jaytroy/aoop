@@ -3,7 +3,7 @@ package nl.rug.aoop.ui;
 import java.util.List;
 
 public class TraderList {
-    private List<Trader> traders; // Change the type to List<Trader>
+    private List<Trader> traders;
 
     public List<Trader> getTraders() {
         return traders;

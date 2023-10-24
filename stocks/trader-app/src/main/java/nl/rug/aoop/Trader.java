@@ -16,7 +16,6 @@ public class Trader {
         this.ownedStocks = new HashMap<>();
     }
 
-    // Getters for trader's information
     public String getName() {
         return name;
     }
@@ -33,7 +32,7 @@ public class Trader {
         return ownedStocks;
     }
 
-    // Method to update trader's available funds
+    // update trader's available funds
     public void setAvailableFunds(double funds) {
         availableFunds = funds;
     }
@@ -43,7 +42,7 @@ public class Trader {
         ownedStocks.put(stockSymbol, ownedStocks.getOrDefault(stockSymbol, 0) + quantity);
     }
 
-    // Method to subtract owned stocks
+    // subtract owned stocks
     public void subtractOwnedStock(String stockSymbol, int quantity) {
         int currentQuantity = ownedStocks.getOrDefault(stockSymbol, 0);
         if (currentQuantity >= quantity) {
