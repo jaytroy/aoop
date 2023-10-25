@@ -30,5 +30,4 @@ import java.util.Objects;
             this.currentPrice = currentPrice;
         }
     }
-
 }

@@ -1,11 +1,12 @@
 package nl.rug.aoop.stockcommands;
 
+import nl.rug.aoop.Stock;
 import nl.rug.aoop.ui.Trader;
 import nl.rug.aoop.model.StockDataModel;
 
 public class BuyLimitOrderCommand {
     private Trader trader;
-    private StockDataModel stock;
+    private Stock stock;
     private double limitPrice;
     private int quantity;
 
