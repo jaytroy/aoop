@@ -4,12 +4,12 @@ import nl.rug.aoop.model.*;
 import java.util.List;
 
 public class StockExchange implements StockExchangeDataModel {
-    private List<Stock> stocks;
-    private List<Trader> traders;
+    private List<StockUI> stocks;
+    private List<TraderUI> traderUIS;
 
-    public StockExchange(List<Stock> stocks, List<Trader> traders) {
+    public StockExchange(List<StockUI> stocks, List<TraderUI> traderUIS) {
         this.stocks = stocks;
-        this.traders = traders;
+        this.traderUIS = traderUIS;
     }
 
     @Override
@@ -28,8 +28,8 @@ public class StockExchange implements StockExchangeDataModel {
 
     @Override
     public TraderDataModel getTraderByIndex(int index) {
-        if (index >= 0 && index < traders.size()) {
-            return (TraderDataModel) traders.get(index);
+        if (index >= 0 && index < traderUIS.size()) {
+            return (TraderDataModel) traderUIS.get(index);
         } else {
             return null;
         }
@@ -38,6 +38,6 @@ public class StockExchange implements StockExchangeDataModel {
 
     @Override
     public int getNumberOfTraders() {
-        return traders.size();
+        return traderUIS.size();
     }
 }

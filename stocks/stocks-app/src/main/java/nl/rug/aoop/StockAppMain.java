@@ -1,8 +1,8 @@
 package nl.rug.aoop;
 
-import nl.rug.aoop.ui.Stock;
+import nl.rug.aoop.ui.StockUI;
 import nl.rug.aoop.ui.StockExchange;
-import nl.rug.aoop.ui.Trader;
+import nl.rug.aoop.ui.TraderUI;
 import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.network.OrderHandler;
 import nl.rug.aoop.network.StockApp;
@@ -25,10 +25,10 @@ public class StockAppMain {
         StockApp stockApp = new StockApp(messageHandler, port);
 
         //Should this be here?
-        List<Stock> stocks = stockApp.initializeStocks();
-        List<Trader> traders = stockApp.initializeTraders();
+        List<StockUI> stocks = stockApp.initializeStocks();
+        List<TraderUI> traderUIS = stockApp.initializeTraders();
 
-        StockExchange stockExchange = new StockExchange(stocks, traders);
+        StockExchange stockExchange = new StockExchange(stocks, traderUIS);
 
         //Start up the view
         SimpleViewFactory viewFactory = new SimpleViewFactory();

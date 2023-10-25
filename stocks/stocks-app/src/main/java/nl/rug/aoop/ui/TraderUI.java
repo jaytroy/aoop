@@ -4,13 +4,13 @@ import nl.rug.aoop.model.TraderDataModel;
 
 import java.util.List;
 
-public class Trader implements TraderDataModel {
+public class TraderUI implements TraderDataModel {
     private String id;
     private String name;
     private double funds;
     private List<String> ownedStocks;
 
-    public Trader() {
+    public TraderUI() {
     }
 
     public String getId() {

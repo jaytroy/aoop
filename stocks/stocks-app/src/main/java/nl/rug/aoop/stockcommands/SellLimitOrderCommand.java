@@ -1,15 +1,16 @@
 package nl.rug.aoop.stockcommands;
 
-import nl.rug.aoop.ui.Trader;
-import nl.rug.aoop.model.StockDataModel;
+import nl.rug.aoop.Stock;
+import nl.rug.aoop.ui.StockUI;
+import nl.rug.aoop.ui.TraderUI;
 
 public class SellLimitOrderCommand {
-    private Trader trader;
-    private StockDataModel stock;
+    private TraderUI trader;
+    private StockUI stock;
     private double limitPrice;
     private int quantity;
 
-    public SellLimitOrderCommand(Trader trader, StockDataModel stock, double limitPrice, int quantity) {
+    public SellLimitOrderCommand(TraderUI trader, StockUI stock, double limitPrice, int quantity) {
         this.trader = trader;
         this.stock = stock;
         this.limitPrice = limitPrice;

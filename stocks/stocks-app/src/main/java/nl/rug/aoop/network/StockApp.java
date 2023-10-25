@@ -1,10 +1,9 @@
 package nl.rug.aoop.network;
 
-import nl.rug.aoop.messagequeue.consumer.MQConsumer;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
-import nl.rug.aoop.ui.Stock;
+import nl.rug.aoop.ui.StockUI;
 import nl.rug.aoop.ui.StockList;
-import nl.rug.aoop.ui.Trader;
+import nl.rug.aoop.ui.TraderUI;
 import nl.rug.aoop.ui.TraderList;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.networking.MessageHandler;
@@ -18,8 +17,8 @@ import java.util.*;
 
 public class StockApp extends Server {
     private List<Client> connectedClients;
-    private List<Stock> stocks; // Change to List
-    private List<Trader> traders; // Change to List
+    private List<StockUI> stocks; // Change to List
+    private List<TraderUI> traders; // Change to List
     private MessageQueue messageQueue;
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
 
@@ -35,7 +34,7 @@ public class StockApp extends Server {
         consumerThread.start();
     }
 
-    public List<Stock> initializeStocks() {
+    public List<StockUI> initializeStocks() {
         try {
             YamlLoader stockLoader = new YamlLoader(Path.of("./data/stocks.yaml"));
             StockList stockList = stockLoader.load(StockList.class);
@@ -46,7 +45,7 @@ public class StockApp extends Server {
         }
     }
 
-    public List<Trader> initializeTraders() {
+    public List<TraderUI> initializeTraders() {
         try {
             YamlLoader traderLoader = new YamlLoader(Path.of("./data/traders.yaml"));
             TraderList traderList = traderLoader.load(TraderList.class);
@@ -103,7 +102,7 @@ public class StockApp extends Server {
 
     private String generateStockInformationForClient(Client client) {
         StringBuilder stockInfo = new StringBuilder();
-        for (Stock stock : stocks) {
+        for (StockUI stock : stocks) {
             stockInfo.append(stock.getSymbol()).append(": ").append(stock.getPrice()).append("\n");
         }
         return stockInfo.toString();
@@ -111,8 +110,8 @@ public class StockApp extends Server {
 
     private String generateTraderInformationForClient(Client client) {
         StringBuilder traderInfo = new StringBuilder();
-        for (Trader trader : traders) {
-            traderInfo.append(trader.getName()).append(": ").append(trader.getFunds()).append("\n");
+        for (TraderUI traderUI : traders) {
+            traderInfo.append(traderUI.getName()).append(": ").append(traderUI.getFunds()).append("\n");
         }
         return traderInfo.toString();
     }
