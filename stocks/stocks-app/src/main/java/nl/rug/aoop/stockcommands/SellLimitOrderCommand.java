@@ -1,28 +1,29 @@
 package nl.rug.aoop.stockcommands;
 
-import nl.rug.aoop.ui.Trader;
+import nl.rug.aoop.Stock;
+import nl.rug.aoop.ui.TraderUI;
 import nl.rug.aoop.model.StockDataModel;
 
 public class SellLimitOrderCommand {
-    private Trader trader;
-    private StockDataModel stock;
+    private TraderUI traderUI;
+    private Stock stock;
     private double limitPrice;
     private int quantity;
 
-    public SellLimitOrderCommand(Trader trader, StockDataModel stock, double limitPrice, int quantity) {
-        this.trader = trader;
+    public SellLimitOrderCommand(TraderUI traderUI, Stock stock, double limitPrice, int quantity) {
+        this.traderUI = traderUI;
         this.stock = stock;
         this.limitPrice = limitPrice;
         this.quantity = quantity;
     }
 
     public void execute() {
-        if (stock != null && stock.getPrice() >= limitPrice && trader.hasEnoughStock(stock.getSymbol(), quantity)) {
+        if (stock != null && stock.getPrice() >= limitPrice && traderUI.hasEnoughStock(stock.getSymbol(), quantity)) {
             double totalRevenue = stock.getPrice() * quantity;
-            trader.setFunds(trader.getFunds() + totalRevenue);
-            trader.removeOwnedStock(stock.getSymbol(), quantity);
+            traderUI.setFunds(traderUI.getFunds() + totalRevenue);
+            traderUI.removeOwnedStock(stock.getSymbol(), quantity);
 
-            System.out.println(trader.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + limitPrice);
+            System.out.println(traderUI.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + limitPrice);
         } else {
             System.out.println("Stock not found, the stock's price is below the specified limit price, or the trader does not own enough shares to sell.");
         }

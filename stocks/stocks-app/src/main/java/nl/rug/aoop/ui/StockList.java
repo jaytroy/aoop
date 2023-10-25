@@ -3,13 +3,13 @@ package nl.rug.aoop.ui;
 import java.util.List;
 
 public class StockList {
-    private List<Stock> stocks;
+    private List<StockUI> stocks;
 
-    public List<Stock> getStocks() {
+    public List<StockUI> getStocks() {
         return stocks;
     }
 
-    public void setStocks(List<Stock> stocks) {
+    public void setStocks(List<StockUI> stocks) {
         this.stocks = stocks;
     }
 }

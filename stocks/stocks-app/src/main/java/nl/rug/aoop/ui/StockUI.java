@@ -3,7 +3,7 @@ package nl.rug.aoop.ui;
 
 import nl.rug.aoop.model.StockDataModel;
 
-public class Stock implements StockDataModel {
+public class StockUI implements StockDataModel {
     private String symbol;
     private String name;
     private long sharesOutstanding;
@@ -11,7 +11,7 @@ public class Stock implements StockDataModel {
     private double price;
     private double initialPrice;
 
-    public Stock() {
+    public StockUI() {
         this.price = this.initialPrice;
     }
 
