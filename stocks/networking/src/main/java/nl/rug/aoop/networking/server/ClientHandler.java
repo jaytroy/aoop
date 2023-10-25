@@ -44,7 +44,6 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         running = true;
-        sendMessage("Hello, enter 'quit' or 'QUIT' to exit. Your id : " + id);
         try {
             while (running) {
                 String received = in.readLine();
@@ -52,7 +51,7 @@ public class ClientHandler implements Runnable {
                     terminate();
                     break;
                 }
-                msgHandler.handleMessage(received);
+                handleMessage(received);
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
@@ -78,5 +77,9 @@ public class ClientHandler implements Runnable {
      */
     public void sendMessage(String message) {
         out.println(message);
+    }
+
+    public void handleMessage(String msg) {
+        msgHandler.handleMessage(msg);
     }
 }

@@ -1,9 +1,8 @@
 package nl.rug.aoop.messagequeue.serverside;
 
-import nl.rug.aoop.messagequeue.producer.InputGenerator;
 import nl.rug.aoop.messagequeue.producer.MQProducer;
-import nl.rug.aoop.messagequeue.producer.MagicInput;
 import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.networking.NetworkMessage;
 import nl.rug.aoop.networking.client.Client;
 
 /**
@@ -22,8 +21,9 @@ public class NetProducer implements MQProducer {
     }
 
     @Override
-    public void putMessage(Message msg) { //Should put a message into the queue via a network
-        client.sendMessage(toJson(msg));
+    public void putMessage(Message msg) {
+        NetworkMessage networkMessage = new NetworkMessage(msg.getHeader(), msg.toJson());
+        client.sendMessage(networkMessage.toJson());
     }
 
     /**

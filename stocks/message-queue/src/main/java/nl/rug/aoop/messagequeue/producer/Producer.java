@@ -41,6 +41,7 @@ public class Producer implements MQProducer {
 
             maxCharacters(message);
 
+
             messageQueue.enqueue(message);
         } catch (IOException e) {
             System.out.println("An error occurred: " + e.getMessage());
