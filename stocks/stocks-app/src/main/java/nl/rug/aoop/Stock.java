@@ -29,38 +29,6 @@ import java.util.Objects;
         public void setCurrentPrice(double currentPrice) {
             this.currentPrice = currentPrice;
         }
-
-        public boolean buyStock(Trader trader, int quantity) {
-            double totalCost = currentPrice * quantity;
-            if (trader.getAvailableFunds() >= totalCost) {
-                trader.subtractFunds(totalCost);
-                trader.addOwnedStock(symbol, quantity);
-                return true;
-            }
-            return false;
-        }
-
-        public boolean sellStock(Trader trader, int quantity) {
-            if (trader.getOwnedStocks().getOrDefault(symbol, 0) >= quantity) {
-                trader.addFunds(currentPrice * quantity);
-                trader.subtractOwnedStock(symbol, quantity);
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Stock stock = (Stock) o;
-            return Objects.equals(symbol, stock.symbol);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(symbol);
-        }
     }
 
 }
