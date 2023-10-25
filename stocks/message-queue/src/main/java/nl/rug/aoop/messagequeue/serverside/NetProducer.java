@@ -25,14 +25,4 @@ public class NetProducer implements MQProducer {
         NetworkMessage networkMessage = new NetworkMessage(msg.getHeader(), msg.toJson());
         client.sendMessage(networkMessage.toJson());
     }
-
-    /**
-     * Converts a message to a JSON string by calling a method within the message.
-     * @param msg The message being converted.
-     * @return Returns a JSON string.
-     */
-
-    public String toJson(Message msg) {
-        return msg.toJson();
-    }
 }

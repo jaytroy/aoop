@@ -5,7 +5,7 @@ import nl.rug.aoop.ui.StockExchange;
 import nl.rug.aoop.ui.TraderUI;
 import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.network.OrderHandler;
-import nl.rug.aoop.network.StockApp;
+import nl.rug.aoop.network.Exchange;
 import nl.rug.aoop.networking.MessageHandler;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class StockAppMain {
         }
 
         MessageHandler messageHandler = new OrderHandler();
-        StockApp stockApp = new StockApp(messageHandler, port);
+        Exchange stockApp = new Exchange(messageHandler, port);
 
         //Should this be here?
         List<StockUI> stocks = stockApp.initializeStocks();

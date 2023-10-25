@@ -6,10 +6,10 @@ import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.networking.MessageHandler;
 
 /**
- * A consumer which continuously polls the TSMessageQueue in StockApp.
+ * A consumer which continuously polls the TSMessageQueue in the exchange.
  */
 public class NetConsumer extends Consumer implements Runnable, MessageHandler { //Should this implement messagehandler?
-    MessageQueue queue;
+    private MessageQueue queue;
     /**
      * Constructor for consumer.
      *
