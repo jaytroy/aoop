@@ -25,11 +25,11 @@ public class StockApp extends Server {
 
     public StockApp(MessageHandler messageHandler, int messageQueuePort) {
         super(messageHandler, messageQueuePort);
-        this.messageQueue = new TSMessageQueue();
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>(); // Initialize as ArrayList
         traders = new ArrayList<>(); // Initialize as ArrayList
 
+        this.messageQueue = new TSMessageQueue();
         consumer = new NetConsumer(messageQueue); //This thread will continuously poll messages
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();

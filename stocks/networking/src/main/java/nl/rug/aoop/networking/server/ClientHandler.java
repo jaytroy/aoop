@@ -14,7 +14,7 @@ import java.net.Socket;
  * Handles the input from the client, serverside. AKA MessageHandler.
  */
 @Slf4j
-public class ClientHandler implements Runnable, MessageHandler {
+public class ClientHandler implements Runnable {
     @Getter
     private Socket socket;
     @Getter
@@ -52,7 +52,7 @@ public class ClientHandler implements Runnable, MessageHandler {
                     terminate();
                     break;
                 }
-                handleMessage(received);
+                msgHandler.handleMessage(received);
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
@@ -78,10 +78,5 @@ public class ClientHandler implements Runnable, MessageHandler {
      */
     public void sendMessage(String message) {
         out.println(message);
-    }
-
-    @Override
-    public void handleMessage(String msg) {
-        msgHandler.handleMessage(msg);
     }
 }

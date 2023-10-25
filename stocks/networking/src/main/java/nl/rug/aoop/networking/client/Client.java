@@ -73,10 +73,6 @@ public class Client implements Runnable {
         out.println(message);
     }
 
-    public void receiveMessage() {
-
-    }
-
     /**
      * Runs the TCP client.
       */

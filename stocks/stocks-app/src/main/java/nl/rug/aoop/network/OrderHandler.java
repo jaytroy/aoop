@@ -1,6 +1,8 @@
 package nl.rug.aoop.network;
 
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.stockcommands.BuyLimitOrderCommand;
+import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
 
 public class OrderHandler implements MessageHandler {
 
@@ -8,9 +10,11 @@ public class OrderHandler implements MessageHandler {
     public void handleMessage(String message) {
 
         if ("BUY".equalsIgnoreCase(message)) {
-            //executeBuy();
+            BuyLimitOrderCommand buy = new BuyLimitOrderCommand();
+            buy.execute();
         } else if ("SELL".equalsIgnoreCase(message)) {
-            //executeSell();
+            SellLimitOrderCommand sell = new SellLimitOrderCommand();
+            sell.execute();
         } else {
             System.out.println("Unknown command: " + message);
         }

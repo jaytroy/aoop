@@ -34,14 +34,12 @@ public class Trader extends Client {
         super.run();
     }
 
-    @Override
-    public void receiveMessage() {
-
-    }
-
-    //@Override
-    public void sendMessage() {
-        int w = 1; //dummy code
+    public void sendMessage(String msg) {
+        try {
+            super.sendMessage(msg);
+        } catch(IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getName() {

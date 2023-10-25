@@ -9,7 +9,7 @@ public class BuyLimitOrderCommand {
     private double limitPrice;
     private int quantity;
 
-    public BuyLimitOrderCommand(Trader trader, StockDataModel stock, double limitPrice, int quantity) {
+    public BuyLimitOrderCommand(Trader trader, Stock stock, double limitPrice, int quantity) {
         this.trader = trader;
         this.stock = stock;
         this.limitPrice = limitPrice;
