@@ -18,7 +18,7 @@ import java.util.*;
 public class StockApp extends Server {
     private List<Client> connectedClients;
     private List<StockUI> stocks; // Change to List
-    private List<TraderUI> traderUIS; // Change to List
+    private List<TraderUI> traders; // Change to List
     private MessageQueue messageQueue;
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
 
@@ -26,7 +26,7 @@ public class StockApp extends Server {
         super(messageHandler, messageQueuePort);
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>(); // Initialize as ArrayList
-        traderUIS = new ArrayList<>(); // Initialize as ArrayList
+        traders = new ArrayList<>(); // Initialize as ArrayList
 
         this.messageQueue = new TSMessageQueue();
         consumer = new NetConsumer(messageQueue); //This thread will continuously poll messages
@@ -110,7 +110,7 @@ public class StockApp extends Server {
 
     private String generateTraderInformationForClient(Client client) {
         StringBuilder traderInfo = new StringBuilder();
-        for (TraderUI traderUI : traderUIS) {
+        for (TraderUI traderUI : traders) {
             traderInfo.append(traderUI.getName()).append(": ").append(traderUI.getFunds()).append("\n");
         }
         return traderInfo.toString();
