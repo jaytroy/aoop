@@ -4,6 +4,9 @@ import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.stockcommands.BuyLimitOrderCommand;
 import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
 import nl.rug.aoop.ui.TraderUI;
+import nl.rug.aoop.ui.TraderList;
+import nl.rug.aoop.ui.StockList;
+
 import nl.rug.aoop.ui.StockUI;
 
 public class OrderHandler implements MessageHandler {
@@ -48,20 +51,12 @@ public class OrderHandler implements MessageHandler {
     }
 
     private TraderUI findTraderByName(String name) {
-        for (TraderUI trader : ) {
-            if (trader.getName().equals(name)) {
-                return trader;
-            }
-        }
+
         return null;
     }
 
     private StockUI findStockBySymbol(String symbol) {
-        for (StockUI stock : ) {
-            if (stock.getSymbol().equals(symbol)) {
-                return stock;
-            }
-        }
+
         return null;
     }
 
