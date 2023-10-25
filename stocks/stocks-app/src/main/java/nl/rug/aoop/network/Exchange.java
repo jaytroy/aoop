@@ -15,14 +15,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-public class StockApp extends Server {
+/**
+ * The exchange keeps track of all the stocks, traders, and it resolves orders.
+ */
+public class Exchange extends Server {
     private List<Client> connectedClients;
     private List<StockUI> stocks; // Change to List
     private List<TraderUI> traders; // Change to List
     private MessageQueue messageQueue;
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
 
-    public StockApp(MessageHandler messageHandler, int messageQueuePort) {
+    public Exchange(MessageHandler messageHandler, int messageQueuePort) {
         super(messageHandler, messageQueuePort);
         connectedClients = new ArrayList<>();
         stocks = new ArrayList<>(); // Initialize as ArrayList

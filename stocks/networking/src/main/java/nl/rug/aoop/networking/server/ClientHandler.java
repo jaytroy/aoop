@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Handles the input from the client, serverside. AKA MessageHandler.
+ * Handles the input from the client, serverside.
  */
 @Slf4j
 public class ClientHandler implements Runnable {
