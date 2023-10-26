@@ -1,9 +1,14 @@
 package nl.rug.aoop.stockcommands;
 
+import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.command.Command;
 import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.model.Trader;
 
-public class SellLimitOrderCommand {
+import java.util.Map;
+
+@Slf4j
+public class SellLimitOrderCommand implements Command {
     private Trader trader;
     private Stock stock;
     private double limitPrice;
@@ -16,15 +21,16 @@ public class SellLimitOrderCommand {
         this.quantity = quantity;
     }
 
-    public void execute() {
+    @Override
+    public void execute(Map<String, Object> params) {
         if (stock != null && stock.getPrice() >= limitPrice && trader.hasEnoughStock(stock.getSymbol(), quantity)) {
             double totalRevenue = stock.getPrice() * quantity;
             trader.setFunds(trader.getFunds() + totalRevenue);
             trader.removeOwnedStock(stock.getSymbol(), quantity);
 
-            System.out.println(trader.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + limitPrice);
+            log.info(trader.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + limitPrice);
         } else {
-            System.out.println("Stock not found, the stock's price is below the specified limit price, or the trader does not own enough shares to sell.");
+            log.info("Stock not found, the stock's price is below the specified limit price, or the trader does not own enough shares to sell.");
         }
     }
 }
