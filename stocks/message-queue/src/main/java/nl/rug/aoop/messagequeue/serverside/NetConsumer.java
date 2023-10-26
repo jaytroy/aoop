@@ -1,4 +1,4 @@
-package nl.rug.aoop.network;
+package nl.rug.aoop.messagequeue.serverside;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.messagequeue.consumer.Consumer;

@@ -1,5 +1,6 @@
 package nl.rug.aoop.network;
 
+import nl.rug.aoop.messagequeue.serverside.NetConsumer;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.ui.StockUI;
 import nl.rug.aoop.ui.StockList;
