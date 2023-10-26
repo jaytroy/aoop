@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.MessageHandler;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Implements the TCP client. AKA NetworkClient.
@@ -56,7 +58,7 @@ public class Client implements Runnable {
         }
 
         connected = true;
-        in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        in = new BufferedReader(new InputStreamReaer(this.socket.getInputStream()));
         out = new PrintWriter(this.socket.getOutputStream());
     }
 
@@ -71,6 +73,7 @@ public class Client implements Runnable {
         }
 
         out.println(message);
+        out.flush();
         System.out.println("Client sent message");
     }
 
@@ -88,10 +91,12 @@ public class Client implements Runnable {
             while (running) {
                 System.out.println("Client is running at Client");
                 String received = in.readLine();
+                log.info("Received: " + received);
                 if (received == null) {
                     log.error("Server disconnected.");
                     break;
                 }
+
             }
         } catch (IOException e) {
             log.error("Error reading from server: " + e.getMessage());

@@ -39,19 +39,26 @@ public class ClientHandler implements Runnable {
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.handler = handler;
+
+        log.info("New handler created for" + socket.getRemoteSocketAddress());
     }
 
     @Override
     public void run() {
+        System.out.println("ClientHandler is running");
         running = true;
         try {
             while (running) {
                 String received = in.readLine();
+                log.info("Received message: " + received);
                 if (received == null || "QUIT".equalsIgnoreCase(received)) {
                     terminate();
                     break;
                 }
                 handler.handleMessage(received);
+
+                //Add TCP check over here? Client is never notified of receipt.
+                sendMessage("Server received message");
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
@@ -77,5 +84,6 @@ public class ClientHandler implements Runnable {
      */
     public void sendMessage(String message) {
         out.println(message);
+        out.flush();
     }
 }

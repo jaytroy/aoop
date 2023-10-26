@@ -61,5 +61,4 @@ public class TestMessage {
         assertEquals(originalMessage.getBody(), newMessage.getBody());
         assertEquals(originalMessage.getTimestamp(), newMessage.getTimestamp());
     }
-
 }

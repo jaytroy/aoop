@@ -25,6 +25,7 @@ public class CommandMessageHandler implements MessageHandler {
 
     @Override
     public void handleMessage(String messageJson) {
+        System.out.println("CommandMessageHandler handling message");
         Map<String, Object> params = new HashMap<>();
         params.put("messageJson", messageJson);
 
