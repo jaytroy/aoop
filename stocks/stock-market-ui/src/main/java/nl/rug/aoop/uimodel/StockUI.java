@@ -1,6 +1,4 @@
-package nl.rug.aoop.model;
-
-import nl.rug.aoop.model.StockDataModel;
+package nl.rug.aoop.uimodel;
 
 public class StockUI implements StockDataModel {
     private String symbol;

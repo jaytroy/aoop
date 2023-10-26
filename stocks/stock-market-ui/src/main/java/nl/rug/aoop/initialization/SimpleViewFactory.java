@@ -1,7 +1,7 @@
 package nl.rug.aoop.initialization;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import nl.rug.aoop.model.StockExchangeDataModel;
+import nl.rug.aoop.uimodel.StockExchangeDataModel;
 import nl.rug.aoop.simpleview.TerminalFrame;
 
 import javax.swing.*;

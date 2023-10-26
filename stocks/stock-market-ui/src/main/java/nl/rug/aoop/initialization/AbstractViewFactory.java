@@ -1,6 +1,6 @@
 package nl.rug.aoop.initialization;
 
-import nl.rug.aoop.model.StockExchangeDataModel;
+import nl.rug.aoop.uimodel.StockExchangeDataModel;
 
 /**
  * Factory for creating views of a stock exchange data model.

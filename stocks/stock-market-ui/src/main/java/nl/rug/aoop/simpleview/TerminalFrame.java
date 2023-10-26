@@ -1,6 +1,6 @@
 package nl.rug.aoop.simpleview;
 
-import nl.rug.aoop.model.StockExchangeDataModel;
+import nl.rug.aoop.uimodel.StockExchangeDataModel;
 import nl.rug.aoop.simpleview.tables.StockTableModel;
 import nl.rug.aoop.simpleview.tables.StockTerminalTable;
 import nl.rug.aoop.simpleview.tables.TraderTableModel;

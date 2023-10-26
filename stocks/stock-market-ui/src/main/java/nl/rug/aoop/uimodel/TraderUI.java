@@ -1,4 +1,4 @@
-package nl.rug.aoop.model;
+package nl.rug.aoop.uimodel;
 
 import java.util.List;
 

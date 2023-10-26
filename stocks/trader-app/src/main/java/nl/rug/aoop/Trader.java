@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Trader extends NetProducer implements ExchangeListener { //Should I use inheritance?
-    'private String name;
+    private String name;
     private int id;
     private double availableFunds;
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol -> quantity)

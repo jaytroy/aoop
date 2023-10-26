@@ -44,7 +44,7 @@ public class JayMain {
         Thread clientThread = new Thread(client);
         clientThread.start();
 
-        nl.rug.aoop.model.Trader jay = new Trader(client,"Jay", 0, 1000);
+        Trader jay = new Trader(client,"Jay", 0, 1000);
 
         Message msg = new Message("mqputcommand","test");
         jay.putMessage(msg);

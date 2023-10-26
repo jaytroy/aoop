@@ -1,8 +1,8 @@
 package nl.rug.aoop.simpleview.tables;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.rug.aoop.model.StockDataModel;
-import nl.rug.aoop.model.StockExchangeDataModel;
+import nl.rug.aoop.uimodel.StockDataModel;
+import nl.rug.aoop.uimodel.StockExchangeDataModel;
 import nl.rug.aoop.simpleview.NumberFormatter;
 
 import javax.swing.*;

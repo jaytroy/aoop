@@ -1,4 +1,4 @@
-package nl.rug.aoop.model;
+package nl.rug.aoop.uimodel;
 
 /**
  * Data model of a stock exchange.
