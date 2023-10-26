@@ -8,10 +8,9 @@ import nl.rug.aoop.networking.MessageHandler;
 import java.util.Map;
 
 public class TraderHandler implements MessageHandler, MQProducer {
-    private final CommandHandler commandHandler;
 
     public TraderHandler(CommandHandler commandHandler) {
-        this.commandHandler = commandHandler;
+
     }
 
     @Override
@@ -21,8 +20,7 @@ public class TraderHandler implements MessageHandler, MQProducer {
 
     @Override
     public void putMessage(Message message) {
-        String messageJson = message.toJson();
 
-        commandHandler.executeCommand("mqputcommand", Map.of("messageJson", messageJson));
+
     }
 }
