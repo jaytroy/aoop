@@ -8,4 +8,5 @@ module messagequeue {
     requires networking;
     requires org.slf4j;
     requires org.mockito;
+    opens nl.rug.aoop.messagequeue.queues to com.google.gson;
 }
