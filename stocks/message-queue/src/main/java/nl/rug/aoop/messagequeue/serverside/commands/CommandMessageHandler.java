@@ -6,12 +6,11 @@ import nl.rug.aoop.networking.MessageHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-
+   
 /**
- * The command message handler class.
+ * Handles messages in the form of commands.
  *
  */
-
 public class CommandMessageHandler implements MessageHandler {
     private final CommandHandler commandHandler;
 
@@ -20,7 +19,6 @@ public class CommandMessageHandler implements MessageHandler {
      *
      * @param commandHandler the commandHandler you pass in.
      */
-
     public CommandMessageHandler(CommandHandler commandHandler) {
         this.commandHandler = commandHandler;
     }

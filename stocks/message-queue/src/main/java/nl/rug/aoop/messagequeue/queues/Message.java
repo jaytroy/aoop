@@ -2,6 +2,7 @@ package nl.rug.aoop.messagequeue.queues;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

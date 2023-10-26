@@ -9,4 +9,5 @@ module stocksapp {
     requires stock.market.ui;
     opens nl.rug.aoop.ui;   // Open the package for reflection
     requires com.fasterxml.jackson.databind;
+    requires command;
 }

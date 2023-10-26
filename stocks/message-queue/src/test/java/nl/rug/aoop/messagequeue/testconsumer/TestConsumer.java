@@ -28,12 +28,12 @@ public class TestConsumer {
     }
     @Test
     public void testConsumerConstructorUnord() {
-        assertEquals(queueUnord, consumerUnord.getMessageQueue());
+        assertEquals(queueUnord, consumerUnord.getQueue());
     }
 
     @Test
     public void testConsumerConstructorOrd() {
-        assertEquals(queueOrd, consumerOrd.getMessageQueue());
+        assertEquals(queueOrd, consumerOrd.getQueue());
     }
 
     @Test
