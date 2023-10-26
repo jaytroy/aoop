@@ -50,14 +50,14 @@ public class ClientHandler implements Runnable {
         try {
             while (running) {
                 String received = in.readLine();
-                log.info("Received message: " + received);
+                log.info("Received message from" + socket.getRemoteSocketAddress() + ": " + received);
                 if (received == null || "QUIT".equalsIgnoreCase(received)) {
                     terminate();
                     break;
                 }
                 handler.handleMessage(received);
 
-                //Add TCP check over here? Client is never notified of receipt.
+                //TCP handshake
                 sendMessage("Server received message");
             }
         } catch (IOException e) {
@@ -82,7 +82,7 @@ public class ClientHandler implements Runnable {
      *
      * @param message The message to send.
      */
-    public void sendMessage(String message) {
+    public void sendMessage(String message) { //Sends a message back to the client to complete handshake
         out.println(message);
         out.flush();
     }

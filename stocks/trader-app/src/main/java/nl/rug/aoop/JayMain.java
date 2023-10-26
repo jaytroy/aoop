@@ -38,5 +38,6 @@ public class JayMain {
 
         Message msg = new Message("PUT","test");
         jay.putMessage(msg);
+        //jay.putMessage(null); Does not work
     }
 }

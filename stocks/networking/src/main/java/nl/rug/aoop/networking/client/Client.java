@@ -58,7 +58,7 @@ public class Client implements Runnable {
         }
 
         connected = true;
-        in = new BufferedReader(new InputStreamReaer(this.socket.getInputStream()));
+        in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         out = new PrintWriter(this.socket.getOutputStream());
     }
 
@@ -74,7 +74,7 @@ public class Client implements Runnable {
 
         out.println(message);
         out.flush();
-        System.out.println("Client sent message");
+        log.info("Client sent message: " + message);
     }
 
     /**
