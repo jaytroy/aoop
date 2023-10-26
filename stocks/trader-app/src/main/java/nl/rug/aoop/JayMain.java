@@ -42,7 +42,13 @@ public class JayMain {
         Trader jay = new Trader(client,"Jay", 0, 1000);
 
         Message msg = new Message("mqputcommand","test");
+        Message msg1 = new Message("BUY","test");
+        Message msg2 = new Message("SELL","test");
+
         jay.putMessage(msg);
+        jay.putMessage(msg1);
+        jay.putMessage(msg2);
+
 
         //jay.putMessage(null); Does not work
     }
