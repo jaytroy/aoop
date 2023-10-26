@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+
 /**
  * Message class that stores the different information on each message.
  */
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class Message implements Comparable<Message> {
     private final String header;
     private final String body;
-    @Getter
+    @Expose(serialize = false, deserialize = false)
     private final LocalDateTime timestamp;
 
     /**
@@ -35,7 +36,10 @@ public class Message implements Comparable<Message> {
      * @return Returns the string converted to JSON.
      */
     public String toJson() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .setPrettyPrinting()
+                .create();
         return gson.toJson(this);
     }
 
@@ -46,7 +50,10 @@ public class Message implements Comparable<Message> {
      * @return Returns a message.
      */
     public static Message fromJson(String json) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .setPrettyPrinting()
+                .create();
         return gson.fromJson(json, Message.class);
     }
 
