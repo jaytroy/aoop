@@ -2,6 +2,11 @@ package nl.rug.aoop;
 
 import nl.rug.aoop.command.CommandHandler;
 import nl.rug.aoop.messagequeue.serverside.commands.CommandMessageHandler;
+import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
+import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
+
+
 import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.ui.StockUI;
 import nl.rug.aoop.ui.StockExchange;
@@ -25,7 +30,13 @@ public class StockAppMain {
             System.out.println("Using backup port at StockAppMain");
         }
         //Start the server
-        MessageHandler handler = new CommandMessageHandler(new CommandHandler()); //Is this the right way to go?
+        MessageQueue messageQueue = new TSMessageQueue();
+        MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
+
+        CommandHandler commandHandler = new CommandHandler();
+        commandHandler.registerCommand("mqputcommand", mqPutCommand);
+
+        MessageHandler handler = new CommandMessageHandler(commandHandler); //Is this the right way to go?
         Server server = new Server(handler,port);
         Thread serverThread = new Thread(server);
         try {

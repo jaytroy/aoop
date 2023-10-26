@@ -1,5 +1,7 @@
 package nl.rug.aoop.command;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +9,7 @@ import java.util.Map;
  * Command handler class.
  */
 
+@Slf4j
 public class CommandHandler {
     private final Map<String, Command> commands = new HashMap<>();
 
@@ -28,7 +31,7 @@ public class CommandHandler {
      */
 
     public void executeCommand(String commandName, Map<String, Object> params) {
-        System.out.println("CommandHandler received " + commandName);
+        log.info("CommandHandler received " + commandName);
         Command command = commands.get(commandName);
         if (command != null) {
             command.execute(params);
