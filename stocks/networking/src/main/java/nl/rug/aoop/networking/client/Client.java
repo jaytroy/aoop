@@ -71,6 +71,7 @@ public class Client implements Runnable {
         }
 
         out.println(message);
+        System.out.println("Client sent message");
     }
 
     /**

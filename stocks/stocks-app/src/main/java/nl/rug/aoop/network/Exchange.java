@@ -6,9 +6,7 @@ import nl.rug.aoop.ui.StockList;
 import nl.rug.aoop.ui.TraderUI;
 import nl.rug.aoop.ui.TraderList;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
-import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.util.YamlLoader;
 
 import java.io.IOException;
@@ -18,23 +16,29 @@ import java.util.*;
 /**
  * The exchange keeps track of all the stocks, traders, and it resolves orders.
  */
-public class Exchange extends Server {
-    private List<Client> connectedClients;
+public class Exchange implements Runnable {
+    private List<Client> connectedClients; //This can probably be removed to be replaced by listeners
     private List<StockUI> stocks; // Change to List
     private List<TraderUI> traders; // Change to List
     private MessageQueue messageQueue;
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
+    private List<ExchangeListener> listeners; //These will be traders, listening to any changes within the exchange. Observer pattern
 
-    public Exchange(MessageHandler messageHandler, int messageQueuePort) {
-        super(messageHandler, messageQueuePort);
+    public Exchange() {
         connectedClients = new ArrayList<>();
+        listeners = new ArrayList<>();
         stocks = new ArrayList<>(); // Initialize as ArrayList
         traders = new ArrayList<>(); // Initialize as ArrayList
 
-        this.messageQueue = new TSMessageQueue();
+        this.messageQueue = new TSMessageQueue(); //Initialize the messagequeue. Will be run "locally" in the exchange
         consumer = new NetConsumer(messageQueue); //This thread will continuously poll messages
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
+    }
+
+    @Override
+    public void run() {
+
     }
 
     public List<StockUI> initializeStocks() {
@@ -44,7 +48,7 @@ public class Exchange extends Server {
             return stockList.getStocks();
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<>(); // Return an empty list
+            return new ArrayList<>(); // Return an empty list. Why?
         }
     }
 
@@ -58,38 +62,33 @@ public class Exchange extends Server {
             return new ArrayList<>(); // Return an empty list
         }
     }
+    //This is implemented in the observer pattern. Connected clients is useful tho. When a client disconnects, remove observer?
 
-    public void runStockApp() {
-        try {
-            super.start();
-        } catch(IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to start server at StockAppMain");
-            return;
-        }
-        super.run(); //It doesn't run without this
-    }
-
-    public void trackConnectedClients() {
+    public void trackConnectedClients() { //This will only run once? It needs to run always. Make exchange runnable?
         for (Client client : connectedClients) {
             if(client.isConnected()) {
-                sendPeriodicUpdates();
+                updateListeners();
             }
         }
     }
 
-    public void sendPeriodicUpdates() {
+    public void updateListeners() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                sendStockInformation();
-                sendTraderInformation();
+                for(ExchangeListener listener : listeners) {
+                    listener.update();
+                }
             }
         }, 0, 1000);
     }
 
+    public void addListener(ExchangeListener l) { //Call this when a client connects
+        listeners.add(l);
+    }
 
-    private void sendStockInformation() {
+
+    private void sendStockInformation() { //We can do this a different way
         for (Client client : connectedClients) {
             String stockInfo = generateStockInformationForClient(client);
             client.sendMessage(stockInfo);
@@ -119,7 +118,7 @@ public class Exchange extends Server {
         return traderInfo.toString();
     }
 
-    public void addClient(Client client) {
+    public void addClient(Client client) { //Replaced by addListener?
         connectedClients.add(client);
     }
 }

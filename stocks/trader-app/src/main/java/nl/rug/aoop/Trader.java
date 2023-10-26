@@ -1,5 +1,7 @@
 package nl.rug.aoop;
 
+import nl.rug.aoop.messagequeue.serverside.NetProducer;
+import nl.rug.aoop.network.ExchangeListener;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 
@@ -8,38 +10,18 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Trader extends Client {
+public class Trader extends NetProducer implements ExchangeListener { //Should I use inheritance?
     private String name;
     private int id;
     private double availableFunds;
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol -> quantity)
 
-    public Trader(String name, int id, double availableFunds, MessageHandler handler, InetSocketAddress address) {
-        super(handler,address);
+    public Trader(Client client, String name, int id, double availableFunds) {
+        super(client);
         this.name = name;
         this.id = id;
         this.availableFunds = availableFunds;
         this.ownedStocks = new HashMap<>();
-
-        runTrader();
-    }
-
-    public void runTrader() {
-        try {
-            super.connect();
-        } catch (IOException e) {
-            System.out.println("Failed to connect at Trader");
-            return;
-        }
-        super.run();
-    }
-
-    public void sendMessage(String msg) {
-        try {
-            super.sendMessage(msg);
-        } catch(IllegalArgumentException e) {
-            e.printStackTrace();
-        }
     }
 
     public String getName() {
@@ -74,5 +56,10 @@ public class Trader extends Client {
         if (currentQuantity >= quantity) {
             ownedStocks.put(stockSymbol, currentQuantity - quantity);
         }
+    }
+
+    @Override
+    public void update() { //Get updates from exchange
+
     }
 }

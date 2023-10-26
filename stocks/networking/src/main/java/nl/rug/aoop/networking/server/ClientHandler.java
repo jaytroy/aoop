@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Handles the input from the client, serverside.
+ * Handles the input from the client, serverside. Can send output.
  */
 @Slf4j
 public class ClientHandler implements Runnable {
@@ -23,13 +23,13 @@ public class ClientHandler implements Runnable {
     private final PrintWriter out;
     @Getter
     private boolean running = false;
-    private MessageHandler msgHandler;
+    private MessageHandler handler;
 
     /**
      * Constructor for class.
      *
-     * @param socket The connection socket.
-     * @param id     Client ID.
+     * @param socket  The connection socket.
+     * @param id      Client ID.
      * @param handler the message handler.
      * @throws IOException Thrown for errors with input/output streams.
      */
@@ -38,7 +38,7 @@ public class ClientHandler implements Runnable {
         this.id = id;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.msgHandler = handler;
+        this.handler = handler;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ClientHandler implements Runnable {
                     terminate();
                     break;
                 }
-                handleMessage(received);
+                handler.handleMessage(received);
             }
         } catch (IOException e) {
             log.error("Error reading from client", e);
@@ -77,9 +77,5 @@ public class ClientHandler implements Runnable {
      */
     public void sendMessage(String message) {
         out.println(message);
-    }
-
-    public void handleMessage(String msg) {
-        msgHandler.handleMessage(msg);
     }
 }

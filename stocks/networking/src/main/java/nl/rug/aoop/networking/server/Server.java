@@ -22,7 +22,7 @@ public class Server implements Runnable {
     private volatile boolean running = false;
     private int id = 0;
     @Getter
-    private MessageHandler msgHandler;
+    private MessageHandler handler;
     @Getter
     private ExecutorService threadPool;
 
@@ -34,7 +34,7 @@ public class Server implements Runnable {
      */
     public Server(MessageHandler handler, int port) {
         this.port = port;
-        this.msgHandler = handler;
+        this.handler = handler;
     }
 
     /**
@@ -59,27 +59,13 @@ public class Server implements Runnable {
                 Socket acceptedSocket = serverSocket.accept();
                 log.info("New connection from client: " + acceptedSocket.getRemoteSocketAddress()); //Log which client exactly?
 
-                threadPool.submit(new ClientHandler(msgHandler, acceptedSocket, id));
+                threadPool.submit(new ClientHandler(handler, acceptedSocket, id)); //This will handle incoming messages from Client
                 id++;
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
             }
         }
 
-    }
-
-    /**
-     * Should receive a message. Is this necessary?
-     */
-    public void handleMessage() {
-        String receivedMessage = readMessageFromSocket();
-
-        msgHandler.handleMessage(receivedMessage);
-    }
-
-    //This doesn't do anything?
-    private String readMessageFromSocket() {
-        return null;
     }
 
     /**

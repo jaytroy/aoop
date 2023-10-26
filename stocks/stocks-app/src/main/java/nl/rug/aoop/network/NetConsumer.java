@@ -8,7 +8,7 @@ import nl.rug.aoop.networking.MessageHandler;
 /**
  * A consumer which continuously polls the TSMessageQueue in the exchange.
  */
-public class NetConsumer extends Consumer implements Runnable, MessageHandler { //Should this implement messagehandler?
+public class NetConsumer extends Consumer implements Runnable, MessageHandler { //Should this implement messagehandler? Is inheritance the correct way to go?
     private MessageQueue queue;
     /**
      * Constructor for consumer.
@@ -30,7 +30,7 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler { 
                 //handleMessage(message)
 
             } catch (Exception e) {
-                System.err.println("Error processing message: " + e.getMessage() + " in netproducer");
+                System.err.println("Error processing message: " + e.getMessage() + " in NetProducer");
             }
         }
     }

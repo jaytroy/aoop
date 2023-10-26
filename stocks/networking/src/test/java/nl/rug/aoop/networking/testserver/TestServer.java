@@ -25,7 +25,7 @@ public class TestServer {
     @Test
     public void testServerConstructor() {
         assertEquals(port, server.getPort());
-        assertEquals(handler, server.getMsgHandler());
+        assertEquals(handler, server.getHandler());
     }
 
     @Test

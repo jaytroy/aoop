@@ -28,6 +28,7 @@ public class CommandHandler {
      */
 
     public void executeCommand(String commandName, Map<String, Object> params) {
+        System.out.println("Received " + commandName);
         Command command = commands.get(commandName);
         if (command != null) {
             command.execute(params);
