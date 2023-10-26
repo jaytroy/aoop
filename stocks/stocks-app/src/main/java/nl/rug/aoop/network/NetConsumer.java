@@ -40,6 +40,6 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler { 
 
     @Override
     public void handleMessage(String message) { //Or should it be passed onto a specific handler?
-        //Logic here
+        //Logic here. Do what needs to be done depending on the type of order
     }
 }
