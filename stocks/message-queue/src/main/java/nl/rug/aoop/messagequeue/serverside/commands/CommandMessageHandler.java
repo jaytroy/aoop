@@ -1,5 +1,6 @@
 package nl.rug.aoop.messagequeue.serverside.commands;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.command.CommandHandler;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Handles messages in the form of commands.
  *
  */
+@Slf4j
 public class CommandMessageHandler implements MessageHandler {
     private final CommandHandler commandHandler;
 
@@ -25,7 +27,7 @@ public class CommandMessageHandler implements MessageHandler {
 
     @Override
     public void handleMessage(String messageJson) {
-        System.out.println("CommandMessageHandler handling message");
+        log.info("CommandMessageHandler handling message");
 
         Map<String, Object> params = new HashMap<>();
         params.put("messageJson", messageJson);

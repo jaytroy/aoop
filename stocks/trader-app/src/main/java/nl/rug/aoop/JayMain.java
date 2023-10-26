@@ -1,7 +1,10 @@
 package nl.rug.aoop;
 
+import nl.rug.aoop.command.CommandHandler;
 import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.model.Trader;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
+import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
+import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 
@@ -15,7 +18,13 @@ import java.net.InetSocketAddress;
 public class JayMain {
     public static void main( String[] args ) {
         //I'm assuming most of this logic should be able to be moved out into the actual trader classes, or some utility classes
-        MessageHandler handler = new TraderHandler(); //Should this be done in the trader / client itself? Should each have its own?
+        MessageQueue messageQueue = new TSMessageQueue();
+        MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
+
+        CommandHandler commandHandler = new CommandHandler();
+        commandHandler.registerCommand("mqputcommand", mqPutCommand);
+
+        MessageHandler handler = new TraderHandler(commandHandler); //Should this be done in the trader / client itself? Should each have its own?
         int port;
         int BACKUP_PORT = 8080;
         InetSocketAddress address;
@@ -37,8 +46,9 @@ public class JayMain {
 
         nl.rug.aoop.model.Trader jay = new Trader(client,"Jay", 0, 1000);
 
-        Message msg = new Message("PUT","test");
+        Message msg = new Message("mqputcommand","test");
         jay.putMessage(msg);
+
         //jay.putMessage(null); Does not work
     }
 }
