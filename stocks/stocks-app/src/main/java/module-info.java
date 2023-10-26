@@ -10,4 +10,5 @@ module stocksapp {
     requires messagequeue;
     requires com.fasterxml.jackson.databind;
     requires command;
+    opens nl.rug.aoop.model to com.fasterxml.jackson.databind;
 }

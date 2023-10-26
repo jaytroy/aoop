@@ -43,7 +43,7 @@ public class StockAppMain {
 
 
         //Now the exchange part
-        Exchange stockApp = new Exchange();
+        Exchange stockApp = new Exchange(messageQueue);
 
         //Should this be here? Why is UI here?
         //List<Stock> stocks = stockApp.initializeStocks();

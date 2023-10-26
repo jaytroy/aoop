@@ -25,14 +25,14 @@ public class Exchange implements Runnable {
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
     private List<ExchangeListener> listeners; //These will be traders, listening to any changes within the exchange. Observer pattern
 
-    public Exchange() {
+    public Exchange(MessageQueue messageQueue) {
         connectedClients = new ArrayList<>();
         listeners = new ArrayList<>();
 
         stocks = initializeStocks();
         traders = initializeTraders();
 
-        this.messageQueue = new TSMessageQueue(); //Initialize the messagequeue. Will be run "locally" in the exchange
+        this.messageQueue = messageQueue; //Initialize the messagequeue. Will be run "locally" in the exchange
         consumer = new NetConsumer(messageQueue); //This thread will continuously poll messages
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
