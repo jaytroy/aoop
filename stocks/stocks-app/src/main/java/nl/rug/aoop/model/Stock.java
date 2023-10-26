@@ -1,4 +1,4 @@
-package nl.rug.aoop;
+package nl.rug.aoop.model;
 
 public class Stock {
     private String symbol;

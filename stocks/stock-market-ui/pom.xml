@@ -28,15 +28,16 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>nl.rug.aoop</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>message-queue</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>nl.rug.aoop</groupId>
-            <artifactId>message-queue</artifactId>
+            <artifactId>stocks-app</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

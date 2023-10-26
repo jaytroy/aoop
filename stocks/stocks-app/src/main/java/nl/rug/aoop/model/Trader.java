@@ -1,16 +1,15 @@
-package nl.rug.aoop.ui;
-
-import nl.rug.aoop.model.TraderDataModel;
+package nl.rug.aoop.model;
 
 import java.util.List;
 
-public class TraderUI implements TraderDataModel {
+public class Trader {
     private String id;
     private String name;
     private double funds;
     private List<String> ownedStocks;
 
-    public TraderUI() {
+    public Trader() {
+
     }
 
     public String getId() {

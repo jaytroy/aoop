@@ -1,13 +1,13 @@
 package nl.rug.aoop.network;
 
+import nl.rug.aoop.model.Stock;
+import nl.rug.aoop.model.Trader;
+import nl.rug.aoop.model.TraderList;
 import nl.rug.aoop.messagequeue.serverside.NetConsumer;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
-import nl.rug.aoop.ui.StockUI;
-import nl.rug.aoop.ui.StockList;
-import nl.rug.aoop.ui.TraderUI;
-import nl.rug.aoop.ui.TraderList;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.networking.client.Client;
+import nl.rug.aoop.model.StockList;
 import nl.rug.aoop.util.YamlLoader;
 
 import java.io.IOException;
@@ -19,8 +19,8 @@ import java.util.*;
  */
 public class Exchange implements Runnable {
     private List<Client> connectedClients; //This can probably be removed to be replaced by listeners
-    private List<StockUI> stocks; // Change to List
-    private List<TraderUI> traders; // Change to List
+    private List<Stock> stocks;
+    private List<Trader> traders;
     private MessageQueue messageQueue;
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.
     private List<ExchangeListener> listeners; //These will be traders, listening to any changes within the exchange. Observer pattern
@@ -28,13 +28,16 @@ public class Exchange implements Runnable {
     public Exchange() {
         connectedClients = new ArrayList<>();
         listeners = new ArrayList<>();
-        stocks = new ArrayList<>(); // Initialize as ArrayList
-        traders = new ArrayList<>(); // Initialize as ArrayList
+
+        stocks = initializeStocks();
+        traders = initializeTraders();
 
         this.messageQueue = new TSMessageQueue(); //Initialize the messagequeue. Will be run "locally" in the exchange
         consumer = new NetConsumer(messageQueue); //This thread will continuously poll messages
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
+
+        updateListeners();
     }
 
     @Override
@@ -42,7 +45,7 @@ public class Exchange implements Runnable {
 
     }
 
-    public List<StockUI> initializeStocks() {
+    public List<Stock> initializeStocks() {
         try {
             YamlLoader stockLoader = new YamlLoader(Path.of("./data/stocks.yaml"));
             StockList stockList = stockLoader.load(StockList.class);
@@ -53,7 +56,7 @@ public class Exchange implements Runnable {
         }
     }
 
-    public List<TraderUI> initializeTraders() {
+    public List<Trader> initializeTraders() {
         try {
             YamlLoader traderLoader = new YamlLoader(Path.of("./data/traders.yaml"));
             TraderList traderList = traderLoader.load(TraderList.class);
@@ -63,8 +66,8 @@ public class Exchange implements Runnable {
             return new ArrayList<>(); // Return an empty list
         }
     }
-    //This is implemented in the observer pattern. Connected clients is useful tho. When a client disconnects, remove observer?
 
+    //This is implemented in the observer pattern. Connected clients is useful tho. When a client disconnects, remove observer?
     public void trackConnectedClients() { //This will only run once? It needs to run always. Make exchange runnable?
         for (Client client : connectedClients) {
             if(client.isConnected()) {
@@ -105,7 +108,7 @@ public class Exchange implements Runnable {
 
     private String generateStockInformationForClient(Client client) {
         StringBuilder stockInfo = new StringBuilder();
-        for (StockUI stock : stocks) {
+        for (Stock stock : stocks) {
             stockInfo.append(stock.getSymbol()).append(": ").append(stock.getPrice()).append("\n");
         }
         return stockInfo.toString();
@@ -113,7 +116,7 @@ public class Exchange implements Runnable {
 
     private String generateTraderInformationForClient(Client client) {
         StringBuilder traderInfo = new StringBuilder();
-        for (TraderUI traderUI : traders) {
+        for (Trader traderUI : traders) {
             traderInfo.append(traderUI.getName()).append(": ").append(traderUI.getFunds()).append("\n");
         }
         return traderInfo.toString();

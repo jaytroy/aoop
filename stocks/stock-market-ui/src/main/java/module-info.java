@@ -7,6 +7,6 @@ module stock.market.ui {
     requires java.desktop;
     requires com.formdev.flatlaf;
     requires networking;
-    requires util;
     requires messagequeue;
+    requires stocksapp;
 }

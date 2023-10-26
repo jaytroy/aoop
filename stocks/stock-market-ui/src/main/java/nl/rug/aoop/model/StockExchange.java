@@ -1,13 +1,12 @@
-package nl.rug.aoop.ui;
+package nl.rug.aoop.model;
 
-import nl.rug.aoop.model.*;
 import java.util.List;
 
 public class StockExchange implements StockExchangeDataModel {
-    private List<StockUI> stocks;
-    private List<TraderUI> traderUIS;
+    private List<Stock> stocks;
+    private List<Trader> traderUIS;
 
-    public StockExchange(List<StockUI> stocks, List<TraderUI> traderUIS) {
+    public StockExchange(List<Stock> stocks, List<Trader> traderUIS) {
         this.stocks = stocks;
         this.traderUIS = traderUIS;
     }

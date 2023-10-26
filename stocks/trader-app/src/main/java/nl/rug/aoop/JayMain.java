@@ -1,6 +1,7 @@
 package nl.rug.aoop;
 
 import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 
@@ -34,7 +35,7 @@ public class JayMain {
         Thread clientThread = new Thread(client);
         clientThread.start();
 
-        Trader jay = new Trader(client,"Jay", 0, 1000);
+        nl.rug.aoop.model.Trader jay = new Trader(client,"Jay", 0, 1000);
 
         Message msg = new Message("PUT","test");
         jay.putMessage(msg);

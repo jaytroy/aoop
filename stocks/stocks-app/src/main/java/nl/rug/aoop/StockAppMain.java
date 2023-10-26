@@ -3,15 +3,10 @@ package nl.rug.aoop;
 import nl.rug.aoop.command.CommandHandler;
 import nl.rug.aoop.messagequeue.serverside.commands.CommandMessageHandler;
 import nl.rug.aoop.networking.server.Server;
-import nl.rug.aoop.ui.StockUI;
-import nl.rug.aoop.ui.StockExchange;
-import nl.rug.aoop.ui.TraderUI;
-import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.network.Exchange;
 import nl.rug.aoop.networking.MessageHandler;
 
 import java.io.IOException;
-import java.util.List;
 
 public class StockAppMain {
     public static void main(String[] args) {
@@ -40,13 +35,13 @@ public class StockAppMain {
         Exchange stockApp = new Exchange();
 
         //Should this be here? Why is UI here?
-        List<StockUI> stocks = stockApp.initializeStocks();
-        List<TraderUI> traderUIS = stockApp.initializeTraders();
+        //List<Stock> stocks = stockApp.initializeStocks();
+        //List<Trader> traders = stockApp.initializeTraders();
 
         //Start up the view
-        StockExchange stockExchange = new StockExchange(stocks, traderUIS); //This is the UI exchange
-        SimpleViewFactory viewFactory = new SimpleViewFactory();
-        viewFactory.createView(stockExchange);
+        //StockExchange stockExchange = new StockExchange(stocks, traders); //This is the UI exchange
+        //SimpleViewFactory viewFactory = new SimpleViewFactory();
+        //viewFactory.createView(stockExchange);
 
         //Start the stock app
         Thread appThread = new Thread(stockApp);

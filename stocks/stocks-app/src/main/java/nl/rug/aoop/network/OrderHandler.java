@@ -1,13 +1,10 @@
 package nl.rug.aoop.network;
 
+import nl.rug.aoop.model.Stock;
+import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.stockcommands.BuyLimitOrderCommand;
 import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
-import nl.rug.aoop.ui.TraderUI;
-import nl.rug.aoop.ui.TraderList;
-import nl.rug.aoop.ui.StockList;
-
-import nl.rug.aoop.ui.StockUI;
 
 public class OrderHandler implements MessageHandler {
     @Override
@@ -26,8 +23,8 @@ public class OrderHandler implements MessageHandler {
         int quantity = Integer.parseInt(parts[4]);
 
         if ("BUY".equalsIgnoreCase(command)) {
-            TraderUI trader = findTraderByName(traderName);
-            StockUI stock = findStockBySymbol(stockSymbol);
+            Trader trader = findTraderByName(traderName);
+            Stock stock = findStockBySymbol(stockSymbol);
 
             if (trader != null && stock != null) {
                 BuyLimitOrderCommand buy = new BuyLimitOrderCommand(trader, stock, limitPrice, quantity);
@@ -36,8 +33,8 @@ public class OrderHandler implements MessageHandler {
                 System.out.println("Trader or stock not found for the buy order.");
             }
         } else if ("SELL".equalsIgnoreCase(command)) {
-            TraderUI trader = findTraderByName(traderName);
-            StockUI stock = findStockBySymbol(stockSymbol);
+            Trader trader = findTraderByName(traderName);
+            Stock stock = findStockBySymbol(stockSymbol);
 
             if (trader != null && stock != null) {
                 SellLimitOrderCommand sell = new SellLimitOrderCommand(trader, stock, limitPrice, quantity);
@@ -50,12 +47,12 @@ public class OrderHandler implements MessageHandler {
         }
     }
 
-    private TraderUI findTraderByName(String name) {
+    private Trader findTraderByName(String name) {
 
         return null;
     }
 
-    private StockUI findStockBySymbol(String symbol) {
+    private Stock findStockBySymbol(String symbol) {
 
         return null;
     }

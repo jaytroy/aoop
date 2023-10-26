@@ -27,11 +27,12 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler { 
         System.out.println("Threaded consumer is running");
         while(!Thread.currentThread().isInterrupted()) {
             try {
-                Message msg = queue.dequeue();
-                log.info("Polled from the queue: " + msg);
-                //turn message into a string
-                //handleMessage(message)
-
+                if(queue.getSize() != 0) {
+                    Message msg = queue.dequeue();
+                    log.info("Polled from the queue: " + msg);
+                    //turn message into a string
+                    //handleMessage(message)
+                }
             } catch (Exception e) {
                 System.err.println("Error processing message: " + e.getMessage() + " in NetProducer");
             }
