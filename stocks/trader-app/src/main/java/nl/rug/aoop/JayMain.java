@@ -18,13 +18,8 @@ import java.net.InetSocketAddress;
 public class JayMain {
     public static void main( String[] args ) {
         //I'm assuming most of this logic should be able to be moved out into the actual trader classes, or some utility classes
-        MessageQueue messageQueue = new TSMessageQueue();
-        MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
 
-        CommandHandler commandHandler = new CommandHandler();
-        commandHandler.registerCommand("mqputcommand", mqPutCommand);
-
-        MessageHandler handler = new TraderHandler(commandHandler); //Should this be done in the trader / client itself? Should each have its own?
+        MessageHandler handler = new TraderHandler(); //Should this be done in the trader / client itself? Should each have its own?
         int port;
         int BACKUP_PORT = 8080;
         InetSocketAddress address;

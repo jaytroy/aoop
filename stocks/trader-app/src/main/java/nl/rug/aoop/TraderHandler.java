@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class TraderHandler implements MessageHandler, MQProducer {
 
-    public TraderHandler(CommandHandler commandHandler) {
+    public TraderHandler() {
 
     }
 
