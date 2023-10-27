@@ -1,5 +1,6 @@
 package nl.rug.aoop.network;
 
+import lombok.Getter;
 import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.model.TraderList;
@@ -19,7 +20,9 @@ import java.util.*;
  */
 public class Exchange implements Runnable {
     private List<Client> connectedClients; //This can probably be removed to be replaced by listeners
+    @Getter
     private List<Stock> stocks;
+    @Getter
     private List<Trader> traders;
     private MessageQueue messageQueue;
     private NetConsumer consumer; //Replace this with interface? Throws an error. MQConsumer is not runnable.

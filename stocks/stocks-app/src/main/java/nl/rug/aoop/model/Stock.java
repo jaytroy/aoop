@@ -1,6 +1,10 @@
 package nl.rug.aoop.model;
 
-public class Stock {
+import nl.rug.aoop.uimodel.StockDataModel;
+
+import java.util.List;
+
+public class Stock implements StockDataModel {
     private String symbol;
     private String name;
     private long sharesOutstanding;
@@ -16,8 +20,23 @@ public class Stock {
         return symbol;
     }
 
+    @Override
+    public String getId() {
+        return null;
+    }
+
     public String getName() {
         return name;
+    }
+
+    @Override
+    public double getFunds() {
+        return 0;
+    }
+
+    @Override
+    public List<String> getOwnedStocks() {
+        return null;
     }
 
     public long getSharesOutstanding() {

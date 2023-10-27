@@ -1,8 +1,10 @@
 package nl.rug.aoop.model;
 
+import nl.rug.aoop.uimodel.TraderDataModel;
+
 import java.util.List;
 
-public class Trader {
+public class Trader implements TraderDataModel {
     private String id;
     private String name;
     private double funds;

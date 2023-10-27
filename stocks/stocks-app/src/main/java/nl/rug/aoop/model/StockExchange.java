@@ -1,7 +1,9 @@
-package nl.rug.aoop.uimodel;
+package nl.rug.aoop.model;
 
-import nl.rug.aoop.model.Stock;
-import nl.rug.aoop.model.Trader;
+
+import nl.rug.aoop.uimodel.StockDataModel;
+import nl.rug.aoop.uimodel.StockExchangeDataModel;
+import nl.rug.aoop.uimodel.TraderDataModel;
 
 import java.util.List;
 

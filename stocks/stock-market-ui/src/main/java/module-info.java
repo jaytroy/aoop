@@ -8,5 +8,4 @@ module stock.market.ui {
     requires com.formdev.flatlaf;
     requires networking;
     requires messagequeue;
-    requires stocksapp;
 }

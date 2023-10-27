@@ -1,5 +1,7 @@
 package nl.rug.aoop.uimodel;
 
+import java.util.List;
+
 /**
  * Data model of a single stock.
  * Note that a stock may have more properties; these are just the ones needed for the view.
@@ -12,12 +14,18 @@ public interface StockDataModel {
      */
     String getSymbol();
 
+    String getId();
+
     /**
      * Retrieves the name of the company associated with the stock.
      *
      * @return Name of the company.
      */
     String getName();
+
+    double getFunds();
+
+    List<String> getOwnedStocks();
 
     /**
      * Retrieves the number of shares available for trading.

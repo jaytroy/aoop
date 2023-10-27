@@ -1,17 +1,22 @@
 package nl.rug.aoop;
 
 import nl.rug.aoop.command.CommandHandler;
+import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.messagequeue.serverside.commands.CommandMessageHandler;
 import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 
 
+import nl.rug.aoop.model.Stock;
+import nl.rug.aoop.model.StockExchange;
+import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.network.Exchange;
 import nl.rug.aoop.networking.MessageHandler;
 
 import java.io.IOException;
+import java.util.List;
 
 public class StockAppMain {
     public static void main(String[] args) {
@@ -30,8 +35,8 @@ public class StockAppMain {
 
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.registerCommand("mqputcommand", mqPutCommand);
-        commandHandler.registerCommand("Buy", );
-        commandHandler.registerCommand("Sell", );
+        //commandHandler.registerCommand("Buy", );
+        //commandHandler.registerCommand("Sell", );
 
         MessageHandler handler = new CommandMessageHandler(commandHandler); //Is this the right way to go?
         Server server = new Server(handler,port);
@@ -48,13 +53,13 @@ public class StockAppMain {
         Exchange stockApp = new Exchange(messageQueue);
 
         //Should this be here? Why is UI here?
-        //List<Stock> stocks = stockApp.initializeStocks();
-        //List<Trader> traders = stockApp.initializeTraders();
+        List<Stock> stocks = stockApp.getStocks();
+        List<Trader> traders = stockApp.getTraders();
 
         //Start up the view
-        //StockExchange stockExchange = new StockExchange(stocks, traders); //This is the UI exchange
-        //SimpleViewFactory viewFactory = new SimpleViewFactory();
-        //viewFactory.createView(stockExchange);
+        StockExchange stockExchange = new StockExchange(stocks, traders); //This is the UI exchange
+        SimpleViewFactory viewFactory = new SimpleViewFactory();
+        viewFactory.createView(stockExchange);
 
         //Start the stock app
         Thread appThread = new Thread(stockApp);
