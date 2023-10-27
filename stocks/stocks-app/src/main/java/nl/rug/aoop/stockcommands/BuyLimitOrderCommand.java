@@ -1,9 +1,15 @@
 package nl.rug.aoop.stockcommands;
 
+import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.command.Command;
 import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.model.Trader;
 
-public class BuyLimitOrderCommand {
+import java.util.Map;
+
+@Slf4j
+
+public class BuyLimitOrderCommand implements Command {
     private Trader trader;
     private Stock stock;
     private double limitPrice;
@@ -16,7 +22,8 @@ public class BuyLimitOrderCommand {
         this.quantity = quantity;
     }
 
-    public void execute() {
+    @Override
+    public void execute(Map<String, Object> params) {
         if (stock != null && stock.getPrice() <= limitPrice) {
             double totalCost = stock.getPrice() * quantity;
 
@@ -24,12 +31,12 @@ public class BuyLimitOrderCommand {
                 trader.setFunds(trader.getFunds() - totalCost);
                 trader.addOwnedStock(stock.getSymbol(), quantity);
 
-                System.out.println(trader.getName() + " has bought " + quantity + " shares of " + stock.getSymbol() + " at or below the specified limit price of " + limitPrice);
+                log.info(trader.getName() + " has bought " + quantity + " shares of " + stock.getSymbol() + " at or below the specified limit price of " + limitPrice);
             } else {
-                System.out.println(trader.getName() + " does not have enough funds to buy " + quantity + " shares of " + stock.getSymbol());
+                log.info(trader.getName() + " does not have enough funds to buy " + quantity + " shares of " + stock.getSymbol());
             }
         } else {
-            System.out.println("Stock not found or the stock's price is above the specified limit price.");
+            log.info("Stock not found or the stock's price is above the specified limit price.");
         }
     }
 }

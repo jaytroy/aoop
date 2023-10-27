@@ -11,12 +11,20 @@ import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.model.StockExchange;
 import nl.rug.aoop.model.Trader;
+import nl.rug.aoop.model.Stock;
+import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.network.Exchange;
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.stockcommands.BuyLimitOrderCommand;
+import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class StockAppMain {
     public static void main(String[] args) {
@@ -66,3 +74,4 @@ public class StockAppMain {
         appThread.start();
     }
 }
+
