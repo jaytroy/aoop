@@ -5,7 +5,6 @@ import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.model.TraderList;
 import nl.rug.aoop.messagequeue.serverside.NetConsumer;
-import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.networking.client.Client;
 import nl.rug.aoop.model.StockList;

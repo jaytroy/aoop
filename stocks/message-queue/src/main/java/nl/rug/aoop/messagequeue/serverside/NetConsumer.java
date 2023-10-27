@@ -30,8 +30,7 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler { 
                 if(queue.getSize() != 0) {
                     Message msg = queue.dequeue();
                     log.info("Polled from the queue: " + msg);
-                    //turn message into a string
-                    //handleMessage(message)
+                    handleMessage(msg.getBody());
                 }
             } catch (Exception e) {
                 System.err.println("Error processing message: " + e.getMessage() + " in NetProducer");
@@ -41,6 +40,7 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler { 
 
     @Override
     public void handleMessage(String message) { //Or should it be passed onto a specific handler?
+        System.out.println("NetConsumer is handling: " + message);
         //Logic here. Do what needs to be done depending on the type of order
     }
 }
