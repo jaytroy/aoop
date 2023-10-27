@@ -41,7 +41,7 @@ public class JayMain {
 
         Trader jay = new Trader(client,"Jay", 0, 1000);
 
-        Message msg = new Message("mqputcommand","test");
+        Message msg = new Message("PUT","test");
         Message msg1 = new Message("BUY","test");
         Message msg2 = new Message("SELL","test");
 

@@ -11,8 +11,6 @@ import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.model.StockExchange;
 import nl.rug.aoop.model.Trader;
-import nl.rug.aoop.model.Stock;
-import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.network.Exchange;
 import nl.rug.aoop.networking.MessageHandler;
@@ -21,10 +19,6 @@ import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 public class StockAppMain {
     public static void main(String[] args) {
@@ -42,7 +36,7 @@ public class StockAppMain {
         MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
 
         CommandHandler commandHandler = new CommandHandler();
-        commandHandler.registerCommand("mqputcommand", mqPutCommand);
+        commandHandler.registerCommand("PUT", mqPutCommand);
         //commandHandler.registerCommand("Buy", );
         //commandHandler.registerCommand("Sell", );
 
@@ -72,6 +66,24 @@ public class StockAppMain {
         //Start the stock app
         Thread appThread = new Thread(stockApp);
         appThread.start();
+    }
+
+    private static Stock findStockBySymbol(List<Stock> stocks, String symbol) {
+        for (Stock stock : stocks) {
+            if (stock.getSymbol().equals(symbol)) {
+                return stock;
+            }
+        }
+        return null;
+    }
+
+    private static Trader findTraderByName(List<Trader> traders, String name) {
+        for (Trader trader : traders) {
+            if (trader.getName().equals(name)) {
+                return trader;
+            }
+        }
+        return null;
     }
 }
 
