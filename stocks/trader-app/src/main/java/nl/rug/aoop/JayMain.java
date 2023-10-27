@@ -5,8 +5,11 @@ import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
+import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
+
+import java.util.List;
 import java.util.Random;
 
 import java.io.IOException;
@@ -43,23 +46,6 @@ public class JayMain {
         Trader jay = new Trader(client,"Jay", 0, 1000);
 
         Message msg = new Message("PUT","test");
-
-        Random random = new Random();
-
-        String[] stockSymbols = {"AAPL", "GOOGL", "TSLA", "AMZN", "MSFT"};
-        String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
-        int randomQuantity = random.nextInt(10000) + 1;
-
-        int buyOrSell = random.nextInt(2);
-        if (buyOrSell == 1) {
-            Message buyMessage = new Message("Buy", randomStockSymbol + randomQuantity);
-
-            jay.putMessage(buyMessage);
-        } else {
-            Message sellMessage = new Message("Sell", randomStockSymbol + randomQuantity);
-
-            jay.putMessage(sellMessage);
-        }
 
         jay.putMessage(msg);
 

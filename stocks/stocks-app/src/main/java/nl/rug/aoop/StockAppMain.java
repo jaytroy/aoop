@@ -1,7 +1,9 @@
 package nl.rug.aoop;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.command.CommandHandler;
 import nl.rug.aoop.initialization.SimpleViewFactory;
+import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.commands.CommandMessageHandler;
 import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
 import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
@@ -19,7 +21,9 @@ import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
+@Slf4j
 public class StockAppMain {
     public static void main(String[] args) {
         // I don't think this is needed here, but it's needed somewhere else
@@ -34,6 +38,7 @@ public class StockAppMain {
         //Start the server
         MessageQueue messageQueue = new TSMessageQueue();
         MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
+
 
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.registerCommand("PUT", mqPutCommand);
@@ -56,7 +61,45 @@ public class StockAppMain {
         List<Stock> stocks = stockApp.getStocks();
         List<Trader> traders = stockApp.getTraders();
 
+        Random random = new Random();
+
+        String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
+        int numOrders = 10;
+
+        for (int i = 0; i < numOrders; i++) {
+            String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
+            int randomQuantity = random.nextInt(10000) + 1;
+            int randomTrader = random.nextInt(10);
+            int buyOrSell = random.nextInt(2);
+            double priceFactor = 1.0 + (0.01 * random.nextDouble());
+            double limitPrice;
+
+            Stock stock = findStockBySymbol(stocks, randomStockSymbol);
+
+            if (stock != null) {
+                if (buyOrSell == 1) {
+                    limitPrice = stock.getPrice() * priceFactor;
+                    BuyLimitOrderCommand buyLimitOrderCommand = new BuyLimitOrderCommand(findTraderById(traders, "bot" + randomTrader),
+                            stock, limitPrice, randomQuantity);
+                    commandHandler.registerCommand("BUY " + i, buyLimitOrderCommand);
+                } else {
+                    limitPrice = stock.getPrice() / priceFactor;
+                    SellLimitOrderCommand sellLimitOrderCommand = new SellLimitOrderCommand(findTraderById(traders, "bot" + randomTrader),
+                            stock, limitPrice, randomQuantity);
+                    commandHandler.registerCommand("SELL " + i, sellLimitOrderCommand);
+                }
+            } else {
+                log.error("Stock with symbol " + randomStockSymbol + " not found.");
+            }
+
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                log.error("Thread failed to sleep");
+            }
+        }
         //Start up the view
+
         StockExchange stockExchange = new StockExchange(stocks, traders); //This is the UI exchange
         SimpleViewFactory viewFactory = new SimpleViewFactory();
         viewFactory.createView(stockExchange);
@@ -75,9 +118,9 @@ public class StockAppMain {
         return null;
     }
 
-    private static Trader findTraderByName(List<Trader> traders, String name) {
+    private static Trader findTraderById(List<Trader> traders, String id) {
         for (Trader trader : traders) {
-            if (trader.getName().equals(name)) {
+            if (trader.getId().equals(id)) {
                 return trader;
             }
         }
