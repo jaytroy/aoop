@@ -1,6 +1,7 @@
 package nl.rug.aoop.uimodel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Data model of a trader.
@@ -33,5 +34,5 @@ public interface TraderDataModel {
      *
      * @return A list of stock symbols that the trader owns.
      */
-    List<String> getOwnedStocks();
+    Map<String, Integer> getOwnedStocks();
 }

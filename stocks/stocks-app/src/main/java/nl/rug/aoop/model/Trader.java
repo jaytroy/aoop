@@ -3,15 +3,21 @@ package nl.rug.aoop.model;
 import nl.rug.aoop.uimodel.TraderDataModel;
 
 import java.util.List;
+import java.util.Map;
+
+import nl.rug.aoop.uimodel.TraderDataModel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Trader implements TraderDataModel {
     private String id;
     private String name;
     private double funds;
-    private List<String> ownedStocks;
+    private Map<String, Integer> ownedStocks;
 
     public Trader() {
-
+        ownedStocks = new HashMap<>();
     }
 
     public String getId() {
@@ -26,52 +32,42 @@ public class Trader implements TraderDataModel {
         return funds;
     }
 
-    public List<String> getOwnedStocks() {
+    public Map<String, Integer> getOwnedStocks() {
         return ownedStocks;
     }
 
     public void setFunds(double newFunds) {
         funds = newFunds;
     }
-    public void addOwnedStock(String stockSymbol, int quantity) {
-        for (String stockEntry : ownedStocks) {
-            if (stockEntry.startsWith(stockSymbol)) {
-                int currentQuantity = Integer.parseInt(stockEntry.split(" : ")[1]);
-                int newQuantity = currentQuantity + quantity;
-                ownedStocks.remove(stockEntry);
-                ownedStocks.add(stockSymbol + " : " + newQuantity);
-                return;
-            }
-        }
-        ownedStocks.add(stockSymbol + " : " + quantity);
-    }
 
+    public void addOwnedStock(String stockSymbol, int quantity) {
+        if (ownedStocks.containsKey(stockSymbol)) {
+            int currentQuantity = ownedStocks.get(stockSymbol);
+            int newQuantity = currentQuantity + quantity;
+            ownedStocks.put(stockSymbol, newQuantity);
+        } else {
+            ownedStocks.put(stockSymbol, quantity);
+        }
+    }
 
     // Method to remove owned stock
     public void removeOwnedStock(String stockSymbol, int quantity) {
-        for (String stockEntry : ownedStocks) {
-            if (stockEntry.startsWith(stockSymbol)) {
-                int currentQuantity = Integer.parseInt(stockEntry.split(" : ")[1]);
-                if (currentQuantity > quantity) {
-                    int newQuantity = currentQuantity - quantity;
-                    ownedStocks.remove(stockEntry);
-                    ownedStocks.add(stockSymbol + " : " + newQuantity);
-                } else if (currentQuantity == quantity) {
-                    ownedStocks.remove(stockEntry);
-                }
-                return;
+        if (ownedStocks.containsKey(stockSymbol)) {
+            int currentQuantity = ownedStocks.get(stockSymbol);
+            if (currentQuantity > quantity) {
+                int newQuantity = currentQuantity - quantity;
+                ownedStocks.put(stockSymbol, newQuantity);
+            } else if (currentQuantity == quantity) {
+                ownedStocks.remove(stockSymbol);
             }
         }
     }
 
     public boolean hasEnoughStock(String stockSymbol, int quantity) {
-        for (String stockEntry : ownedStocks) {
-            if (stockEntry.startsWith(stockSymbol)) {
-                int currentQuantity = Integer.parseInt(stockEntry.split(" : ")[1]);
-                return currentQuantity >= quantity;
-            }
+        if (ownedStocks.containsKey(stockSymbol)) {
+            int currentQuantity = ownedStocks.get(stockSymbol);
+            return currentQuantity >= quantity;
         }
         return false;
     }
-
 }

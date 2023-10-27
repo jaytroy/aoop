@@ -3,77 +3,77 @@ traders:
     name: "Just Bob"
     funds: 10450
     ownedStocks:
-      - "NVDA : 3"
-      - "AMD : 23"
-      - "AAPL : 15"
-      - "ADBE : 1"
-      - "FB : 3"
+      "NVDA" : 3
+      "AMD" : 23
+      "AAPL" : 15
+      "ADBE" : 1
+      "FB" : 3
   - id: "bot2"
     name: "Bert Macklin FBI"
     funds: 9999999
     ownedStocks:
-      - "INTC : 9874"
-      - "MSFT : 10923"
-      - "TSLA : 134"
-      - "ADBE : 1249"
-      - "FB : 103985"
+      "INTC" : 9874
+      "MSFT" : 10923
+      "TSLA" : 134
+      "ADBE" : 1249
+      "FB" : 103985
   - id: "bot3"
     name: "Bob Johnson"
     funds: 120000
     ownedStocks:
-      - "NVDA : 35"
-      - "AMD : 35"
-      - "AAPL : 83"
-      - "INTC : 456"
-      - "MSFT : 83"
-      - "TSLA : 38"
-      - "FB : 17"
+      "NVDA" : 35
+      "AMD" : 35
+      "AAPL" : 83
+      "INTC" : 456
+      "MSFT" : 83
+      "TSLA" : 38
+      "FB" : 17
   - id: "bot4"
     name: "John Bobson"
     funds: 150000
     ownedStocks:
-      - "NVDA : 35"
-      - "AMD : 35"
-      - "MSFT : 83"
-      - "TSLA : 38"
-      - "ADBE : 72"
-      - "FB : 17"
+      "NVDA" : 35
+      "AMD" : 35
+      "MSFT" : 83
+      "TSLA" : 38
+      "ADBE" : 72
+      "FB" : 17
   - id: "bot5"
     name: "Kip Hackman"
     funds: 1000
     ownedStocks:
-      - "NVDA : 4"
-      - "AMD : 6"
-      - "AAPL : 23"
-      - "INTC : 8"
-      - "TSLA : 5"
-      - "ADBE : 7"
-      - "FB : 13"
+      "NVDA" : 4
+      "AMD" : 6
+      "AAPL" : 23
+      "INTC" : 8
+      "TSLA" : 5
+      "ADBE" : 7
+      "FB" : 13
   - id: "bot6"
     name: "NoobMaster69"
     funds: 69420
     ownedStocks:
-      - "NVDA : 42"
-      - "AMD : 47"
+      "NVDA" : 42
+      "AMD" : 47
   - id: "bot7"
     name: "Ben Dover"
     funds: 6000000
     ownedStocks:
-      - "NVDA : 234"
-      - "AMD : 7654"
-      - "AAPL : 2345"
-      - "INTC : 6134"
-      - "MSFT : 7653"
-      - "TSLA : 234"
-      - "ADBE : 543"
-      - "FB : 164"
+      "NVDA" : 234
+      "AMD" : 7654
+      "AAPL" : 2345
+      "INTC" : 6134
+      "MSFT" : 7653
+      "TSLA" : 234
+      "ADBE" : 543
+      "FB" : 164
   - id: "bot8"
     name: "Lorenzo von Matterhorn"
     funds: 10000000
     ownedStocks:
-      - "NVDA : 4250"
+      "NVDA" : 4250
   - id: "bot9"
     name: "B. Nugel"
     funds: 300000
     ownedStocks:
-      - "AOOP : 60000"
+      "AOOP" : 60000

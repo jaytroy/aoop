@@ -64,5 +64,23 @@ public class StockAppMain {
         Thread appThread = new Thread(stockApp);
         appThread.start();
     }
+
+    private static Stock findStockBySymbol(List<Stock> stocks, String symbol) {
+        for (Stock stock : stocks) {
+            if (stock.getSymbol().equals(symbol)) {
+                return stock;
+            }
+        }
+        return null;
+    }
+
+    private static Trader findTraderByName(List<Trader> traders, String name) {
+        for (Trader trader : traders) {
+            if (trader.getName().equals(name)) {
+                return trader;
+            }
+        }
+        return null;
+    }
 }
 
