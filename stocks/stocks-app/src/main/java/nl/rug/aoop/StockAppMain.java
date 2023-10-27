@@ -37,8 +37,6 @@ public class StockAppMain {
 
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.registerCommand("PUT", mqPutCommand);
-        //commandHandler.registerCommand("Buy", );
-        //commandHandler.registerCommand("Sell", );
 
         MessageHandler handler = new CommandMessageHandler(commandHandler); //Is this the right way to go?
         Server server = new Server(handler,port);

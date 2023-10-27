@@ -7,6 +7,7 @@ import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
 import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
+import java.util.Random;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -42,12 +43,25 @@ public class JayMain {
         Trader jay = new Trader(client,"Jay", 0, 1000);
 
         Message msg = new Message("PUT","test");
-        Message msg1 = new Message("BUY","test");
-        Message msg2 = new Message("SELL","test");
+
+        Random random = new Random();
+
+        String[] stockSymbols = {"AAPL", "GOOGL", "TSLA", "AMZN", "MSFT"};
+        String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
+        int randomQuantity = random.nextInt(10000) + 1;
+
+        int buyOrSell = random.nextInt(2);
+        if (buyOrSell == 1) {
+            Message buyMessage = new Message("Buy", randomStockSymbol + randomQuantity);
+
+            jay.putMessage(buyMessage);
+        } else {
+            Message sellMessage = new Message("Sell", randomStockSymbol + randomQuantity);
+
+            jay.putMessage(sellMessage);
+        }
 
         jay.putMessage(msg);
-        jay.putMessage(msg1);
-        jay.putMessage(msg2);
 
 
         //jay.putMessage(null); Does not work
