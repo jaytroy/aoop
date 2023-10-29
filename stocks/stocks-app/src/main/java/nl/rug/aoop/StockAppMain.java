@@ -109,8 +109,6 @@ public class StockAppMain {
                     viewFactory.updateView();
 
                 }
-
-
             } else {
                 log.error("Stock with symbol " + randomStockSymbol + " not found.");
             }
