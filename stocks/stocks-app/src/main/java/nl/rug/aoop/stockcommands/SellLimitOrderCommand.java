@@ -28,9 +28,9 @@ public class SellLimitOrderCommand implements Command {
             trader.setFunds(trader.getFunds() + totalRevenue);
             trader.removeOwnedStock(stock.getSymbol(), quantity);
 
-            log.info(trader.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + limitPrice);
+            log.info(trader.getName() + " has sold " + quantity + " shares of " + stock.getSymbol() + " at or above the specified limit price of " + (int) limitPrice);
         } else {
-            log.info("Stock not found, the stock's price is below the specified limit price, or the trader does not own enough shares to sell.");
+            log.info("Failed, " + trader.getName() + " does not own enough shares to sell.");
         }
     }
 }

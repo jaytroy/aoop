@@ -8,7 +8,6 @@ import nl.rug.aoop.model.Trader;
 import java.util.Map;
 
 @Slf4j
-
 public class BuyLimitOrderCommand implements Command {
     private Trader trader;
     private Stock stock;
@@ -30,8 +29,7 @@ public class BuyLimitOrderCommand implements Command {
             if (trader.getFunds() >= totalCost) {
                 trader.setFunds(trader.getFunds() - totalCost);
                 trader.addOwnedStock(stock.getSymbol(), quantity);
-
-                log.info(trader.getName() + " has bought " + quantity + " shares of " + stock.getSymbol() + " at or below the specified limit price of " + limitPrice);
+                log.info(trader.getName() + " has bought " + quantity + " shares of " + stock.getSymbol() + " at or below the specified limit price of " + (int) limitPrice);
             } else {
                 log.info(trader.getName() + " does not have enough funds to buy " + quantity + " shares of " + stock.getSymbol());
             }

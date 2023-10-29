@@ -57,9 +57,10 @@ public class Server implements Runnable {
         while (running) {
             try {
                 Socket acceptedSocket = serverSocket.accept();
-                log.info("New connection from client: " + acceptedSocket.getRemoteSocketAddress()); //Log which client exactly?
+                log.info("New connection from client: " + acceptedSocket.getRemoteSocketAddress());
 
-                threadPool.submit(new ClientHandler(handler, acceptedSocket, id)); //This will handle incoming messages from Client
+                threadPool.submit(new ClientHandler(handler, acceptedSocket, id)); //This will handle incoming messages
+                // from Client
                 id++;
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
