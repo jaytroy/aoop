@@ -8,7 +8,7 @@ public class StockAppMain {
     /**
      * The main method that initializes the Stock App view and components.
      *
-     * @param args Command-line arguments (not used).
+     * @param args Command-line arguments.
      */
     public static void main(String[] args) {
         InitializeView.initialize();
