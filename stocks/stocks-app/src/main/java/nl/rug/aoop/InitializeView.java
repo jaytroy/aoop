@@ -21,92 +21,65 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+
+/**
+ * This class provides initialization for the Stock App, including starting the server and setting up the view.
+ */
 @Slf4j
 public class InitializeView {
+    /**
+     * Initialize the Stock App, start the server, and set up the view.
+     */
     public static void initialize() {
-        int port;
-        int BACKUP_PORT = 8080;
-        if(System.getenv("MESSAGE_QUEUE_PORT") != null) {
-            port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
-        } else {
-            port = BACKUP_PORT;
-            System.out.println("Using backup port at StockAppMain");
-        }
-        //Start the server
+        int port = getPort();
+
         MessageQueue messageQueue = new TSMessageQueue();
         MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
-
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.registerCommand("PUT", mqPutCommand);
-
-        MessageHandler handler = new CommandMessageHandler(commandHandler); //Is this the right way to go?
-        Server server = new Server(handler,port);
+        MessageHandler handler = new CommandMessageHandler(commandHandler);
+        Server server = new Server(handler, port);
         Thread serverThread = new Thread(server);
         try {
-            server.start(); //Start the server
-        } catch(IOException e) {
+            server.start();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        serverThread.start(); //Start the thread
+        serverThread.start();
 
-        //Now the exchange part
+        // Set up the Exchange
         Exchange stockApp = new Exchange(messageQueue);
-
-        //Should this be here? Why is UI here?
         List<Stock> stocks = stockApp.getStocks();
         List<Trader> traders = stockApp.getTraders();
 
-        //Start up the view
-        StockExchange stockExchange = new StockExchange(stocks, traders); //This is the UI exchange
+        // Start the view
+        StockExchange stockExchange = new StockExchange(stocks, traders);
         SimpleViewFactory viewFactory = new SimpleViewFactory();
         viewFactory.createView(stockExchange);
 
+        buyAndSellActivation(stocks, traders, commandHandler, viewFactory);
+    }
 
-        Thread appThread = new Thread(stockApp);
-        appThread.start();
-        //Start the stock app
-
+    private static void buyAndSellActivation(List<Stock> stocks, List<Trader> traders, CommandHandler commandHandler, 
+                                             SimpleViewFactory viewFactory) {
         Random random = new Random();
-
         String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
         int numOrders = 10;
-
         for (int i = 0; i < numOrders; i++) {
             String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
-            int randomQuantityBuy = random.nextInt(100) + 1;;
-            int randomQuantitySell = random.nextInt(10) + 1;
             int randomTrader = random.nextInt(9) + 1;
             int buyOrSell = random.nextInt(2);
             double priceFactor = 1.0 + (0.01 * random.nextDouble());
-            double limitPrice;
-
             Stock stock = findStockBySymbol(stocks, randomStockSymbol);
-
             if (stock != null) {
                 if (buyOrSell == 1) {
-                    limitPrice = stock.getPrice() * priceFactor;
-                    BuyLimitOrderCommand buyLimitOrderCommand = new BuyLimitOrderCommand(findTraderById(traders, "bot" + randomTrader),
-                            stock, limitPrice, randomQuantityBuy);
-                    commandHandler.registerCommand("BUY " + i, buyLimitOrderCommand);
-                    commandHandler.executeCommand("BUY " + i, null);
-                    viewFactory.updateView();
+                    buyCommand(traders, commandHandler, viewFactory, stock, priceFactor, randomTrader, i);
                 } else {
-                    Map<String, Integer> stockSymbolSell = findTraderById(traders, "bot" + randomTrader).getOwnedStocks();
-                    String[] stockSymbolsSelling = stockSymbolSell.keySet().toArray(new String[0]);
-                    String randomStockSymbolSelling = stockSymbolsSelling[random.nextInt(stockSymbolsSelling.length)];
-                    Stock stockToSell = findStockBySymbol(stocks, randomStockSymbolSelling);
-                    limitPrice = stockToSell.getPrice() / priceFactor;
-                    SellLimitOrderCommand sellLimitOrderCommand = new SellLimitOrderCommand(findTraderById(traders, "bot" + randomTrader),
-                            stockToSell, limitPrice, randomQuantitySell);
-                    commandHandler.registerCommand("SELL " + i, sellLimitOrderCommand);
-                    commandHandler.executeCommand("SELL " + i, null);
-                    viewFactory.updateView();
-
+                    sellCommand(stocks, traders, commandHandler, viewFactory, randomTrader, priceFactor, i);
                 }
             } else {
                 log.error("Stock with symbol " + randomStockSymbol + " not found.");
             }
-
             try {
                 Thread.sleep(4000);
             } catch (InterruptedException e) {
@@ -114,6 +87,64 @@ public class InitializeView {
             }
         }
     }
+
+    private static void buyCommand(List<Trader> traders, CommandHandler commandHandler, SimpleViewFactory viewFactory,
+                                   Stock stock, double priceFactor, int randomTrader, int i) {
+        Random random = new Random();
+        double limitPrice;
+        int randomQuantityBuy = random.nextInt(100) + 1;;
+        limitPrice = stock.getPrice() * priceFactor;
+        BuyLimitOrderCommand buyLimitOrderCommand = new BuyLimitOrderCommand(findTraderById(traders,
+                "bot" + randomTrader),
+                stock, limitPrice, randomQuantityBuy);
+        commandHandler.registerCommand("BUY " + i, buyLimitOrderCommand);
+        commandHandler.executeCommand("BUY " + i, null);
+        viewFactory.updateView();
+    }
+
+    private static void sellCommand(List<Stock> stocks, List<Trader> traders, CommandHandler commandHandler,
+                                    SimpleViewFactory viewFactory, int randomTrader, double priceFactor, int i) {
+        Random random = new Random();
+        double limitPrice;
+        int randomQuantitySell = random.nextInt(10) + 1;
+        Map<String, Integer> stockSymbolSell = findTraderById(traders, "bot" + randomTrader).
+                getOwnedStocks();
+        String[] stockSymbolsSelling = stockSymbolSell.keySet().toArray(new String[0]);
+        String randomStockSymbolSelling = stockSymbolsSelling[random.nextInt(stockSymbolsSelling.length)];
+        Stock stockToSell = findStockBySymbol(stocks, randomStockSymbolSelling);
+        limitPrice = stockToSell.getPrice() / priceFactor;
+        SellLimitOrderCommand sellLimitOrderCommand = new SellLimitOrderCommand(findTraderById(traders,
+                "bot" + randomTrader),
+                stockToSell, limitPrice, randomQuantitySell);
+        commandHandler.registerCommand("SELL " + i, sellLimitOrderCommand);
+        commandHandler.executeCommand("SELL " + i, null);
+        viewFactory.updateView();
+    }
+
+    /**
+     * Determine the port for the server, either from the environment variable or use a backup port.
+     *
+     * @return The selected port for the server.
+     */
+    private static int getPort() {
+        int port;
+        int BACKUP_PORT = 8080;
+        if (System.getenv("MESSAGE_QUEUE_PORT") != null) {
+            port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
+        } else {
+            port = BACKUP_PORT;
+            System.out.println("Using backup port at StockAppMain");
+        }
+        return port;
+    }
+
+    /**
+     * Finds the stock by symbol.
+     *
+     * @param stocks the list of stocks.
+     * @param symbol the symbol.
+     * @return the stock you are trying to find.
+     */
 
     private static Stock findStockBySymbol(List<Stock> stocks, String symbol) {
         for (Stock stock : stocks) {
@@ -123,6 +154,14 @@ public class InitializeView {
         }
         return null;
     }
+
+    /**
+     * Finds the trader by id.
+     *
+     * @param traders the list of traders.
+     * @param id the id.
+     * @return the trader you are trying to find.
+     */
 
     private static Trader findTraderById(List<Trader> traders, String id) {
         for (Trader trader : traders) {
