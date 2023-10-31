@@ -6,7 +6,6 @@ import nl.rug.aoop.simpleview.TerminalFrame;
 
 import javax.swing.*;
 
-
 /**
  * Creates a new SWING UI for the provided stock exchange.
  */
@@ -22,6 +21,9 @@ public class SimpleViewFactory implements AbstractViewFactory {
         });
     }
 
+    /**
+     * Method to update the view.
+     */
     public void updateView() {
         if (terminalFrame != null) {
             terminalFrame.updateView(); // You need to implement this method in your TerminalFrame

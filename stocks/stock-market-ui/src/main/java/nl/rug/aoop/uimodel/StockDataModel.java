@@ -14,6 +14,11 @@ public interface StockDataModel {
      */
     String getSymbol();
 
+    /**
+     * Retrieves the unique identifier of a stock.
+     *
+     * @return The unique identifier of the stock.
+     */
     String getId();
 
     /**
@@ -23,8 +28,18 @@ public interface StockDataModel {
      */
     String getName();
 
+    /**
+     * Retrieves the available funds associated with the stock.
+     *
+     * @return Available funds for the stock.
+     */
     double getFunds();
 
+    /**
+     * Retrieves a list of the stocks owned by the entity.
+     *
+     * @return List of owned stocks.
+     */
     List<String> getOwnedStocks();
 
     /**
@@ -35,14 +50,14 @@ public interface StockDataModel {
     long getSharesOutstanding();
 
     /**
-     * Retrieves the total market cap of the company. Calculated as sharesOutstanding * price
+     * Retrieves the total market capitalization of the company. Calculated as sharesOutstanding * price.
      *
-     * @return Market cap of the company.
+     * @return Market capitalization of the company.
      */
     double getMarketCap();
 
     /**
-     * Retrieves the price of a single share. Represents the latest price a share was traded at.
+     * Retrieves the price of a single share. Represents the latest price at which a share was traded.
      *
      * @return The price of a single share.
      */

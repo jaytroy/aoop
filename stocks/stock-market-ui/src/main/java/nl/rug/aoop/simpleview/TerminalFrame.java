@@ -19,11 +19,11 @@ public class TerminalFrame extends JFrame {
     /**
      * The width of the frame.
      */
-    public static final int WIDTH = 800;
+    public static final int WIDTH = 1600;
     /**
      * The height of the frame.
      */
-    public static final int HEIGHT = 800;
+    public static final int HEIGHT = 1100;
 
     /**
      * Creates a new frame for the stock terminal view.
