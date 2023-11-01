@@ -5,10 +5,12 @@ import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The `JayMain` class represents the entry point for the Jay Trader application in the stock exchange system.
  */
+@Slf4j
 public class JayMain {
     /**
      * The main method that initializes the Stock App view and components.
@@ -42,6 +44,17 @@ public class JayMain {
         Trader jay = new Trader(client,"Jay", 0, 1000);
         Message msg = new Message("PUT","test");
         jay.putMessage(msg);
+        for(int i = 0; i < 10; i++) {
+            Message buy = new Message("BUY " + i,"test");
+            Message sell = new Message("SELL " + i,"test");
+            jay.putMessage(buy);
+            jay.putMessage(sell);
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                log.error("Thread failed to sleep");
+            }
+        }
         //jay.putMessage(null); Does not work
     }
 }

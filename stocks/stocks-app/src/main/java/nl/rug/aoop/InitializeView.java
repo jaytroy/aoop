@@ -98,7 +98,6 @@ public class InitializeView {
                 "bot" + randomTrader),
                 stock, limitPrice, randomQuantityBuy);
         commandHandler.registerCommand("BUY " + i, buyLimitOrderCommand);
-        commandHandler.executeCommand("BUY " + i, null);
         viewFactory.updateView();
     }
 
@@ -117,7 +116,6 @@ public class InitializeView {
                 "bot" + randomTrader),
                 stockToSell, limitPrice, randomQuantitySell);
         commandHandler.registerCommand("SELL " + i, sellLimitOrderCommand);
-        commandHandler.executeCommand("SELL " + i, null);
         viewFactory.updateView();
     }
 
