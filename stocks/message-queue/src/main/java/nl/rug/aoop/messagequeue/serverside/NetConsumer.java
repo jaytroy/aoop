@@ -10,13 +10,15 @@ import nl.rug.aoop.networking.MessageHandler;
  * A consumer which continuously polls the TSMessageQueue in the exchange.
  */
 @Slf4j
-public class NetConsumer extends Consumer implements Runnable, MessageHandler { //Should this implement messagehandler? Is inheritance the correct way to go?
+public class NetConsumer extends Consumer implements Runnable, MessageHandler {
     private MessageQueue queue;
+
     /**
      * Constructor for consumer.
      *
      * @param messageQueue the messagequeue.
      */
+
     public NetConsumer(MessageQueue messageQueue) {
         super(messageQueue);
         queue = super.getQueue();
@@ -26,21 +28,17 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler { 
     public void run() {
         System.out.println("Threaded consumer is running");
         while(!Thread.currentThread().isInterrupted()) {
-            try {
-                if(queue.getSize() != 0) {
-                    Message msg = queue.dequeue();
-                    log.info("Polled from the queue: " + msg);
-                    handleMessage(msg.getBody());
-                }
-            } catch (Exception e) {
-                System.err.println("Error processing message: " + e.getMessage() + " in NetProducer");
+            if (queue.getSize() != 0) {
+                Message msg = queue.dequeue();
+                log.info("Polled from the queue: " + msg);
+                //turn message into a string
+                //handleMessage(message)
             }
         }
     }
 
     @Override
     public void handleMessage(String message) { //Or should it be passed onto a specific handler?
-        System.out.println("NetConsumer is handling: " + message);
         //Logic here. Do what needs to be done depending on the type of order
     }
 }

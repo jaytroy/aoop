@@ -7,13 +7,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Local date time type adapter for GSON loading.
+ */
+
 public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @Override
     public void write(JsonWriter out, LocalDateTime value) throws IOException {
         if (value != null) {
-            out.value(formatter.format(value));
+            out.value(FORMATTER.format(value));
         } else {
             out.nullValue();
         }
@@ -22,7 +26,7 @@ public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
     @Override
     public LocalDateTime read(JsonReader in) throws IOException {
         if (in.peek() != null) {
-            return LocalDateTime.parse(in.nextString(), formatter);
+            return LocalDateTime.parse(in.nextString(), FORMATTER);
         }
         in.nextNull();
         return null;

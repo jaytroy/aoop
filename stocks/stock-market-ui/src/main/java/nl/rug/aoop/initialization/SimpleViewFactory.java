@@ -10,12 +10,23 @@ import javax.swing.*;
  * Creates a new SWING UI for the provided stock exchange.
  */
 public class SimpleViewFactory implements AbstractViewFactory {
+    private TerminalFrame terminalFrame; // Declare terminalFrame as an instance variable
+
     @Override
     public void createView(StockExchangeDataModel stockExchangeDataModel) {
         FlatDarculaLaf.setup();
         System.setProperty("sun.java2d.opengl", "true");
         SwingUtilities.invokeLater(() -> {
-            new TerminalFrame(stockExchangeDataModel);
+            terminalFrame = new TerminalFrame(stockExchangeDataModel); // Initialize terminalFrame
         });
+    }
+
+    /**
+     * Method to update the view.
+     */
+    public void updateView() {
+        if (terminalFrame != null) {
+            terminalFrame.updateView(); // You need to implement this method in your TerminalFrame
+        }
     }
 }
