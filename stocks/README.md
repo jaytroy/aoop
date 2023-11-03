@@ -169,38 +169,25 @@ Each of these modules plays a unique role in making the Stock Market Simulation 
 
 If there were more time, additional features like automated trading bots, user authentication, and a more interactive and visually appealing user interface could be implemented. Overall, the implementation serves as a solid foundation for a stock market simulation, but further refinements and enhancements could make it an even more comprehensive and realistic tool for understanding stock market dynamics and trading strategies.
 
-Usage
+## Usage
 
-The Stock Exchange Simulator project provides an environment for simulating stock market activities. Users can observe stock prices in real-time and place buy and sell orders through a simple user interface. Here are some examples of how to use the project:
-Real-time Stock Updates
+To use the code all you need to do is run the code and everything will be done automatically.
 
-The project uses the Observer pattern to provide real-time updates on stock prices. Upon launching the application, users can observe the latest stock prices, which update continuously as trading activity occurs.
-
-Real-time Stock Updates
-Placing Buy and Sell Orders
-
-Traders can place buy and sell orders for available stocks. The Command pattern allows for extensibility in adding various order types. To place a buy limit order, traders can use the following command:
-
-
-BUY "Stock Symbol" "Limit Price" "Quantity"
-
-Similarly, to place a sell limit order, traders can use:
-
-SELL "Stock Symbol" "Limit Price" "Quantity"
-
-Roadmap
+## Roadmap
 
 In the future, we plan to enhance the project in the following ways:
-   - Realistic Trading Strategies: We aim to introduce more realistic trading strategies and algorithms, making the stock exchange simulation more authentic. This can include strategies like moving averages, relative strength index (RSI), and more. 
+   - Realistic Trading Strategies: We aim to introduce more realistic trading strategies and algorithms, making the stock exchange simulation more authentic. 
    - User Interface Enhancement: We intend to improve the user interface provided by the SimpleViewFactory. Features like advanced charting, transaction history, and order book displays will be added to provide a richer and more user-friendly experience. 
    - Improved Owned Stocks Display: We will add a feature to allow users to view all the stocks they own, addressing the issue of limited visibility.
 
-Contributing
+## Contributing
 
-We welcome contributions to this project. If you have ideas, bug fixes, or enhancements, please feel free to fork the repository, make your changes, and create a pull request. We value community collaboration and will review and merge contributions that align with the project's goals.
-Contact
+We welcome contributions to this project. If you have ideas, bug fixes, or enhancements, please feel free to make your changes, and create a pull request. We value community collaboration and will review and merge contributions that align with the project's goals.
 
-If you have any questions or suggestions regarding the project, you can contact us at [your.email@example.com].
+## Contact
 
-Important Note:
+If you have any questions or suggestions regarding the project, you can contact us at [ohassan100100@gmail.com] or [j.borcel@student.rug.nl].
+
+## Important Note:
+
 We are not responsible for any issues that may occur on your system while using this project. Please use the software responsibly and at your own risk.
