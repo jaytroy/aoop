@@ -117,27 +117,4 @@ public class Trader implements TraderDataModel {
         }
         return false;
     }
-
-    /**
-     * Change the method toJson.
-     *
-     * @return the string in json.
-     */
-    public String toJson() {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
-                .create();
-        return gson.toJson(this);
-    }
-
-    /**
-     * Turning a trader from json.
-     *
-     * @param json the json message.
-     * @return the message in string format.
-     */
-    public static Trader fromJson(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, Trader.class);
-    }
 }

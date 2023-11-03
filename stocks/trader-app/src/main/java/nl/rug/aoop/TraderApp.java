@@ -17,6 +17,12 @@ import static nl.rug.aoop.actions.Order.Type.SELL;
 public class TraderApp {
     public void initialize() {
         Trader trader1 = new Trader("bot1",getAdd());
+        Trader trader2 = new Trader("bot2",getAdd());
+        Trader trader3 = new Trader("bot3",getAdd());
+
+        trader1.placeOrder(SELL,"AMD",100,500);
+        trader2.placeOrder(BUY,"AMD",10,600);
+        trader3.placeOrder(BUY,"AMD",20,800);
 
         //BuyAndSell(trader1);
 

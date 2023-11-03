@@ -25,7 +25,7 @@ import java.util.*;
  * and resolves orders.
  */
 @Slf4j
-public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObserver {
+public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private Server server;
     private List<Client> connectedClients;
     @Getter
@@ -67,23 +67,6 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     }
 
     /**
-     * This scans for and executes each order as required. Should this be here? Move it out into a consumer?
-     */
-    @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            if (buyQueue.getSize() != 0) {
-                Message m = buyQueue.dequeue();
-                // Execute command
-            }
-            if (sellQueue.getSize() != 0) {
-                Message m = sellQueue.dequeue();
-                // Execute command
-            }
-        }
-    }
-
-    /**
      * Initializes the list of stocks by loading stock information from a YAML file.
      *
      * @return A list of stocks.
@@ -122,8 +105,9 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                log.info("Sending update to " + server.getClientHandlers().size() + " clients");
                 for (ClientHandler handler : server.getClientHandlers().values()) {
-                    sendTraderInformation(handler.getId());
+                    sendTraderInformation(handler);
                 }
             }
         }, 0, 4000);
@@ -131,15 +115,15 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
 
     /**
      * Send trader information to connected clients.
-     *
-     * @param id The client id to send trader information to.
      */
-    private void sendTraderInformation(String id) {
-        StringBuilder traderInfo = new StringBuilder();
-        Trader trader = findTraderById(id);
-        if (trader != null) {
-            Message msg = new Message("TRADER", trader.toJson());
-            server.getClientHandlers().get(id).sendMessage(msg.toJson());
+    private void sendTraderInformation(ClientHandler handler) {
+        String handlerId = handler.getId();
+
+        if(handlerId != null) {
+            String traderInfo = generateTraderInformation(handlerId);
+            handler.sendMessage(traderInfo); //this should be via clienthandler somehow
+        } else {
+            log.warn("No client connected with ID: " + handlerId);
         }
     }
 
@@ -152,7 +136,18 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     private String generateTraderInformation(String id) {
         StringBuilder traderInfo = new StringBuilder();
         Trader trader = findTraderById(id);
-        return trader.toJson();
+
+        traderInfo.append("Trader ID: ").append(trader.getId()).append("  ");
+        traderInfo.append("Name: ").append(trader.getName()).append("  ");
+        traderInfo.append("Funds: ").append(trader.getFunds()).append("  ");
+
+        Map<String, Integer> ownedStocks = trader.getOwnedStocks();
+        traderInfo.append("Owned Stocks: ");
+        for (Map.Entry<String, Integer> entry : ownedStocks.entrySet()) {
+            traderInfo.append(entry.getKey()).append(": ").append(entry.getValue()).append("  ");
+        }
+
+        return traderInfo.toString();
     }
 
     @Override
