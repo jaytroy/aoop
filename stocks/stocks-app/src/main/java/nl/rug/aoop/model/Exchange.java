@@ -123,7 +123,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
 
         if(handlerId != null) {
             String traderInfo = generateTraderInformation(handlerId);
-            handler.sendMessage(traderInfo); //this should be via clienthandler somehow
+            handler.sendMessage(traderInfo);
         } else {
             log.warn("No client connected with ID: " + handlerId);
         }

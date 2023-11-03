@@ -32,7 +32,6 @@ public class TraderHandler implements MessageHandler {
         // Ideally, we would use JSON paired with our message class here. We tried to, but we ran out of time.
         String[] parts = message.split("  ");
         Map<String, Integer> ownedStocks = new HashMap<>();
-
         for (int i = 0; i < parts.length; i++) {
             if (parts[i].equals("Name:")) {
                 trader.setName(parts[++i]);
@@ -40,8 +39,7 @@ public class TraderHandler implements MessageHandler {
             } else if (parts[i].equals("Funds:")) {
                 trader.setAvailableFunds(Double.parseDouble(parts[++i]));
             } else if (parts[i].equals("Stocks:")) {
-                // Parse the owned stocks
-                i++; // Move to the first stock
+                i++;
                 while (i < parts.length) {
                     String[] stockInfo = parts[i].split(":");
                     if (stockInfo.length == 2) {
@@ -49,7 +47,6 @@ public class TraderHandler implements MessageHandler {
                         int quantity = Integer.parseInt(stockInfo[1]);
                         ownedStocks.put(stockSymbol, quantity);
                     } else {
-                        // This part is not in "SYMBOL:QUANTITY" format, so break the loop
                         break;
                     }
                     i++;

@@ -56,7 +56,6 @@ public class ClientHandler implements Runnable {
                 String received = in.readLine();
                 log.info("Received message from " + id + " ip:" + socket.getRemoteSocketAddress() + ": " + received);
 
-                //Sorts out issues with clientIDs being sent as null on connection
                 if(received != null) {
                     handler.handleMessage(received);
                 } else {

@@ -28,12 +28,12 @@ public class TestConsumer {
     }
     @Test
     public void testConsumerConstructorUnord() {
-        assertEquals(queueUnord, consumerUnord.getQueue());
+        assertEquals(consumerUnord.getQueue(), queueUnord);
     }
 
     @Test
     public void testConsumerConstructorOrd() {
-        assertEquals(queueOrd, consumerOrd.getQueue());
+        assertEquals(consumerOrd.getQueue(), queueOrd);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class TestConsumer {
         Producer p = new Producer(queueUnord);
 
         p.putMessage(msg);
-        assertEquals(msg, consumerUnord.pollMessage());
+        assertEquals(consumerUnord.pollMessage(), msg);
     }
 
     @Test
@@ -49,6 +49,6 @@ public class TestConsumer {
         Producer p = new Producer(queueOrd);
 
         p.putMessage(msg);
-        assertEquals(msg, consumerOrd.pollMessage());
+        assertEquals(consumerOrd.pollMessage(), msg);
     }
 }
