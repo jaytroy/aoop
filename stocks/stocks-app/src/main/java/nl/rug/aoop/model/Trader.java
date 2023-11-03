@@ -2,12 +2,8 @@ package nl.rug.aoop.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Getter;
 import lombok.Setter;
-import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.uimodel.TraderDataModel;
-
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -122,6 +118,11 @@ public class Trader implements TraderDataModel {
         return false;
     }
 
+    /**
+     * Change the method toJson.
+     *
+     * @return the string in json.
+     */
     public String toJson() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
@@ -129,11 +130,14 @@ public class Trader implements TraderDataModel {
         return gson.toJson(this);
     }
 
-
+    /**
+     * Turning a trader from json.
+     *
+     * @param json the json message.
+     * @return the message in string format.
+     */
     public static Trader fromJson(String json) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
-                .create();
+        Gson gson = new Gson();
         return gson.fromJson(json, Trader.class);
     }
 }
