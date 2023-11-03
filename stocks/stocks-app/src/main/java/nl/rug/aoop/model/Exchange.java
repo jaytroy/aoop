@@ -188,15 +188,6 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         return traderInfo.toString();
     }
 
-    /**
-     * Add a client to the list of connected clients.
-     *
-     * @param client The client to add.
-     */
-    public void addClient(Client client) {
-        connectedClients.add(client);
-    }
-
     @Override
     public StockDataModel getStockByIndex(int index) {
         if (index >= 0 && index < stocks.size()) {
@@ -268,6 +259,8 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
 
     @Override
     public void update(Message msg) { //Gets order from consumer
+        String body = msg.getBody();
+        Order order = new Order(body);
         //placeOrder(order);
     }
 

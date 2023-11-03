@@ -2,6 +2,8 @@ package nl.rug.aoop.actions;
 
 import lombok.Getter;
 import lombok.Setter;
+import com.google.gson.Gson;
+
 
 import java.time.LocalDateTime;
 
@@ -45,5 +47,15 @@ public class Order implements Comparable<Order> {
         } else {
             return this.timestamp.compareTo(other.timestamp);
         }
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static Order fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Order.class);
     }
 }

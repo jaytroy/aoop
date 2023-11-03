@@ -7,9 +7,12 @@ import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import static nl.rug.aoop.actions.Order.Type.BUY;
+
 public class TraderApp {
     public void initialize() {
         Trader trader1 = new Trader("bot1",getAdd());
+        trader1.placeOrder(BUY, "AMD", 100, 1000);
         Trader trader2 = new Trader("bot2",getAdd());
         Trader trader3 = new Trader("bot3",getAdd());
 

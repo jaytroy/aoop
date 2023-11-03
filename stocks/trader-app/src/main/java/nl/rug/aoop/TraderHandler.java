@@ -1,9 +1,12 @@
 package nl.rug.aoop;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.producer.MQProducer;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.networking.client.Client;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -12,13 +15,14 @@ import java.util.HashMap;
  * trader in the stock exchange system.
  */
 @Slf4j
-public class TraderHandler implements MessageHandler, MQProducer {
+public class TraderHandler implements MessageHandler {
     Trader trader;
+    Client client;
 
     /**
      * Constructs a TraderHandler.
      */
-    public TraderHandler(Trader trader) {
+    public TraderHandler(Trader trader, Client client) {
         this.trader = trader;
     }
 
@@ -59,14 +63,7 @@ public class TraderHandler implements MessageHandler, MQProducer {
         trader.setOwnedStocks(ownedStocks);
     }
 
-
-    /**
-     * Put a message into the message queue.
-     *
-     * @param message The message to be put into the message queue.
-     */
-    @Override
-    public void putMessage(Message message) {
-
+    public void sendOrder(Message msg) {
+        Client
     }
 }
