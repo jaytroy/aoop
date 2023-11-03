@@ -120,9 +120,9 @@ public class Trader implements ExchangeListener {
         Random random3 = new Random();g
         int num = random3.nextInt(10);
         if(num < 5) {
-            placeOrder(BUY,ticker,quantity,price)
+            placeOrder(BUY,ticker,quantity,price);
         } else {
-            placeOrder(SELL,ticker,quantity,price)
+            placeOrder(SELL,ticker,quantity,price);
         }
     }
 }
