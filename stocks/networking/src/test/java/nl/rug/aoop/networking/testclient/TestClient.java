@@ -38,9 +38,9 @@ public class TestClient {
     @BeforeEach
     public void setup() {
         address = new InetSocketAddress("localhost", 8000);
-        client = new Client(new DummyMessageHandler(), address);
+        client = new Client(new DummyMessageHandler(), address, "10");
         badAddress = new InetSocketAddress("localhost", 80);
-        badClient = new Client(new DummyMessageHandler(), badAddress);
+        badClient = new Client(new DummyMessageHandler(), badAddress, "10");
     }
 
     @Test

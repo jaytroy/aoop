@@ -1,23 +1,30 @@
 package nl.rug.aoop;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.messagequeue.queues.Message;
+import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.networking.client.Client;
+
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Random;
+
+import static nl.rug.aoop.actions.Order.Type.BUY;
+import static nl.rug.aoop.actions.Order.Type.SELL;
+
 
 @Slf4j
 public class TraderApp {
     public void initialize() {
         Trader trader1 = new Trader("bot1",getAdd());
-        Trader trader2 = new Trader("bot2",getAdd());
-        Trader trader3 = new Trader("bot3",getAdd());
 
+        BuyAndSell(trader1);
 
-        //trader2.placeOrder(SELL, "AMD", 10, 900);
-        //trader1.placeOrder(BUY, "AMD", 100, 950);
-        //trader3.placeOrder(SELL, "AMD", 50, 800);
-        //trader2.placeOrder(BUY, "AMD", 40, 850);
-    }
-
-    public InetSocketAddress getAdd() {
+/*
+        //I'm assuming most of this logic should be able to be moved out into the actual trader classes, or some
+        // utility classes
+        MessageHandler handler = new TraderHandler(); //Should this be done in the trader / client itself? Should each
+        // have its own?
         int port;
         int BACKUP_PORT = 8080;
         InetSocketAddress address;
@@ -27,11 +34,25 @@ public class TraderApp {
             port = BACKUP_PORT;
             System.out.println("Using backup port at TraderAppMain");
         }
-        return new InetSocketAddress("localhost", port);
+        address = new InetSocketAddress("localhost", port);
+        Client client = new Client(handler, address);
+        try {
+            client.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Thread clientThread = new Thread(client);
+        clientThread.start();
+
+        Trader jay = new Trader(client,"Jay", 0, 1000);
+        Message msg = new Message("PUT","BUY 10 AMD");
+        jay.putMessage(msg);
+
+        //jay.putMessage(null); Does not work
+        */
     }
 
-    /*
-    private static void BuyAndSellStrat(Trader trader1) {
+    private static void BuyAndSell(Trader trader1) {
         Random random = new Random();
         String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
 
@@ -56,6 +77,17 @@ public class TraderApp {
             }
         }
     }
-     */
-}
 
+    public InetSocketAddress getAdd() {
+        int port;
+        int BACKUP_PORT = 8080;
+        InetSocketAddress address;
+        if(System.getenv("MESSAGE_QUEUE_PORT") != null) {
+            port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
+        } else {
+            port = BACKUP_PORT;
+            System.out.println("Using backup port at TraderAppMain");
+        }
+        return new InetSocketAddress("localhost", port);
+    }
+}

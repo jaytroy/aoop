@@ -62,18 +62,16 @@ public class Server implements Runnable {
                 Socket acceptedSocket = serverSocket.accept();
                 ClientHandler handler = new ClientHandler(this.handler, acceptedSocket);
                 String clientId = handler.getId();
-
                 if (clientHandlers.containsKey(clientId)) {
                     log.error("Client ID {} is already connected", clientId);
-                    // Handle the situation, maybe by closing the new socket or assigning a new ID
                 } else {
                     clientHandlers.put(clientId, handler);
-                    log.info("New connection from client: " + clientId + " ip: "+ acceptedSocket.getRemoteSocketAddress());
+                    log.info("New connection from client: " + clientId + " ip: "+ acceptedSocket.
+                            getRemoteSocketAddress());
                     threadPool.submit(() -> {
                         try {
                             handler.run();
                         } finally {
-                            // Remove the client handler from the map when it is finished
                             clientHandlers.remove(clientId);
                         }
                     });
@@ -82,7 +80,6 @@ public class Server implements Runnable {
                 log.error("Socket error: " + e.getMessage());
             }
         }
-
     }
 
     /**
@@ -99,14 +96,4 @@ public class Server implements Runnable {
         }
         threadPool.shutdown();
     }
-
-    /*
-    public void terminateClientHandler(String clientId) {
-        ClientHandler handler = clientHandlers.get(clientId);
-        if (handler != null) {
-            handler.terminate();
-            clientHandlers.remove(clientId);
-        }
-    }
-     */
 }

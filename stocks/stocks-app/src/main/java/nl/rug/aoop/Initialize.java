@@ -44,15 +44,18 @@ public class Initialize {
             e.printStackTrace();
         }
         serverThread.start();
-
         // Set up the Exchange
         Exchange stockApp = new Exchange(messageQueue,server);
-
+        List<Stock> stocks = stockApp.getStocks();
+        List<Trader> traders = stockApp.getTraders();
         // Start the view
         SimpleViewFactory viewFactory = new SimpleViewFactory();
         viewFactory.createView(stockApp);
 
-        int updates = 0;
+        updateView(viewFactory);
+    }
+
+    private static void updateView(SimpleViewFactory viewFactory) {
         while (true) {
             viewFactory.updateView();
             try {

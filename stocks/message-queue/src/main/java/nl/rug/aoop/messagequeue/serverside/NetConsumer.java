@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.messagequeue.consumer.Consumer;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.networking.MessageHandler;
 
 /**
  * A consumer which continuously polls the TSMessageQueue in the exchange.
