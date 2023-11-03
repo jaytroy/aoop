@@ -1,6 +1,7 @@
 package nl.rug.aoop.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import nl.rug.aoop.uimodel.StockDataModel;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class Stock implements StockDataModel {
     private long sharesOutstanding;
     private double marketCap;
     @Getter
+    @Setter
     private double price;
     private double initialPrice;
 

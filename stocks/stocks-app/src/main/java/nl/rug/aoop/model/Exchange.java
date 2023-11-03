@@ -250,13 +250,48 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
 
     private void executeTrade(Order newOrder, Order headOrder, PriorityQueue<Order> oppositeOrders) {
         int tradedQuantity = (int) Math.min(newOrder.getQuantity(), headOrder.getQuantity());
+        double tradePrice = headOrder.getPrice();
+
+        // Update the quantities on the orders
         newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
         headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
 
-        System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " at price " + headOrder.getPrice());
+        // Find the trader objects for the buyer and seller
+        Trader buyer = findTraderById(newOrder.getType() == Order.Type.BUY ? newOrder.getClientId() : headOrder.getClientId());
+        Trader seller = findTraderById(newOrder.getType() == Order.Type.SELL ? newOrder.getClientId() : headOrder.getClientId());
 
+        // Update funds and stock holdings for buyer and seller
+        if (buyer != null && seller != null) {
+            buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
+            buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
+
+            seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
+            seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
+
+            System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " at price " + tradePrice);
+
+            updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
+        } else {
+            // Handle the case where the buyer or seller cannot be found
+            log.error("Buyer or Seller not found for the trade");
+        }
+
+        // Remove the head order if its quantity is now zero
         if (headOrder.getQuantity() == 0) {
             oppositeOrders.poll();
+        }
+    }
+
+
+    private void updateStockPrice(String stockSymbol, double tradePrice) {
+        // Find the stock object
+        Stock tradedStock = findStockBySymbol(stockSymbol);
+        if (tradedStock != null) {
+            // Update the stock price. The actual implementation might be more complex.
+            tradedStock.setPrice(tradePrice);
+        } else {
+            // Handle the case where the stock cannot be found
+            log.error("Stock not found for symbol: " + stockSymbol);
         }
     }
 
@@ -271,6 +306,15 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         for (Trader trader : traders) {
             if (trader.getId().equals(id)) {
                 return trader;
+            }
+        }
+        return null;
+    }
+
+    private Stock findStockBySymbol(String symbol) {
+        for (Stock stock : stocks) {
+            if (stock.getSymbol().equals(symbol)) {
+                return stock;
             }
         }
         return null;
