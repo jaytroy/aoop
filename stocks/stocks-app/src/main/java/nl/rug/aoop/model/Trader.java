@@ -1,7 +1,5 @@
 package nl.rug.aoop.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.Setter;
 import nl.rug.aoop.uimodel.TraderDataModel;
 import java.util.Map;

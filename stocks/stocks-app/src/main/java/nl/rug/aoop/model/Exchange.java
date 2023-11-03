@@ -115,6 +115,8 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
 
     /**
      * Send trader information to connected clients.
+     *
+     * @param handler the clienthandler.
      */
     private void sendTraderInformation(ClientHandler handler) {
         String handlerId = handler.getId();
