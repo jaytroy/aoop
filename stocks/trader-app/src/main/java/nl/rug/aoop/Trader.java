@@ -25,7 +25,7 @@ import java.util.Random;
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
  * owned stocks.
  */
-public class Trader implements ExchangeListener {
+public class Trader {
     @Getter
     @Setter
     private String name;
@@ -95,12 +95,6 @@ public class Trader implements ExchangeListener {
         }
     }
 
-    @Override
-    public void update(Map<String,Integer> ownedStocks, int availableFunds) {
-        this.ownedStocks = ownedStocks;
-        this.availableFunds = availableFunds;
-    }
-
     public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
         Order order = new Order(type, this.id, symbol, quantity, price, LocalDateTime.now());
         Message msg = new Message("PUT",order.toJson());
@@ -117,7 +111,7 @@ public class Trader implements ExchangeListener {
 
         String ticker = "AMD"; //Ideally this would be loaded from the exchange. We don't have time to implement that.
 
-        Random random3 = new Random();g
+        Random random3 = new Random();
         int num = random3.nextInt(10);
         if(num < 5) {
             placeOrder(BUY,ticker,quantity,price);
