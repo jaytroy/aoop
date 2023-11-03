@@ -1,7 +1,13 @@
 package nl.rug.aoop.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import lombok.Getter;
+import lombok.Setter;
+import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.uimodel.TraderDataModel;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -9,6 +15,7 @@ import java.util.HashMap;
  * The Trader class represents a trader in the trading system.
  */
 public class Trader implements TraderDataModel {
+    @Setter
     private String id;
     private String name;
     private double funds;
@@ -113,5 +120,20 @@ public class Trader implements TraderDataModel {
             return currentQuantity >= quantity;
         }
         return false;
+    }
+
+    public String toJson() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
+                .create();
+        return gson.toJson(this);
+    }
+
+
+    public static Trader fromJson(String json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
+                .create();
+        return gson.fromJson(json, Trader.class);
     }
 }

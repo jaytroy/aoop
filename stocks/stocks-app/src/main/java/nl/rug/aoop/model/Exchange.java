@@ -1,6 +1,7 @@
 package nl.rug.aoop.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.serverside.ConsumerObserver;
@@ -147,7 +148,8 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
 
         if(handlerId != null) {
             String traderInfo = generateTraderInformation(handlerId);
-            handler.sendMessage(traderInfo); //this should be via clienthandler somehow
+            Message msg = new Message("TRADER",traderInfo);
+            handler.sendMessage(msg.toJson());
         } else {
             log.warn("No client connected with ID: " + handlerId);
         }
@@ -176,18 +178,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     private String generateTraderInformation(String id) {
         StringBuilder traderInfo = new StringBuilder();
         Trader trader = findTraderById(id);
-
-        traderInfo.append("Trader ID: ").append(trader.getId()).append("~");
-        traderInfo.append("Name: ").append(trader.getName()).append("~");
-        traderInfo.append("Funds: ").append(trader.getFunds()).append("~");
-
-        Map<String, Integer> ownedStocks = trader.getOwnedStocks();
-        traderInfo.append("Owned Stocks:~");
-        for (Map.Entry<String, Integer> entry : ownedStocks.entrySet()) {
-            traderInfo.append(entry.getKey()).append(": ").append(entry.getValue()).append("~");
-        }
-
-        return traderInfo.toString();
+        return trader.toJson();
     }
 
     @Override
@@ -229,7 +220,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         }
     }
 
-    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>> sameTypeOrderBooks) {
+    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>> sameTypeOrder) {
         log.info("Matching order " + newOrder);
         if (oppositeOrders != null && !oppositeOrders.isEmpty()) {
             while (!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
@@ -244,7 +235,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         }
 
         if (newOrder.getQuantity() > 0) {
-            sameTypeOrderBooks.computeIfAbsent(newOrder.getSymbol(), k -> new PriorityQueue<>()).add(newOrder);
+            sameTypeOrder.computeIfAbsent(newOrder.getSymbol(), k -> new PriorityQueue<>()).add(newOrder);
         }
     }
 
@@ -282,12 +273,10 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         }
     }
 
-
     private void updateStockPrice(String stockSymbol, double tradePrice) {
         // Find the stock object
         Stock tradedStock = findStockBySymbol(stockSymbol);
         if (tradedStock != null) {
-            // Update the stock price. The actual implementation might be more complex.
             tradedStock.setPrice(tradePrice);
         } else {
             // Handle the case where the stock cannot be found

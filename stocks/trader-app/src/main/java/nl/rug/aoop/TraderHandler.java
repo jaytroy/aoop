@@ -33,7 +33,17 @@ public class TraderHandler implements MessageHandler {
      */
     @Override
     public void handleMessage(String message) {
-        String[] parts = message.split("~");
+        Message msg = Message.fromJson(message);
+        if(msg.getHeader().equals("TRADER")) {
+            nl.rug.aoop.model.Trader traderinfo = nl.rug.aoop.model.Trader.fromJson(msg.getBody());
+            trader.setName(traderinfo.getName());
+            log.info(trader.getName());
+            trader.setOwnedStocks(traderinfo.getOwnedStocks());
+            trader.setAvailableFunds(traderinfo.getFunds());
+            log.info(Double.toString(trader.getAvailableFunds()));
+        }
+
+        /*String[] parts = message.split("~");
         Map<String, Integer> ownedStocks = new HashMap<>();
 
         for (int i = 0; i < parts.length; i++) {
@@ -57,9 +67,8 @@ public class TraderHandler implements MessageHandler {
                     }
                     i++;
                 }
-            }
+            }*/
         }
 
-        trader.setOwnedStocks(ownedStocks);
-    }
+        //trader.setOwnedStocks(ownedStocks);
 }
