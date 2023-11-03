@@ -46,16 +46,24 @@ public class Initialize {
         serverThread.start();
         // Set up the Exchange
         Exchange stockApp = new Exchange(messageQueue,server);
+<<<<<<< HEAD
         List<Stock> stocks = stockApp.getStocks();
         List<Trader> traders = stockApp.getTraders();
+=======
+
+>>>>>>> refs/remotes/origin/stonks
         // Start the view
         SimpleViewFactory viewFactory = new SimpleViewFactory();
         viewFactory.createView(stockApp);
 
+<<<<<<< HEAD
         updateView(viewFactory);
     }
 
     private static void updateView(SimpleViewFactory viewFactory) {
+=======
+        int updates = 0;
+>>>>>>> refs/remotes/origin/stonks
         while (true) {
             viewFactory.updateView();
             try {
