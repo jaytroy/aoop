@@ -1,7 +1,6 @@
 package nl.rug.aoop.model;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.serverside.ConsumerObserver;
@@ -28,7 +27,7 @@ import java.util.*;
 @Slf4j
 public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObserver {
     private Server server;
-    private List<Client> connectedClients; // Or should it be clienthandlers? //This is stored in server
+    private List<Client> connectedClients;
     @Getter
     private List<Stock> stocks;
     @Getter
@@ -36,7 +35,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     private MessageQueue messageQueue;
     private MessageQueue buyQueue;
     private MessageQueue sellQueue;
-    private NetConsumer consumer; // Replace this with an interface? Throws an error. MQConsumer is not runnable.
+    private NetConsumer consumer;
     private Map<String, PriorityQueue<Order>> buyOrders;
     private Map<String, PriorityQueue<Order>> sellOrders;
 
@@ -44,6 +43,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
      * Constructs an Exchange with the specified message queue.
      *
      * @param messageQueue The message queue used for communication.
+     * @param server The server to which this exchange is associated.
      */
     public Exchange(MessageQueue messageQueue, Server server) {
         this.server = server;
@@ -56,30 +56,29 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         traders = initializeTraders();
 
         this.messageQueue = messageQueue;
-        consumer = new NetConsumer(messageQueue, this); //This thread will continuously poll messages from queu
+        consumer = new NetConsumer(messageQueue, this);
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
 
         this.buyQueue = new OrderedQueue();
         this.sellQueue = new OrderedQueue();
 
-        updateClients(); //necessary?
+        updateClients();
     }
 
     /**
      * This scans for and executes each order as required. Should this be here? Move it out into a consumer?
      */
     @Override
-    public void run() { //This does not run in parallel, unfortunately. It should work nonetheless
-        while (!Thread.currentThread().isInterrupted()) { //Should we create threads for both queues?
-            if (buyQueue.getSize() != 0) { //Or maybe use TSMessageQueue? I don't know...
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            if (buyQueue.getSize() != 0) {
                 Message m = buyQueue.dequeue();
-                //Execute command
-
+                // Execute command
             }
             if (sellQueue.getSize() != 0) {
                 Message m = sellQueue.dequeue();
-                //Execute command
+                // Execute command
             }
         }
     }
@@ -96,7 +95,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
             return stockList.getStocks();
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<>(); // Return an empty list. Why?
+            return new ArrayList<>();
         }
     }
 
@@ -112,7 +111,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
             return traderList.getTraders();
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<>(); // Return an empty list
+            return new ArrayList<>();
         }
     }
 
@@ -123,50 +122,25 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                //log.info("Updating " + server.getClientHandlers().size() + " clients");
                 for (ClientHandler handler : server.getClientHandlers().values()) {
-                    //sendStockInformation(handler);
-                    sendTraderInformation(handler);
+                    sendTraderInformation(handler.getId());
                 }
             }
         }, 0, 4000);
     }
 
     /**
-     * Send stock information to connected clients.
-     */
-    private void sendStockInformation(ClientHandler handler) {
-        String stockInfo = generateStockInformation(handler);
-        handler.sendMessage(stockInfo);
-    }
-
-    /**
      * Send trader information to connected clients.
-     */
-    private void sendTraderInformation(ClientHandler handler) {
-        String handlerId = handler.getId();
-
-        if(handlerId != null) {
-            String traderInfo = generateTraderInformation(handlerId);
-            Message msg = new Message("TRADER",traderInfo);
-            handler.sendMessage(msg.toJson());
-        } else {
-            log.warn("No client connected with ID: " + handlerId);
-        }
-    }
-
-    /**
-     * Generate stock information for a specific client.
      *
-     * @param handler The client to generate information for.
-     * @return A string containing stock information for the client.
+     * @param id The client id to send trader information to.
      */
-    private String generateStockInformation(ClientHandler handler) {
-        StringBuilder stockInfo = new StringBuilder();
-        for (Stock stock : stocks) {
-            stockInfo.append(stock.getSymbol()).append(": ").append(stock.getPrice()).append("\n");
+    private void sendTraderInformation(String id) {
+        StringBuilder traderInfo = new StringBuilder();
+        Trader trader = findTraderById(id);
+        if (trader != null) {
+            Message msg = new Message("TRADER", trader.toJson());
+            server.getClientHandlers().get(id).sendMessage(msg.toJson());
         }
-        return stockInfo.toString();
     }
 
     /**
@@ -184,7 +158,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     @Override
     public StockDataModel getStockByIndex(int index) {
         if (index >= 0 && index < stocks.size()) {
-            return (StockDataModel) stocks.get(index);
+            return stocks.get(index);
         } else {
             return null;
         }
@@ -198,7 +172,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     @Override
     public TraderDataModel getTraderByIndex(int index) {
         if (index >= 0 && index < traders.size()) {
-            return (TraderDataModel) traders.get(index);
+            return traders.get(index);
         } else {
             return null;
         }
@@ -209,6 +183,11 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         return traders.size();
     }
 
+    /**
+     * Method to place order.
+     *
+     * @param order the order.
+     */
     public void placeOrder(Order order) {
         log.info("Received order from client " + order.getClientId() + ": " + order);
 
@@ -220,7 +199,8 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         }
     }
 
-    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>> sameTypeOrder) {
+    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>>
+            sameTypeOrder) {
         log.info("Matching order " + newOrder);
         if (oppositeOrders != null && !oppositeOrders.isEmpty()) {
             while (!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
@@ -243,15 +223,13 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         int tradedQuantity = (int) Math.min(newOrder.getQuantity(), headOrder.getQuantity());
         double tradePrice = headOrder.getPrice();
 
-        // Update the quantities on the orders
         newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
         headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
 
-        // Find the trader objects for the buyer and seller
-        Trader buyer = findTraderById(newOrder.getType() == Order.Type.BUY ? newOrder.getClientId() : headOrder.getClientId());
-        Trader seller = findTraderById(newOrder.getType() == Order.Type.SELL ? newOrder.getClientId() : headOrder.getClientId());
-
-        // Update funds and stock holdings for buyer and seller
+        Trader buyer = findTraderById(newOrder.getType() == Order.Type.BUY ? newOrder.getClientId() : headOrder.
+                getClientId());
+        Trader seller = findTraderById(newOrder.getType() == Order.Type.SELL ? newOrder.getClientId() : headOrder.
+                getClientId());
         if (buyer != null && seller != null) {
             buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
             buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
@@ -259,33 +237,30 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
             seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
             seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
 
-            System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " at price " + tradePrice);
+            System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
+                    "at price " + tradePrice);
 
             updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
         } else {
-            // Handle the case where the buyer or seller cannot be found
             log.error("Buyer or Seller not found for the trade");
         }
 
-        // Remove the head order if its quantity is now zero
         if (headOrder.getQuantity() == 0) {
             oppositeOrders.poll();
         }
     }
 
     private void updateStockPrice(String stockSymbol, double tradePrice) {
-        // Find the stock object
         Stock tradedStock = findStockBySymbol(stockSymbol);
         if (tradedStock != null) {
             tradedStock.setPrice(tradePrice);
         } else {
-            // Handle the case where the stock cannot be found
             log.error("Stock not found for symbol: " + stockSymbol);
         }
     }
 
     @Override
-    public void update(Message msg) { //Gets order from consumer
+    public void update(Message msg) {
         String body = msg.getBody();
         Order order = Order.fromJson(body);
         placeOrder(order);
