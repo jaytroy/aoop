@@ -1,10 +1,5 @@
 package nl.rug.aoop;
 
-import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.networking.MessageHandler;
-import nl.rug.aoop.networking.client.Client;
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import lombok.extern.slf4j.Slf4j;
 
 /**

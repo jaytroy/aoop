@@ -22,7 +22,7 @@ public class Order implements Comparable<Order> {
     @Getter
     private Type type;
     @Getter
-    private String clientId; // Or should it be a trader?
+    private String clientId;
     @Getter
     private String symbol;
     @Setter

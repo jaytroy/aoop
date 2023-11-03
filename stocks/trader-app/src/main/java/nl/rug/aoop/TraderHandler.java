@@ -1,13 +1,7 @@
 package nl.rug.aoop;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.rug.aoop.actions.Order;
-import nl.rug.aoop.messagequeue.producer.MQProducer;
-import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
-import nl.rug.aoop.networking.NetworkMessage;
-import nl.rug.aoop.networking.client.Client;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -17,28 +11,27 @@ import java.util.HashMap;
  */
 @Slf4j
 public class TraderHandler implements MessageHandler {
-    Trader trader;
+    private Trader trader;
 
     /**
-     * Constructs a TraderHandler.
+     * Constructs a TraderHandler for a specific trader.
+     *
+     * @param trader The trader associated with this handler.
      */
     public TraderHandler(Trader trader) {
         this.trader = trader;
     }
 
     /**
-     * Handle an incoming message.
+     * Handle an incoming message, updating the trader's information based on the received message.
      *
      * @param message The incoming message to be handled.
      */
     @Override
     public void handleMessage(String message) {
-        //Ideally we would use JSON paired with our message class here. We tried to, but we ran out of time.
-        log.info("Received: " + message);
-
+        // Ideally, we would use JSON paired with our message class here. We tried to, but we ran out of time.
         String[] parts = message.split("  ");
         Map<String, Integer> ownedStocks = new HashMap<>();
-
         for (int i = 0; i < parts.length; i++) {
             if (parts[i].equals("Name:")) {
                 trader.setName(parts[++i]);
@@ -46,8 +39,7 @@ public class TraderHandler implements MessageHandler {
             } else if (parts[i].equals("Funds:")) {
                 trader.setAvailableFunds(Double.parseDouble(parts[++i]));
             } else if (parts[i].equals("Stocks:")) {
-                // Parse the owned stocks
-                i++; // Move to the first stock
+                i++;
                 while (i < parts.length) {
                     String[] stockInfo = parts[i].split(":");
                     if (stockInfo.length == 2) {
@@ -55,7 +47,6 @@ public class TraderHandler implements MessageHandler {
                         int quantity = Integer.parseInt(stockInfo[1]);
                         ownedStocks.put(stockSymbol, quantity);
                     } else {
-                        // This part is not in "SYMBOL:QUANTITY" format, so break the loop
                         break;
                     }
                     i++;

@@ -95,9 +95,7 @@ public class Client implements Runnable {
         running = true;
         try {
             while (running) {
-                //System.out.println("Client is running at Client");
                 String received = in.readLine();
-                //log.info(id + " received: " + received);
                 if (received == null) {
                     log.error("Server disconnected.");
                     break;

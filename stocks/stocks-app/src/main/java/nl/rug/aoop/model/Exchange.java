@@ -8,7 +8,6 @@ import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.queues.OrderedQueue;
 import nl.rug.aoop.messagequeue.serverside.NetConsumer;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.networking.client.Client;
 import nl.rug.aoop.networking.server.ClientHandler;
 import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.uimodel.StockDataModel;
@@ -126,7 +125,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
 
         if(handlerId != null) {
             String traderInfo = generateTraderInformation(handlerId);
-            handler.sendMessage(traderInfo); //this should be via clienthandler somehow
+            handler.sendMessage(traderInfo);
         } else {
             log.warn("No client connected with ID: " + handlerId);
         }

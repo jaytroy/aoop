@@ -4,25 +4,36 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 
-
-
+/**
+ * The TraderApp class represents the entry point for initializing traders in the stock exchange system.
+ */
 @Slf4j
 public class TraderApp {
+
+    /**
+     * Initializes trader instances and connects them to the stock exchange.
+     */
     public void initialize() {
-        Trader trader1 = new Trader("bot1",getAdd());
-        Trader trader2 = new Trader("bot2",getAdd());
-        Trader trader3 = new Trader("bot3",getAdd());
+        Trader trader1 = new Trader("bot1", getSocketAddress());
+        Trader trader2 = new Trader("bot2", getSocketAddress());
+        Trader trader3 = new Trader("bot3", getSocketAddress());
     }
 
-    public InetSocketAddress getAdd() {
+    /**
+     * Get the network address for connecting to the message queue. It uses the environment variable
+     * "MESSAGE_QUEUE_PORT" if available, otherwise, it uses a backup port.
+     *
+     * @return The network address (InetSocketAddress) for connecting to the message queue.
+     */
+    public InetSocketAddress getSocketAddress() {
         int port;
         int BACKUP_PORT = 8080;
         InetSocketAddress address;
-        if(System.getenv("MESSAGE_QUEUE_PORT") != null) {
+        if (System.getenv("MESSAGE_QUEUE_PORT") != null) {
             port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
         } else {
             port = BACKUP_PORT;
-            System.out.println("Using backup port at TraderAppMain");
+            log.info("Using backup port at TraderAppMain");
         }
         return new InetSocketAddress("localhost", port);
     }
