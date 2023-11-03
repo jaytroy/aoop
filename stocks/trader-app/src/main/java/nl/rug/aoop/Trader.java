@@ -5,6 +5,8 @@ import lombok.Setter;
 import nl.rug.aoop.actions.Order;
 
 import static nl.rug.aoop.actions.Order.Type.BUY;
+import static nl.rug.aoop.actions.Order.Type.SELL;
+
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
 import nl.rug.aoop.network.ExchangeListener;
@@ -17,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
@@ -103,5 +106,23 @@ public class Trader implements ExchangeListener {
         Message msg = new Message("PUT",order.toJson());
         NetworkMessage nmsg = new NetworkMessage(msg.getHeader(),msg.getBody());
         client.sendMessage(nmsg.toJson());
+    }
+
+    public void traderStrat() {
+        Random random1 = new Random();
+        long quantity = random1.nextInt(10);
+
+        Random random2 = new Random();
+        int price = random2.nextInt(100);
+
+        String ticker = "AMD"; //Ideally this would be loaded from the exchange. We don't have time to implement that.
+
+        Random random3 = new Random();g
+        int num = random3.nextInt(10);
+        if(num < 5) {
+            placeOrder(BUY,ticker,quantity,price)
+        } else {
+            placeOrder(SELL,ticker,quantity,price)
+        }
     }
 }
