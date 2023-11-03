@@ -260,8 +260,8 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     @Override
     public void update(Message msg) { //Gets order from consumer
         String body = msg.getBody();
-        Order order = new Order(body);
-        //placeOrder(order);
+        Order order = Order.fromJson(body);
+        placeOrder(order);
     }
 
     private Trader findTraderById(String id) {

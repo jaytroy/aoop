@@ -64,6 +64,6 @@ public class TraderHandler implements MessageHandler {
     }
 
     public void sendOrder(Message msg) {
-        Client
+        //Client
     }
 }
