@@ -12,10 +12,10 @@ import static nl.rug.aoop.actions.Order.Type.BUY;
 public class TraderApp {
     public void initialize() {
         Trader trader1 = new Trader("bot1",getAdd());
-        trader1.placeOrder(BUY, "AMD", 100, 1000);
         Trader trader2 = new Trader("bot2",getAdd());
         Trader trader3 = new Trader("bot3",getAdd());
 
+        trader1.placeOrder(BUY, "AMD", 100, 1000);
 
 /*
         //I'm assuming most of this logic should be able to be moved out into the actual trader classes, or some

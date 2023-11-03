@@ -5,6 +5,7 @@ import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.producer.MQProducer;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.networking.NetworkMessage;
 import nl.rug.aoop.networking.client.Client;
 
 import java.util.Map;
@@ -17,12 +18,11 @@ import java.util.HashMap;
 @Slf4j
 public class TraderHandler implements MessageHandler {
     Trader trader;
-    Client client;
 
     /**
      * Constructs a TraderHandler.
      */
-    public TraderHandler(Trader trader, Client client) {
+    public TraderHandler(Trader trader) {
         this.trader = trader;
     }
 
@@ -61,9 +61,5 @@ public class TraderHandler implements MessageHandler {
         }
 
         trader.setOwnedStocks(ownedStocks);
-    }
-
-    public void sendOrder(Message msg) {
-        //Client
     }
 }

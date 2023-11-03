@@ -1,8 +1,10 @@
 package nl.rug.aoop.actions;
 
+import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import com.google.gson.Gson;
+import nl.rug.aoop.model.LocalDateTimeAdapter;
 
 
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ public class Order implements Comparable<Order> {
     public enum Type {
         BUY, SELL
     }
+
     @Getter
     private Type type;
     @Getter
@@ -50,12 +53,17 @@ public class Order implements Comparable<Order> {
     }
 
     public String toJson() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
         return gson.toJson(this);
     }
 
+
     public static Order fromJson(String json) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
         return gson.fromJson(json, Order.class);
     }
 }

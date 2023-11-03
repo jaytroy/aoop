@@ -27,6 +27,7 @@ public class MqPutCommand implements Command {
 
     @Override
     public void execute(Map<String, Object> params) {
+        log.info("Executing MQPut");
         String messageJson = (String) params.get("messageJson");
         Message message = Message.fromJson(messageJson);
 

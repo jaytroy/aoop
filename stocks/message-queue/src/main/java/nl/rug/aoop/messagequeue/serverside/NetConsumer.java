@@ -35,6 +35,7 @@ public class NetConsumer extends Consumer implements Runnable {
                 Message msg = queue.dequeue();
                 log.info("Polled from the queue: " + msg);
 
+                log.info("Updating " + observer + " with " + msg);
                 observer.update(msg); //Should send the order to the exchange
             }
         }

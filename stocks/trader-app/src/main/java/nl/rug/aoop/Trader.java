@@ -9,6 +9,7 @@ import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
 import nl.rug.aoop.network.ExchangeListener;
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.networking.NetworkMessage;
 import nl.rug.aoop.networking.client.Client;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class Trader implements ExchangeListener {
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
     private NetProducer producer;
     private Client client;
-    private TraderHandler handler;
+    private MessageHandler handler;
     private InetSocketAddress address;
 
     /**
@@ -46,7 +47,7 @@ public class Trader implements ExchangeListener {
         this.id = id;
         this.address = address;
 
-        handler = new TraderHandler(this,client);
+        handler = new TraderHandler(this);
         client = new Client(handler,address,id);
         producer = new NetProducer(client);
 
@@ -99,7 +100,8 @@ public class Trader implements ExchangeListener {
 
     public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
         Order order = new Order(type, this.id, symbol, quantity, price, LocalDateTime.now());
-        Message msg = new Message("MQPutCommand",order.toJson());
-        handler.sendOrder(msg);
+        Message msg = new Message("PUT",order.toJson());
+        NetworkMessage nmsg = new NetworkMessage(msg.getHeader(),msg.getBody());
+        client.sendMessage(nmsg.toJson());
     }
 }

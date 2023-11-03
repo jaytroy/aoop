@@ -12,4 +12,5 @@ module stocksapp {
     requires stock.market.ui;
     requires com.google.gson;
     opens nl.rug.aoop.model to com.fasterxml.jackson.databind;
+    opens nl.rug.aoop.actions to com.google.gson;
 }

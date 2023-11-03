@@ -46,6 +46,8 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
      */
     public Exchange(MessageQueue messageQueue, Server server) {
         this.server = server;
+        this.buyOrders = new HashMap<>();
+        this.sellOrders = new HashMap<>();
 
         connectedClients = new ArrayList<>();
 
@@ -120,7 +122,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                log.info("Updating " + server.getClientHandlers().size() + " clients");
+                //log.info("Updating " + server.getClientHandlers().size() + " clients");
                 for (ClientHandler handler : server.getClientHandlers().values()) {
                     //sendStockInformation(handler);
                     sendTraderInformation(handler);
@@ -228,6 +230,7 @@ public class Exchange implements Runnable, StockExchangeDataModel, ConsumerObser
     }
 
     private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>> sameTypeOrderBooks) {
+        log.info("Matching order " + newOrder);
         if (oppositeOrders != null && !oppositeOrders.isEmpty()) {
             while (!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
                 Order headOrder = oppositeOrders.peek();
