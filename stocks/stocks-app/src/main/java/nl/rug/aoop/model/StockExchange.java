@@ -10,6 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The `StockExchange` class represents a stock exchange where orders are matched and trades are executed.
+ * It maintains order books for buy and sell orders and processes incoming orders from clients.
+ */
 @Slf4j
 public class StockExchange {
     private MessageQueue orderQueue;
@@ -18,12 +22,20 @@ public class StockExchange {
     private final Map<String, Trader> connectedTraders = new ConcurrentHashMap<>();
     private final Map<String, Stock> stocks = new ConcurrentHashMap<>();
 
+    /**
+     * Initializes a new instance of the `StockExchange` class.
+     */
     public StockExchange() {
         this.orderQueue = new TSMessageQueue();
         this.buyOrders = new HashMap<>();
         this.sellOrders = new HashMap<>();
     }
 
+    /**
+     * Places an order in the stock exchange.
+     *
+     * @param order The order to be placed.
+     */
     public void placeOrder(Order order) {
         log.info("Received order from client " + order.getClientId() + ": " + order);
 
@@ -35,7 +47,8 @@ public class StockExchange {
         }
     }
 
-    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>> sameTypeOrderBooks) {
+    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>>
+            sameTypeOrderBooks) {
         if (oppositeOrders != null && !oppositeOrders.isEmpty()) {
             while (!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
                 Order headOrder = oppositeOrders.peek();
@@ -58,12 +71,11 @@ public class StockExchange {
         newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
         headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
 
-        System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " at price " + headOrder.getPrice());
+        System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " at price "
+                + headOrder.getPrice());
 
         if (headOrder.getQuantity() == 0) {
             oppositeOrders.poll();
         }
     }
 }
-
-

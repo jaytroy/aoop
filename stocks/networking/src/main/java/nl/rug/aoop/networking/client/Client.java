@@ -17,10 +17,11 @@ import java.net.Socket;
  */
 @Slf4j
 public class Client implements Runnable {
+    private String id;
+
     /**
      * Sets the timeout length.
      */
-    private String id;
     protected static final int TIMEOUT = 1000;
     @Getter
     private InetSocketAddress address;
@@ -38,6 +39,7 @@ public class Client implements Runnable {
      * Client constructor.
      *
      * @param handler the message handler.
+     * @param id the id.
      * @param address The socket host name and port address.
      */
     public Client(MessageHandler handler, InetSocketAddress address,String id) {
