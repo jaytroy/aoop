@@ -140,37 +140,67 @@ Each of these modules plays a unique role in making the Stock Market Simulation 
 
 ## Design
 
-<!--
-List all the design patterns you used in your program. For every pattern, describe the following:
-- Where it is used in your application.
-- What benefit it provides in your application. Try to be specific here. For example, don't just mention a pattern improves maintainability, but explain in what way it does so.
--->
+
+1. Observer Pattern:
+   - Where Used: The Observer pattern is used to define a one-to-many dependency between objects, so that when one object changes state, all its dependents are notified and updated automatically.
+   - Benefit: This pattern allows for loose coupling between components, ensuring that updates are propagated efficiently while keeping the system maintainable.
+
+2. Command Pattern:
+   - Where Used: In our application it was used for defining various commands like buying and selling stocks. 
+   - Benefit: It allows you to separate the sender of a request from its receiver, providing flexibility, extensibility, and the ability to support undo/redo operations, which is valuable in a stock exchange simulation.
+
+3. Factory Method Pattern:
+   - Where Used: The Factory Method pattern provides an interface for creating objects, but allows subclasses to alter the type of objects that will be created. It was used for creating instances of traders or stocks with different properties. 
+   - Benefit: It promotes loose coupling and flexibility in object creation, making it easier to add new types of traders or stocks without changing existing code.
 
 ## Evaluation
 
-<!--
-Discuss the stability of your implementation. What works well? Are there any bugs? Is everything tested properly? Are there still features that have not been implemented? Also, if you had the time, what improvements would you make to your implementation? Are there things which you would have done completely differently? Try to aim for at least 250 words.
--->
+1. Stability and Successes:
+  - Observer Pattern for Real-time Updates: The application employs the Observer pattern to provide real-time updates to clients, ensuring that changes in stock prices, trader portfolios, and market conditions are efficiently propagated to users. This contributes to the system's responsiveness. 
+  - Command Pattern for Extensibility: The Command pattern, particularly for buying and selling orders, enhances the extensibility of the system. It allows for different types of orders to be added without significant changes to the existing codebase. 
 
-_
+2. Areas for Improvement:
+  - Realistic Trading Strategies: To make the stock exchange simulation more authentic we should have considered implementing more advanced trading strategies and algorithms. Currently, the system randomly generates buy and sell orders; introducing intelligent trading strategies can add complexity and realism to the simulation. 
+  - User Interface Enhancement: The user interface provided by the SimpleViewFactory could be improved for a more user-friendly experience. Enhancements like advanced charting, transaction history, and order book displays could provide a richer user experience.
+  - When displaying the owned stocks of the trader in the ui the user can hardly see all the stocks, this could have been improved by adding a button where if you click on it you can view all the owned stocks.
+
+3. Limits:
+  - While it is good to look for areas of improvement it's also important to evaluate what limits this project had, we were a group of 2 members, so implementing realistic algorithms within the time constraint we were in was going to be difficult.
+
+If there were more time, additional features like automated trading bots, user authentication, and a more interactive and visually appealing user interface could be implemented. Overall, the implementation serves as a solid foundation for a stock market simulation, but further refinements and enhancements could make it an even more comprehensive and realistic tool for understanding stock market dynamics and trading strategies.
+
+Usage
+
+The Stock Exchange Simulator project provides an environment for simulating stock market activities. Users can observe stock prices in real-time and place buy and sell orders through a simple user interface. Here are some examples of how to use the project:
+Real-time Stock Updates
+
+The project uses the Observer pattern to provide real-time updates on stock prices. Upon launching the application, users can observe the latest stock prices, which update continuously as trading activity occurs.
+
+Real-time Stock Updates
+Placing Buy and Sell Orders
+
+Traders can place buy and sell orders for available stocks. The Command pattern allows for extensibility in adding various order types. To place a buy limit order, traders can use the following command:
 
 
-<!-- Below you can find some sections that you would normally put in a README, but we decided to leave out (either because it is not very relevant, or because it is covered by one of the added sections) -->
+BUY "Stock Symbol" "Limit Price" "Quantity"
 
-<!-- ## Usage -->
-<!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources. -->
+Similarly, to place a sell limit order, traders can use:
 
-<!-- ## Roadmap -->
-<!-- Use this space to show your plans for future additions -->
+SELL "Stock Symbol" "Limit Price" "Quantity"
 
-<!-- ## Contributing -->
-<!-- You can use this section to indicate how people can contribute to the project -->
+Roadmap
 
-<!-- ## License -->
-<!-- You can add here whether the project is distributed under any license -->
+In the future, we plan to enhance the project in the following ways:
+   - Realistic Trading Strategies: We aim to introduce more realistic trading strategies and algorithms, making the stock exchange simulation more authentic. This can include strategies like moving averages, relative strength index (RSI), and more. 
+   - User Interface Enhancement: We intend to improve the user interface provided by the SimpleViewFactory. Features like advanced charting, transaction history, and order book displays will be added to provide a richer and more user-friendly experience. 
+   - Improved Owned Stocks Display: We will add a feature to allow users to view all the stocks they own, addressing the issue of limited visibility.
 
+Contributing
 
-<!-- ## Contact -->
-<!-- If you want to provide some contact details, this is the place to do it -->
+We welcome contributions to this project. If you have ideas, bug fixes, or enhancements, please feel free to fork the repository, make your changes, and create a pull request. We value community collaboration and will review and merge contributions that align with the project's goals.
+Contact
 
-<!-- ## Acknowledgements  -->
+If you have any questions or suggestions regarding the project, you can contact us at [your.email@example.com].
+
+Important Note:
+We are not responsible for any issues that may occur on your system while using this project. Please use the software responsibly and at your own risk.

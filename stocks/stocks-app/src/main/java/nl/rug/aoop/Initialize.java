@@ -54,6 +54,17 @@ public class Initialize {
         SimpleViewFactory viewFactory = new SimpleViewFactory();
         viewFactory.createView(stockApp);
 
+        int updates = 0;
+        while (updates < 15) {
+            viewFactory.updateView();
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            updates++;
+        }
+
         //buyAndSellActivation(stocks, traders, commandHandler, viewFactory);
     }
 
