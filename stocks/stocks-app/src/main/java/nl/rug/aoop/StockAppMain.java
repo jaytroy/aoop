@@ -11,6 +11,6 @@ public class StockAppMain {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
-        InitializeView.initialize();
+        Initialize.initialize();
     }
 }

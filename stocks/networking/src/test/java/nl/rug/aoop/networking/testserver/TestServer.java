@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class TestServer {
     private static int port;
@@ -18,7 +19,7 @@ public class TestServer {
     @BeforeAll
     public static void setup() {
         port = 7500;
-        handler = new DummyMessageHandler();
+        handler = mock(MessageHandler.class);
         server = new Server(handler, port);
     }
 
@@ -58,20 +59,11 @@ public class TestServer {
             serverThread.interrupt();
         }
     }
-    static class DummyMessageHandler implements MessageHandler {
-        static String lastReceivedMessage;
-
-        @Override
-        public void handleMessage(String message) {
-            lastReceivedMessage = "Received: " + message;
-        }
-    }
 
     @AfterAll
     public static void endServer() {
         if (server != null && server.getThreadPool() != null) {
             server.terminate();
-
         }
     }
 }

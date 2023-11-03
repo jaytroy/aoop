@@ -1,4 +1,4 @@
-package nl.rug.aoop.stockcommands;
+package nl.rug.aoop.actions;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.command.Command;

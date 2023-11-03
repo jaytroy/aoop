@@ -20,6 +20,7 @@ public class Client implements Runnable {
     /**
      * Sets the timeout length.
      */
+    private String id;
     protected static final int TIMEOUT = 1000;
     @Getter
     private InetSocketAddress address;
@@ -39,9 +40,10 @@ public class Client implements Runnable {
      * @param handler the message handler.
      * @param address The socket host name and port address.
      */
-    public Client(MessageHandler handler, InetSocketAddress address) {
+    public Client(MessageHandler handler, InetSocketAddress address,String id) {
         this.address = address;
         this.msgHandler = handler;
+        this.id = id;
     }
 
     /**
@@ -60,12 +62,14 @@ public class Client implements Runnable {
         connected = true;
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         out = new PrintWriter(this.socket.getOutputStream());
+
+        sendMessage(id); //Send the clients id for serverside identification
     }
 
     /**
      * Sends a message to the server.
      * @param message The message being sent.
-     * @throws IllegalArgumentException Thrown when an invalid messages is passed.
+     * @throws IllegalArgumentException Thrown when an invalid message is passed.
      */
     public void sendMessage(String message) throws IllegalArgumentException {
         if (message == null || message.equals("")) {
@@ -89,14 +93,14 @@ public class Client implements Runnable {
         running = true;
         try {
             while (running) {
-                System.out.println("Client is running at Client");
+                //System.out.println("Client is running at Client");
                 String received = in.readLine();
-                log.info("Received: " + received);
+                log.info(id + " received: " + received);
                 if (received == null) {
                     log.error("Server disconnected.");
                     break;
                 }
-
+                msgHandler.handleMessage(received);
             }
         } catch (IOException e) {
             log.error("Error reading from server: " + e.getMessage());

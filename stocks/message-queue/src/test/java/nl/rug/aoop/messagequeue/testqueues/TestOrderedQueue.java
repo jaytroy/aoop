@@ -5,6 +5,8 @@ import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.messagequeue.queues.OrderedQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -35,40 +37,51 @@ public class TestOrderedQueue {
     }
 
     @Test
-    public void testEnqueueAndDequeueDifferentTimeStamps() {
+    public void testEnqueueAndDequeueDifferentTimeStamps() throws NoSuchFieldException, IllegalAccessException {
         Message message1 = new Message("header", "body");
         Message message2 = new Message("header", "body");
         Message message3 = new Message("header", "body");
 
+        //Who cares about encapsulation
+        Field timestampField = Message.class.getDeclaredField("timestamp");
+        timestampField.setAccessible(true);
+
+        LocalDateTime message1Timestamp = (LocalDateTime) timestampField.get(message1);
+        LocalDateTime oneHourLater = message1Timestamp.plusHours(1);
+        timestampField.set(message2, oneHourLater);
+        timestampField.set(message3, timestampField.get(message1));
+
         queue.enqueue(message1);
-        queue.enqueue(message3); //No matter what order we dequeue the results should be the same
         queue.enqueue(message2);
+        queue.enqueue(message3);
 
         assertEquals(message1, queue.dequeue());
-        assertEquals(message2, queue.dequeue());
         assertEquals(message3, queue.dequeue());
+        assertEquals(message2, queue.dequeue());
 
         assertEquals(0, queue.getSize());
     }
+
     @Test
-    public void testEnqueueAndDequeueSameTimeStamps() {
+    public void testEnqueueAndDequeueSameTimeStamps() throws NoSuchFieldException, IllegalAccessException {
         Message message1 = new Message("header", "body");
         Message message2 = new Message("header", "body");
         Message message3 = new Message("header", "body");
 
-        queue.enqueue(message1);
+        //Who cares about encapsulation 2
+        Field timestampField = Message.class.getDeclaredField("timestamp");
+        timestampField.setAccessible(true);
+
+        timestampField.set(message2, timestampField.get(message1));
+        timestampField.set(message3, timestampField.get(message1));
+
         queue.enqueue(message2);
-        queue.enqueue(message1);
         queue.enqueue(message3);
-        queue.enqueue(message2);
         queue.enqueue(message1);
 
-        assertEquals(message1, queue.dequeue());
-        assertEquals(message1, queue.dequeue());
-        assertEquals(message1, queue.dequeue());
-        assertEquals(message2, queue.dequeue());
         assertEquals(message2, queue.dequeue());
         assertEquals(message3, queue.dequeue());
+        assertEquals(message1, queue.dequeue());
 
         assertEquals(0, queue.getSize());
     }

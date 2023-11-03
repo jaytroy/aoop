@@ -1,9 +1,14 @@
 package nl.rug.aoop;
 
+import lombok.Getter;
+import lombok.Setter;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
 import nl.rug.aoop.network.ExchangeListener;
+import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,62 +16,42 @@ import java.util.Map;
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
  * owned stocks.
  */
-public class Trader extends NetProducer implements ExchangeListener {
+public class Trader implements ExchangeListener {
+    @Getter
+    @Setter
     private String name;
-    private int id;
+    @Getter
+    private String id;
+    @Getter
     private double availableFunds;
-    private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol -> quantity)
+    @Getter
+    @Setter
+    private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
+    private NetProducer producer;
+    private Client client;
+    private MessageHandler handler;
+    private InetSocketAddress address;
 
     /**
      * Constructs a Trader with the given client, name, ID, and available funds.
      *
-     * @param client          The client representing the trader.
-     * @param name            The name of the trader.
      * @param id              The ID of the trader.
-     * @param availableFunds  The available funds for trading.
      */
-    public Trader(Client client, String name, int id, double availableFunds) {
-        super(client);
-        this.name = name;
+    public Trader(String id, InetSocketAddress address) {
         this.id = id;
-        this.availableFunds = availableFunds;
-        this.ownedStocks = new HashMap<>();
-    }
+        this.address = address;
 
-    /**
-     * Get the name of the trader.
-     *
-     * @return The name of the trader.
-     */
-    public String getName() {
-        return name;
-    }
+        handler = new TraderHandler(this);
+        client = new Client(handler,address,id);
+        producer = new NetProducer(client);
 
-    /**
-     * Get the ID of the trader.
-     *
-     * @return The ID of the trader.
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Get the available funds for trading.
-     *
-     * @return The available funds.
-     */
-    public double getAvailableFunds() {
-        return availableFunds;
-    }
-
-    /**
-     * Get the owned stocks by the trader.
-     *
-     * @return A map of owned stocks (stock symbol -> quantity).
-     */
-    public Map<String, Integer> getOwnedStocks() {
-        return ownedStocks;
+        try {
+            client.connect();
+            Thread clientThread = new Thread(client);
+            clientThread.start();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -102,7 +87,10 @@ public class Trader extends NetProducer implements ExchangeListener {
     }
 
     @Override
-    public void update() {
-        // Get updates from the stock exchange
+    public void update(Map<String,Integer> ownedStocks, int availableFunds) {
+        this.ownedStocks = ownedStocks;
+        this.availableFunds = availableFunds;
     }
+
+
 }

@@ -7,7 +7,7 @@ import nl.rug.aoop.networking.MessageHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-   
+
 /**
  * Handles messages in the form of commands.
  *

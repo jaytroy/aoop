@@ -5,28 +5,23 @@ import nl.rug.aoop.command.CommandHandler;
 import nl.rug.aoop.initialization.SimpleViewFactory;
 import nl.rug.aoop.messagequeue.serverside.commands.CommandMessageHandler;
 import nl.rug.aoop.messagequeue.serverside.commands.MqPutCommand;
-import nl.rug.aoop.messagequeue.serverside.TSMessageQueue;
+import nl.rug.aoop.messagequeue.queues.TSMessageQueue;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.model.Stock;
-import nl.rug.aoop.model.StockExchange;
 import nl.rug.aoop.model.Trader;
 import nl.rug.aoop.networking.server.Server;
-import nl.rug.aoop.network.Exchange;
+import nl.rug.aoop.model.Exchange;
 import nl.rug.aoop.networking.MessageHandler;
-import nl.rug.aoop.stockcommands.BuyLimitOrderCommand;
-import nl.rug.aoop.stockcommands.SellLimitOrderCommand;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 
 /**
  * This class provides initialization for the Stock App, including starting the server and setting up the view.
  */
 @Slf4j
-public class InitializeView {
+public class Initialize {
     /**
      * Initialize the Stock App, start the server, and set up the view.
      */
@@ -34,10 +29,13 @@ public class InitializeView {
         int port = getPort();
 
         MessageQueue messageQueue = new TSMessageQueue();
-        MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
+
         CommandHandler commandHandler = new CommandHandler();
+        MqPutCommand mqPutCommand = new MqPutCommand(messageQueue);
         commandHandler.registerCommand("PUT", mqPutCommand);
+
         MessageHandler handler = new CommandMessageHandler(commandHandler);
+
         Server server = new Server(handler, port);
         Thread serverThread = new Thread(server);
         try {
@@ -48,18 +46,18 @@ public class InitializeView {
         serverThread.start();
 
         // Set up the Exchange
-        Exchange stockApp = new Exchange(messageQueue);
+        Exchange stockApp = new Exchange(messageQueue,server);
         List<Stock> stocks = stockApp.getStocks();
         List<Trader> traders = stockApp.getTraders();
 
         // Start the view
-        StockExchange stockExchange = new StockExchange(stocks, traders);
         SimpleViewFactory viewFactory = new SimpleViewFactory();
-        viewFactory.createView(stockExchange);
+        viewFactory.createView(stockApp);
 
-        buyAndSellActivation(stocks, traders, commandHandler, viewFactory);
+        //buyAndSellActivation(stocks, traders, commandHandler, viewFactory);
     }
 
+/*
     private static void buyAndSellActivation(List<Stock> stocks, List<Trader> traders, CommandHandler commandHandler, 
                                              SimpleViewFactory viewFactory) {
         Random random = new Random();
@@ -104,7 +102,7 @@ public class InitializeView {
     private static void sellCommand(List<Stock> stocks, List<Trader> traders, CommandHandler commandHandler,
                                     SimpleViewFactory viewFactory, int randomTrader, double priceFactor, int i) {
         Random random = new Random();
-        double limitPrice;
+        double limitPriceMap<String,Integer> ownedStocks, int availableFunds;
         int randomQuantitySell = random.nextInt(10) + 1;
         Map<String, Integer> stockSymbolSell = findTraderById(traders, "bot" + randomTrader).
                 getOwnedStocks();
@@ -118,7 +116,7 @@ public class InitializeView {
         commandHandler.registerCommand("SELL " + i, sellLimitOrderCommand);
         viewFactory.updateView();
     }
-
+*/
     /**
      * Determine the port for the server, either from the environment variable or use a backup port.
      *
@@ -143,7 +141,6 @@ public class InitializeView {
      * @param symbol the symbol.
      * @return the stock you are trying to find.
      */
-
     private static Stock findStockBySymbol(List<Stock> stocks, String symbol) {
         for (Stock stock : stocks) {
             if (stock.getSymbol().equals(symbol)) {

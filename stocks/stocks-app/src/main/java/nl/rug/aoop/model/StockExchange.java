@@ -1,55 +1,69 @@
 package nl.rug.aoop.model;
 
-import nl.rug.aoop.uimodel.StockDataModel;
-import nl.rug.aoop.uimodel.StockExchangeDataModel;
-import nl.rug.aoop.uimodel.TraderDataModel;
+import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.actions.Order;
+import nl.rug.aoop.messagequeue.queues.MessageQueue;
+import nl.rug.aoop.messagequeue.queues.TSMessageQueue;
 
-import java.util.List;
+import java.util.PriorityQueue;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * The StockExchange class represents the core data model for the stock exchange, providing information about stocks
- * and traders.
- */
-public class StockExchange implements StockExchangeDataModel {
-    private List<Stock> stocks;
-    private List<Trader> traderUIS;
+@Slf4j
+public class StockExchange {
+    private MessageQueue orderQueue;
+    private Map<String, PriorityQueue<Order>> buyOrders;
+    private Map<String, PriorityQueue<Order>> sellOrders;
+    private final Map<String, Trader> connectedTraders = new ConcurrentHashMap<>();
+    private final Map<String, Stock> stocks = new ConcurrentHashMap<>();
 
-    /**
-     * Constructs a StockExchange with the given list of stocks and trader user interfaces (UIs).
-     *
-     * @param stocks     The list of stocks in the stock exchange.
-     * @param traderUIS  The list of trader user interfaces in the stock exchange.
-     */
-    public StockExchange(List<Stock> stocks, List<Trader> traderUIS) {
-        this.stocks = stocks;
-        this.traderUIS = traderUIS;
+    public StockExchange() {
+        this.orderQueue = new TSMessageQueue();
+        this.buyOrders = new HashMap<>();
+        this.sellOrders = new HashMap<>();
     }
 
-    @Override
-    public StockDataModel getStockByIndex(int index) {
-        if (index >= 0 && index < stocks.size()) {
-            return (StockDataModel) stocks.get(index);
+    public void placeOrder(Order order) {
+        log.info("Received order from client " + order.getClientId() + ": " + order);
+
+        String stockSymbol = order.getSymbol();
+        if (order.getType() == Order.Type.BUY) {
+            matchOrder(order, sellOrders.get(stockSymbol), buyOrders);
         } else {
-            return null;
+            matchOrder(order, buyOrders.get(stockSymbol), sellOrders);
         }
     }
 
-    @Override
-    public int getNumberOfStocks() {
-        return stocks.size();
-    }
+    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>> sameTypeOrderBooks) {
+        if (oppositeOrders != null && !oppositeOrders.isEmpty()) {
+            while (!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
+                Order headOrder = oppositeOrders.peek();
+                if ((newOrder.getType() == Order.Type.BUY && newOrder.getPrice() >= headOrder.getPrice()) ||
+                        (newOrder.getType() == Order.Type.SELL && newOrder.getPrice() <= headOrder.getPrice())) {
+                    executeTrade(newOrder, headOrder, oppositeOrders);
+                } else {
+                    break;
+                }
+            }
+        }
 
-    @Override
-    public TraderDataModel getTraderByIndex(int index) {
-        if (index >= 0 && index < traderUIS.size()) {
-            return (TraderDataModel) traderUIS.get(index);
-        } else {
-            return null;
+        if (newOrder.getQuantity() > 0) {
+            sameTypeOrderBooks.computeIfAbsent(newOrder.getSymbol(), k -> new PriorityQueue<>()).add(newOrder);
         }
     }
 
-    @Override
-    public int getNumberOfTraders() {
-        return traderUIS.size();
+    private void executeTrade(Order newOrder, Order headOrder, PriorityQueue<Order> oppositeOrders) {
+        int tradedQuantity = (int) Math.min(newOrder.getQuantity(), headOrder.getQuantity());
+        newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
+        headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
+
+        System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " at price " + headOrder.getPrice());
+
+        if (headOrder.getQuantity() == 0) {
+            oppositeOrders.poll();
+        }
     }
 }
+
+

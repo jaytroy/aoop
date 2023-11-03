@@ -3,7 +3,7 @@
   <h1 align="center">Stock Market Simulation</h1>
 
   <p align="center">
-    < add a very short description here (1 sentence)>
+    < A stock market simulation application that allows trading of stocks by traders.>
   </p>
 </p>
 
@@ -22,7 +22,7 @@
 
 ## About The Project
 
-<!-- Add short description about the project here -->
+This project is a stock market simulation application that provides traders with the ability to buy and sell stocks. It allows traders to monitor stock information, execute trading orders, and receive real-time updates about the stock market.
 
 ## Getting Started
 
@@ -37,21 +37,106 @@ To get a local copy up and running follow these simple steps.
 
 1. Navigate to the `stocks` directory
 2. Clean and build the project using:
-```sh
-mvn install
-```
+   sh
+   mvn install
+
 
 ### Running
 
-<!--
-Describe how to run your program here. These should be a few very simple steps.
--->
+1. *Initialize the Stock App:*
+- Open your terminal or command prompt.
+- Navigate to the `stocks app` directory of the project.
+
+  sh
+  cd stocks/stocks-app/src/main/java/nl/rug/aoop
+  java -jar StockAppMain.jar
+
+2. *Run the Trader App:*
+- After successfully initializing the Stock App, you can now run the Trader App to create trading bots and randomize buy and sell orders.
+- Open your terminal or command prompt.
+- Navigate to the `traders app` directory of the project.
+
+  sh
+  cd stocks/stocks-app/src/main/java/nl/rug/aoop
+  java -jar TraderApp.jar
+
+
+This step activates the trading bots, and they will start generating random buy and sell orders.
+
+Please note that it's essential to first initialize the Stock App to create the trading environment, and then run the Trader App to observe the bots' trading activities. The instructions provided ensure a smooth and sequential execution of the program.
 
 ## Modules
 
-<!--
-Describe each module in the project, what their purpose is and how they are used in your program. Try to aim for at least 100 words per module.
--->
+The Stock Market Simulation project is divided into several modules, each serving a specific purpose and contributing to the overall functionality of the program:
+
+1. *Command Module:*
+
+- Command Interface: This module defines the command interface, which serves as a foundation for various commands used in the simulation.
+
+- Command Message Handler: The Command Message Handler class provides functionality to register and execute commands. It plays a crucial role in the interaction between different components of the system.
+
+2. *Message Queue Module:*
+
+- Consumer: The Consumer class implements the MQConsumer and is responsible for polling messages from a message queue.
+
+- Producer: The Producer class implements the MQProducer and enqueues messages, ensuring they meet specific character constraints.
+
+- LocalDateTimeAdapter: This class is a GSON type adapter for loading LocalDateTime objects.
+
+- Message: The Message class represents individual messages and provides methods for converting them to and from JSON format.
+
+- MessageQueue: This interface outlines the fundamental operations for managing messages in a queue.
+
+- OrderedQueue: OrderedQueue is an implementation of MessageQueue that takes the time of messages into account, enabling ordered message retrieval.
+
+- UnorderedQueue: UnorderedQueue is another implementation of MessageQueue, not considering the message time order.
+
+- CommandMessageHandler: This class handles messages in the form of commands, forwarding them to the appropriate handlers.
+
+- MqPutCommand: MqPutCommand is a specific command class that puts messages into the message queue.
+
+- NetConsumer: NetConsumer is a consumer class designed to work with network-based messages, continuously polling the message queue in the exchange.
+
+- NetProducer: NetProducer is a class responsible for sending input messages to the server through a client.
+
+- TSMessageQueue: TSMessageQueue represents a thread-safe message queue, ensuring safe and efficient message storage and retrieval.
+
+3. *Networking Module:*
+
+- Client Handler: The Client Handler is responsible for handling client connections, managing incoming messages, and ensuring smooth communication between the clients and the server.
+
+- Client: The Client module represents a client that can connect to the server, send and receive messages, and participate in the stock market simulation.
+
+- Server: The Server component hosts and manages the stock market simulation, acting as the central point for client connections and message exchange.
+
+- NetworkMessage: The NetworkMessage class represents a network message with a header and a body. It offers methods to convert a NetworkMessage to JSON and create a NetworkMessage object from its JSON representation. This class is fundamental for handling network communication between different components of the application.
+
+4. *Stock Market UI Module:*
+
+- SimpleViewFactory: Initializes a Swing-based user interface for the stock exchange simulation, utilizing the TerminalFrame for displaying UI elements.
+
+- StockExchangeDataModel: Represents the data model of a stock exchange, offering access to information about stocks and traders on the exchange.
+
+- StockDataModel: Represents a single stock's data, including properties like the stock symbol, company name, available funds, owned stocks, shares outstanding, market capitalization, and share price.
+
+- TraderDataModel: Represents a trader's data, including ID, name, available funds, and a collection of owned stocks.
+
+- SimpleView package: This additional package initializes tables and frames for the user interface, enhancing the visual representation of stocks and traders in the application.
+
+5. *Stock App Module:*
+
+- The Stock App module implements the user interface, loads data related to each stock and trader, and manages the user experience. It provides information about the stocks' prices, trader details, and other stock market data.
+- InitializeView: Initializes the Stock App by starting the server and setting up the view, we call this class in StockAppMain such that this class does all the initializing and we can run through the StockAppMain.
+- BuyLimitOrderCommand: Represents a command to execute a buy limit order, allowing a trader to buy a specified quantity of shares of a stock if the stock's price is at or below a specified limit price.
+- SellLimitOrderCommand: Represents a command to execute a sell limit order, allowing a trader to sell a specified quantity of shares of a stock if the stock's price is at or above a specified limit price.
+- Exchange: Represents the central component of the trading system, keeping track of all stocks, traders, and resolving orders.
+
+6. *Trader App Module:*
+
+- In this module, we focus on the trading aspect of the simulation. It periodically receives information about each trader, both human and bot traders. Bot traders continuously update their activities based on randomly executed buy and sell commands. This module is crucial for simulating trading activities in the stock market.
+
+Each of these modules plays a unique role in making the Stock Market Simulation a comprehensive and interactive program. They work together to ensure a seamless user experience, facilitate communication between clients, and provide a real-time view of the stock market and trader activities.
+
 
 ## Design
 
@@ -67,13 +152,7 @@ List all the design patterns you used in your program. For every pattern, descri
 Discuss the stability of your implementation. What works well? Are there any bugs? Is everything tested properly? Are there still features that have not been implemented? Also, if you had the time, what improvements would you make to your implementation? Are there things which you would have done completely differently? Try to aim for at least 250 words.
 -->
 
-## Extras
-
-<!--
-If you implemented any extras, you can list/mention them here.
--->
-
-___
+_
 
 
 <!-- Below you can find some sections that you would normally put in a README, but we decided to leave out (either because it is not very relevant, or because it is covered by one of the added sections) -->

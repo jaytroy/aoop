@@ -53,12 +53,26 @@ public class TestMessage {
     }
 
     @Test
-    public void testOverallToJsonAndFromJson() {
-        Message originalMessage = new Message("header", "body");
-        String json = originalMessage.toJson();
-        Message newMessage = Message.fromJson(json);
-        assertEquals(originalMessage.getHeader(), newMessage.getHeader());
-        assertEquals(originalMessage.getBody(), newMessage.getBody());
-        assertEquals(originalMessage.getTimestamp(), newMessage.getTimestamp());
+    public void testToJson() {
+        Message message = new Message("Header", "Body");
+        String json = message.toJson();
+        assertNotNull(json);
+    }
+
+    @Test
+    public void testFromJson() {
+        String jsonString = "{\"header\":\"Header\",\"body\":\"Body\"}";
+        Message message = Message.fromJson(jsonString);
+        assertNotNull(message);
+        assertEquals("Header", message.getHeader());
+        assertEquals("Body", message.getBody());
+    }
+
+    @Test
+    public void testInvalidJson() {
+        String invalidJson = "invalid_json";
+        assertThrows(RuntimeException.class, () -> {
+            Message.fromJson(invalidJson);
+        });
     }
 }

@@ -10,18 +10,21 @@ import nl.rug.aoop.networking.MessageHandler;
  * A consumer which continuously polls the TSMessageQueue in the exchange.
  */
 @Slf4j
-public class NetConsumer extends Consumer implements Runnable, MessageHandler {
+public class NetConsumer extends Consumer implements Runnable {
     private MessageQueue queue;
+    private ConsumerObserver observer;
 
     /**
      * Constructor for consumer.
      *
      * @param messageQueue the messagequeue.
+     * @param observer the exchange related to the consumer.
      */
 
-    public NetConsumer(MessageQueue messageQueue) {
+    public NetConsumer(MessageQueue messageQueue, ConsumerObserver observer) {
         super(messageQueue);
         queue = super.getQueue();
+        this.observer = observer;
     }
 
     @Override
@@ -31,14 +34,10 @@ public class NetConsumer extends Consumer implements Runnable, MessageHandler {
             if (queue.getSize() != 0) {
                 Message msg = queue.dequeue();
                 log.info("Polled from the queue: " + msg);
-                //turn message into a string
-                //handleMessage(message)
+
+                observer.update(msg); //Should send the order to the exchange
             }
         }
     }
-
-    @Override
-    public void handleMessage(String message) { //Or should it be passed onto a specific handler?
-        //Logic here. Do what needs to be done depending on the type of order
-    }
 }
+

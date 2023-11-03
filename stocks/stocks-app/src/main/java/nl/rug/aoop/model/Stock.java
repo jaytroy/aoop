@@ -1,5 +1,6 @@
 package nl.rug.aoop.model;
 
+import lombok.Getter;
 import nl.rug.aoop.uimodel.StockDataModel;
 
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  * The Stock class represents a single stock in the trading system.
  */
 public class Stock implements StockDataModel {
+    @Getter
     private String symbol;
+    @Getter
     private String name;
+    @Getter
     private long sharesOutstanding;
     private double marketCap;
+    @Getter
     private double price;
     private double initialPrice;
 
@@ -22,27 +27,9 @@ public class Stock implements StockDataModel {
         this.price = this.initialPrice;
     }
 
-    /**
-     * Get the symbol of the stock.
-     *
-     * @return The stock's symbol.
-     */
-    public String getSymbol() {
-        return symbol;
-    }
-
     @Override
     public String getId() {
         return null;
-    }
-
-    /**
-     * Get the name of the company associated with the stock.
-     *
-     * @return The name of the company.
-     */
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -56,15 +43,6 @@ public class Stock implements StockDataModel {
     }
 
     /**
-     * Get the number of shares available for trading.
-     *
-     * @return The total number of shares outstanding.
-     */
-    public long getSharesOutstanding() {
-        return sharesOutstanding;
-    }
-
-    /**
      * Get the total market capitalization of the company.
      *
      * @return The market capitalization of the company.
@@ -73,12 +51,4 @@ public class Stock implements StockDataModel {
         return price * sharesOutstanding;
     }
 
-    /**
-     * Get the price of a single share.
-     *
-     * @return The price of a single share.
-     */
-    public double getPrice() {
-        return price;
-    }
 }

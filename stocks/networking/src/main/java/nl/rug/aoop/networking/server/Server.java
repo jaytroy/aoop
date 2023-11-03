@@ -7,6 +7,7 @@ import nl.rug.aoop.networking.MessageHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,11 +21,12 @@ public class Server implements Runnable {
     private ServerSocket serverSocket;
     @Getter
     private volatile boolean running = false;
-    private int id = 0;
     @Getter
     private MessageHandler handler;
     @Getter
     private ExecutorService threadPool;
+    @Getter
+    private final ConcurrentHashMap<String, ClientHandler> clientHandlers;
 
     /**
      * Server constructor.
@@ -35,6 +37,7 @@ public class Server implements Runnable {
     public Server(MessageHandler handler, int port) {
         this.port = port;
         this.handler = handler;
+        this.clientHandlers = new ConcurrentHashMap<>();
     }
 
     /**
@@ -57,11 +60,24 @@ public class Server implements Runnable {
         while (running) {
             try {
                 Socket acceptedSocket = serverSocket.accept();
-                log.info("New connection from client: " + acceptedSocket.getRemoteSocketAddress());
+                ClientHandler handler = new ClientHandler(this.handler, acceptedSocket);
+                String clientId = handler.getId();
 
-                threadPool.submit(new ClientHandler(handler, acceptedSocket, id)); //This will handle incoming messages
-                // from Client
-                id++;
+                if (clientHandlers.containsKey(clientId)) {
+                    log.error("Client ID {} is already connected", clientId);
+                    // Handle the situation, maybe by closing the new socket or assigning a new ID
+                } else {
+                    clientHandlers.put(clientId, handler);
+                    log.info("New connection from client: " + clientId + " ip: "+ acceptedSocket.getRemoteSocketAddress());
+                    threadPool.submit(() -> {
+                        try {
+                            handler.run();
+                        } finally {
+                            // Remove the client handler from the map when it is finished
+                            clientHandlers.remove(clientId);
+                        }
+                    });
+                }
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
             }
@@ -83,4 +99,14 @@ public class Server implements Runnable {
         }
         threadPool.shutdown();
     }
+
+    /*
+    public void terminateClientHandler(String clientId) {
+        ClientHandler handler = clientHandlers.get(clientId);
+        if (handler != null) {
+            handler.terminate();
+            clientHandlers.remove(clientId);
+        }
+    }
+     */
 }

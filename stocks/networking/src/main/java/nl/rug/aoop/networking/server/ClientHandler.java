@@ -18,7 +18,7 @@ public class ClientHandler implements Runnable {
     @Getter
     private Socket socket;
     @Getter
-    private int id;
+    private String id;
     private final BufferedReader in;
     private final PrintWriter out;
     @Getter
@@ -29,18 +29,22 @@ public class ClientHandler implements Runnable {
      * Constructor for class.
      *
      * @param socket  The connection socket.
-     * @param id      Client ID.
      * @param handler the message handler.
      * @throws IOException Thrown for errors with input/output streams.
      */
-    public ClientHandler(MessageHandler handler, Socket socket, int id) throws IOException {
+    public ClientHandler(MessageHandler handler, Socket socket) throws IOException {
         this.socket = socket;
-        this.id = id;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.handler = handler;
 
-        log.info("New handler created for" + socket.getRemoteSocketAddress());
+        // Read the client ID as the first line of the connection
+        this.id = in.readLine();
+        if (this.id == null || this.id.trim().isEmpty()) {
+            throw new IOException("Client did not send an ID");
+        }
+
+        log.info("New handler created for " + this.id + " ip: "+ socket.getRemoteSocketAddress());
     }
 
     @Override
@@ -50,12 +54,14 @@ public class ClientHandler implements Runnable {
         try {
             while (running) {
                 String received = in.readLine();
-                log.info("Received message from" + socket.getRemoteSocketAddress() + ": " + received);
-                if (received == null || "QUIT".equalsIgnoreCase(received)) {
-                    terminate();
-                    break;
+                log.info("Received message from " + id + " ip:" + socket.getRemoteSocketAddress() + ": " + received);
+
+                //Sorts out issues with clientIDs being sent as null on connection
+                if(received != null) {
+                    handler.handleMessage(received);
+                } else {
+                    return;
                 }
-                handler.handleMessage(received);
 
                 //TCP handshake
                 sendMessage("Server received message");
@@ -70,6 +76,7 @@ public class ClientHandler implements Runnable {
      */
     public void terminate() {
         running = false;
+        //server.terminateClientHandler(this.id)
         try {
             socket.close();
         } catch (IOException e) {
@@ -82,7 +89,7 @@ public class ClientHandler implements Runnable {
      *
      * @param message The message to send.
      */
-    public void sendMessage(String message) { //Sends a message back to the client to complete handshake
+    public void sendMessage(String message) { //Sends a message back to the client
         out.println(message);
         out.flush();
     }

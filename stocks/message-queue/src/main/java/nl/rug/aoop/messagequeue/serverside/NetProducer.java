@@ -22,7 +22,7 @@ public class NetProducer implements MQProducer {
 
     @Override
     public void putMessage(Message msg) {
-        System.out.println("Putting message");
+        System.out.println("Netproducer is putting message");
         NetworkMessage networkMessage = new NetworkMessage(msg.getHeader(), msg.toJson());
         client.sendMessage(networkMessage.toJson());
     }

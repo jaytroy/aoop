@@ -12,11 +12,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class TestClientHandler {
     private ClientHandler clientHandler;
     private ServerSocket serverSocket;
     private Socket clientSocket;
+    private MessageHandler handler;
 
     @BeforeEach
     public void setup() throws IOException {
@@ -24,8 +26,8 @@ public class TestClientHandler {
         int port = serverSocket.getLocalPort();
 
         clientSocket = new Socket("localhost", port);
-
-        clientHandler = new ClientHandler(new DummyMessageHandler(), clientSocket, 1);
+        handler = mock(MessageHandler.class);
+        clientHandler = new ClientHandler(handler, clientSocket);
 
         Thread clientHandlerThread = new Thread(clientHandler);
         clientHandlerThread.start();
@@ -60,12 +62,5 @@ public class TestClientHandler {
     public void tearDown() throws IOException {
         clientSocket.close();
         serverSocket.close();
-    }
-
-    static class DummyMessageHandler implements MessageHandler {
-        @Override
-        public void handleMessage(String message) {
-            // Dummy implementation
-        }
     }
 }
