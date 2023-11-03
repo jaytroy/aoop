@@ -22,7 +22,7 @@ public class TestExchange {
     }
     @Test
     public void testConstructor() {
-        assertEquals();
-
+        assertEquals(queue,exchange.getMessageQueue());
+        assertEquals(server, exchange.getServer());
     }
 }

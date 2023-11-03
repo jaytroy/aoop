@@ -11,23 +11,19 @@ import java.util.List;
  */
 public class Stock implements StockDataModel {
     @Getter
+    @Setter
     private String symbol;
     @Getter
+    @Setter
     private String name;
     @Getter
+    @Setter
     private long sharesOutstanding;
+    @Setter
     private double marketCap;
     @Getter
     @Setter
     private double price;
-    private double initialPrice;
-
-    /**
-     * Default constructor for a Stock. Initializes the price with the initial price.
-     */
-    public Stock() {
-        this.price = this.initialPrice;
-    }
 
     @Override
     public String getId() {

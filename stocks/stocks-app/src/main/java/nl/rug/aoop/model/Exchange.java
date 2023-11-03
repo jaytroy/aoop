@@ -19,6 +19,7 @@ import nl.rug.aoop.util.YamlLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The Exchange class represents the central component of the trading system. It keeps track of all the stocks, traders,
@@ -26,12 +27,14 @@ import java.util.*;
  */
 @Slf4j
 public class Exchange implements StockExchangeDataModel, ConsumerObserver {
+    @Getter
     private Server server;
-    private List<Client> connectedClients;
+    private ConcurrentHashMap<String, ClientHandler> connectedClients;
     @Getter
     private List<Stock> stocks;
     @Getter
     private List<Trader> traders;
+    @Getter
     private MessageQueue messageQueue;
     private MessageQueue buyQueue;
     private MessageQueue sellQueue;
@@ -50,7 +53,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         this.buyOrders = new HashMap<>();
         this.sellOrders = new HashMap<>();
 
-        connectedClients = new ArrayList<>();
+        this.connectedClients =  server.getClientHandlers();
 
         stocks = initializeStocks();
         traders = initializeTraders();
