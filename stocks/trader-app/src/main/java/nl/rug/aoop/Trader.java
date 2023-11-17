@@ -13,6 +13,7 @@ import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
@@ -24,17 +25,19 @@ public class Trader {
     @Getter
     @Setter
     private String name;
+    @Setter
     @Getter
     private String id;
     @Getter
     @Setter
-    private double availableFunds;
+    private double funds;
     @Getter
     @Setter
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
+    @Setter
     private InetSocketAddress address;
 
     /**
@@ -66,7 +69,7 @@ public class Trader {
      * @param funds The new available funds.
      */
     public void setAvailableFunds(double funds) {
-        availableFunds = funds;
+        this.funds = funds;
     }
 
     /**
@@ -112,19 +115,35 @@ public class Trader {
      */
     public void traderStrategy() {
         Random random = new Random();
-        String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
-        String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
-        int randomQuantityBuy = random.nextInt(100) + 1;
-        double priceFactor = 1.0 + (0.01 * random.nextDouble());
-        int price = random.nextInt(1000) + 1;
-        double limitPriceBuy = price * priceFactor;
-        double limitPriceSell = price / priceFactor;
-        int buyOrSell = random.nextInt(2);
 
-        if (buyOrSell == 1) {
-            placeOrder(BUY, randomStockSymbol, randomQuantityBuy, limitPriceBuy);
-        } else {
-            placeOrder(SELL, randomStockSymbol, randomQuantityBuy, limitPriceSell);
+        for (String stockSymbol : getRandomStockSymbols()) {
+            int randomQuantityBuy = random.nextInt(100) + 1;
+            double priceFactor = 1.0 + (0.01 * random.nextDouble());
+            int price = random.nextInt(1000) + 1;
+            double limitPriceBuy = price * priceFactor;
+            double limitPriceSell = price / priceFactor;
+            int buyOrSell = random.nextInt(2);
+
+            Order.Type orderType = (buyOrSell == 1) ? Order.Type.BUY : Order.Type.SELL;
+            long randomQuantity = randomQuantityBuy;
+
+            placeOrder(orderType, stockSymbol, randomQuantity, (orderType == Order.Type.BUY) ? limitPriceBuy : limitPriceSell);
         }
+    }
+
+    private String[] getRandomStockSymbols() {
+        String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
+        Random random = new Random();
+        int numberOfStocks = random.nextInt(stockSymbols.length) + 1;
+
+        // Shuffle the array to get random stock symbols
+        for (int i = numberOfStocks - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            String temp = stockSymbols[index];
+            stockSymbols[index] = stockSymbols[i];
+            stockSymbols[i] = temp;
+        }
+
+        return Arrays.copyOfRange(stockSymbols, 0, numberOfStocks);
     }
 }

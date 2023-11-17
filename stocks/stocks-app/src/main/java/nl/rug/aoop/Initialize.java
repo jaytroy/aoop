@@ -82,37 +82,4 @@ public class Initialize {
         }
         return port;
     }
-
-    /**
-     * Finds the stock by symbol.
-     *
-     * @param stocks the list of stocks.
-     * @param symbol the symbol.
-     * @return the stock you are trying to find.
-     */
-    private static Stock findStockBySymbol(List<Stock> stocks, String symbol) {
-        for (Stock stock : stocks) {
-            if (stock.getSymbol().equals(symbol)) {
-                return stock;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Finds the trader by id.
-     *
-     * @param traders the list of traders.
-     * @param id the id.
-     * @return the trader you are trying to find.
-     */
-
-    private static Trader findTraderById(List<Trader> traders, String id) {
-        for (Trader trader : traders) {
-            if (trader.getId().equals(id)) {
-                return trader;
-            }
-        }
-        return null;
-    }
 }
