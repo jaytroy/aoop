@@ -22,7 +22,6 @@ public class TraderApp {
             String traderId = "bot" + i;
             Trader trader = new Trader(traderId, getSocketAddress());
             traders.add(trader);
-            traders.get(i-1).traderStrategy();
         }
     }
 
