@@ -75,7 +75,6 @@ public class ClientHandler implements Runnable {
      */
     public void terminate() {
         running = false;
-        //server.terminateClientHandler(this.id)
         try {
             socket.close();
         } catch (IOException e) {

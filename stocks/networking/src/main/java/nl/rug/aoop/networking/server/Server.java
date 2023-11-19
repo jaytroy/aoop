@@ -42,6 +42,7 @@ public class Server implements Runnable {
 
     /**
      * Starts the server.
+     *
      * @throws IOException When an I/O error occurs opening the socket.
      */
     public void start() throws IOException {
@@ -63,23 +64,27 @@ public class Server implements Runnable {
                 ClientHandler handler = new ClientHandler(this.handler, acceptedSocket);
                 String clientId = handler.getId();
                 if (clientHandlers.containsKey(clientId)) {
-                    log.error("Client ID {} is already connected", clientId);
+                    log.error("Client ID {} is already connected. Rejecting the new connection.", clientId);
+                    handler.terminate();
                 } else {
                     clientHandlers.put(clientId, handler);
-                    log.info("New connection from client: " + clientId + " ip: "+ acceptedSocket.
-                            getRemoteSocketAddress());
+                    log.info("New connection from client: " + clientId + " ip: " + acceptedSocket.getRemoteSocketAddress());
                     threadPool.submit(() -> {
                         try {
                             handler.run();
                         } finally {
+                            log.info("Removing client: " + clientId);
                             clientHandlers.remove(clientId);
                         }
                     });
                 }
+                log.info("Number of connected clients: " + clientHandlers.size());
             } catch (IOException e) {
                 log.error("Socket error: " + e.getMessage());
             }
         }
+
+
     }
 
     /**
@@ -87,6 +92,7 @@ public class Server implements Runnable {
      */
     public void terminate() {
         running = false;
+        clientHandlers.values().forEach(ClientHandler::terminate);  // Terminate all connected clients
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();

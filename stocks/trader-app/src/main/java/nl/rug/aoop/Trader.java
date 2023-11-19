@@ -119,9 +119,9 @@ public class Trader {
         Random random = new Random();
 
         for (String stockSymbol : getRandomStockSymbols()) {
-            int randomQuantityBuy = random.nextInt(100) + 1;
+            int randomQuantityBuy = random.nextInt(50) + 1;
             double priceFactor = 1.0 + (0.01 * random.nextDouble());
-            int price = random.nextInt(200) + 1;
+            int price = random.nextInt(250) + 1;
             double limitPriceBuy = price * priceFactor;
             double limitPriceSell = price / priceFactor;
             int buyOrSell = random.nextInt(2);
