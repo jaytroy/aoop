@@ -41,7 +41,7 @@ public class Initialize {
         try {
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to start server");
         }
         serverThread.start();
         // Set up the Exchange
@@ -59,9 +59,9 @@ public class Initialize {
         while (true) {
             viewFactory.updateView();
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("Failed to put thread to sleep");
             }
         }
     }

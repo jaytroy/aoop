@@ -2,6 +2,7 @@ package nl.rug.aoop;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import static nl.rug.aoop.actions.Order.Type.BUY;
 import static nl.rug.aoop.actions.Order.Type.SELL;
@@ -21,6 +22,7 @@ import java.util.Random;
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
  * owned stocks.
  */
+@Slf4j
 public class Trader {
     @Getter
     @Setter
@@ -59,7 +61,7 @@ public class Trader {
             Thread clientThread = new Thread(client);
             clientThread.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to start client");
         }
     }
 
@@ -119,7 +121,7 @@ public class Trader {
         for (String stockSymbol : getRandomStockSymbols()) {
             int randomQuantityBuy = random.nextInt(100) + 1;
             double priceFactor = 1.0 + (0.01 * random.nextDouble());
-            int price = random.nextInt(1000) + 1;
+            int price = random.nextInt(200) + 1;
             double limitPriceBuy = price * priceFactor;
             double limitPriceSell = price / priceFactor;
             int buyOrSell = random.nextInt(2);
@@ -136,7 +138,6 @@ public class Trader {
         Random random = new Random();
         int numberOfStocks = random.nextInt(stockSymbols.length) + 1;
 
-        // Shuffle the array to get random stock symbols
         for (int i = numberOfStocks - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
             String temp = stockSymbols[index];

@@ -2,6 +2,7 @@ package nl.rug.aoop;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.MessageHandler;
@@ -32,24 +33,29 @@ public class TraderHandler implements MessageHandler {
 
     @Override
     public void handleMessage(String message) {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
-                .create();
+        try {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Trader.class, new TraderTypeAdapter(trader.getId()))
+                    .create();
 
-        Type traderType = new TypeToken<Trader>() {}.getType();
+            Type traderType = new TypeToken<Trader>() {}.getType();
 
-        Trader trader = gson.fromJson(message, traderType);
+            Trader trader = gson.fromJson(message, traderType);
 
-        if (trader != null) {
-            this.trader.setName(trader.getName());
-            this.trader.setAvailableFunds(trader.getFunds());
-            this.trader.setOwnedStocks(trader.getOwnedStocks());
+            if (trader != null) {
+                this.trader.setName(trader.getName());
+                this.trader.setAvailableFunds(trader.getFunds());
+                this.trader.setOwnedStocks(trader.getOwnedStocks());
 
-            this.trader.traderStrategy();
+                this.trader.traderStrategy();
 
-            log.info("Trader information updated: " + trader.toString());
-        } else {
-            log.error("Failed to parse trader information from JSON message.");
+                log.info("Trader information updated: " + trader.getName());
+            } else {
+                log.error("Failed to parse trader information from JSON message: " + message);
+            }
+        } catch (JsonSyntaxException e) {
+            log.error("Error parsing JSON message: " + trader.getName());
         }
     }
+
 }
