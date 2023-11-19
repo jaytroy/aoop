@@ -45,6 +45,8 @@ public class TraderHandler implements MessageHandler {
             this.trader.setAvailableFunds(trader.getFunds());
             this.trader.setOwnedStocks(trader.getOwnedStocks());
 
+            this.trader.traderStrategy();
+
             log.info("Trader information updated: " + trader.toString());
         } else {
             log.error("Failed to parse trader information from JSON message.");
