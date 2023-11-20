@@ -35,12 +35,14 @@ public class Trader implements Runnable {
     @Getter
     @Setter
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
+    @Getter
+    @Setter
     private List<Stock> availableStocks;
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
     private InetSocketAddress address;
-    private TraderStrategy strat;
+    private TraderStrategy strategy;
 
     /**
      * Constructs a Trader with the given ID and network address.
@@ -55,6 +57,7 @@ public class Trader implements Runnable {
         handler = new TraderHandler(this);
         client = new Client(handler, address, id);
         producer = new NetProducer(client);
+        strategy = new TraderStrategy(this);
 
         try {
             client.connect();
@@ -70,7 +73,25 @@ public class Trader implements Runnable {
     @Override
     public void run() {
         Random random = new Random();
-        double randomDouble = 4 + (4 - 1) * random.nextDouble(); //Replace numbers with constants
+        double randomDouble = 4 + (4 - 1) * random.nextDouble(); // Replace numbers with constants
+
+        // Delay execution by 5 seconds
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            log.error("Thread sleep interrupted", e);
+            Thread.currentThread().interrupt();
+        }
+        // Execute the strategy periodically
+        while (true) {
+            strategy.executeStrategy();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                log.error("Thread sleep interrupted", e);
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     /**
@@ -85,49 +106,7 @@ public class Trader implements Runnable {
         Order order = new Order(type, this.id, symbol, quantity, price, LocalDateTime.now());
         Message msg = new Message("PUT", order.toJson());
         producer.putMessage(msg);
-    }
-
-    /**
-     * Implement a trader strategy for generating random orders.
-     *
-     */
-
-    public void traderStrategy() {
-        Random random = new Random();
-
-        // For buying, get all possible stock symbols from available stocks
-        List<String> stockSymbolsToBuy = availableStocks.stream().map(Stock::getSymbol).toList();
-
-        // For selling, get stock symbols from the symbols of owned stocks
-        List<String> stockSymbolsToSell = ownedStocks.keySet().stream().toList();
-
-        int randomQuantityBuy = random.nextInt(100) + 1;
-        double priceFactor = 1.0 + (0.01 * random.nextDouble());
-
-        // For buying, randomly choose a stock symbol from available stocks
-        String randomStockSymbolBuy = stockSymbolsToBuy.get(random.nextInt(stockSymbolsToBuy.size()));
-
-        // For selling, randomly choose a stock symbol from owned stocks
-        String randomStockSymbolSell = stockSymbolsToSell.get(random.nextInt(stockSymbolsToSell.size()));
-
-        // Choose the correct stock price from available stocks
-        Stock chosenStock = availableStocks.stream()
-                .filter(stock -> stock.getSymbol().equals(randomStockSymbolBuy))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Stock not found for symbol: " + randomStockSymbolBuy));
-
-        double price = chosenStock.getPrice();
-
-        double limitPriceBuy = price * priceFactor;
-        double limitPriceSell = price / priceFactor;
-
-        int buyOrSell = random.nextInt(2);
-
-        if (buyOrSell == 1) {
-            placeOrder(BUY, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
-        } else {
-            placeOrder(SELL, randomStockSymbolSell, randomQuantityBuy, limitPriceSell);
-        }
+        log.info("Placed order: {}", order.toJson());
     }
 
 
