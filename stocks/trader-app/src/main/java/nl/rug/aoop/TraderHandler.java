@@ -1,10 +1,15 @@
 package nl.rug.aoop;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
+
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+
 
 /**
  * The TraderHandler class is responsible for handling messages and producing messages for a
@@ -39,7 +44,7 @@ public class TraderHandler implements MessageHandler {
         if(header.equals("TRADER")) {
             handleTraderInfo(msg.getBody());
         } else if(header.equals("STOCK")) {
-            //handle different type of message
+            handleStockInfo(msg.getBody());
         }
 
     }
@@ -54,6 +59,17 @@ public class TraderHandler implements MessageHandler {
     }
 
     public void handleStockInfo(String msg) {
+        Gson gson = new Gson();
+        Type stockListType = new TypeToken<List<Stock>>() {}.getType();
 
+        List<Stock> stocks = gson.fromJson(msg, stockListType); //here this list has all the stock info
+
+        if (stocks != null) {
+            for (Stock stock : stocks) {
+                log.info("Received stock information - Symbol: {}, Price: {}", stock.getSymbol(), stock.getPrice());
+            }
+        } else {
+            log.warn("Failed to parse stock information.");
+        }
     }
 }

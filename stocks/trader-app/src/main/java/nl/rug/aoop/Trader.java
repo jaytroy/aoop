@@ -8,6 +8,7 @@ import static nl.rug.aoop.actions.Order.Type.BUY;
 import static nl.rug.aoop.actions.Order.Type.SELL;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
+import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.NetworkMessage;
 import nl.rug.aoop.networking.client.Client;
