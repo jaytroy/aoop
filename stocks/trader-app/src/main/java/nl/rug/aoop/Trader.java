@@ -4,20 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
-import static nl.rug.aoop.actions.Order.Type.BUY;
-import static nl.rug.aoop.actions.Order.Type.SELL;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
-import nl.rug.aoop.model.Stock;
 import nl.rug.aoop.networking.MessageHandler;
-import nl.rug.aoop.networking.NetworkMessage;
 import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
@@ -36,7 +31,7 @@ public class Trader {
     @Getter
     @Setter
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
-    private List<String> availableStocks;
+    private List<Stock> availableStocks;
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
@@ -128,5 +123,10 @@ public class Trader {
         setName(name);
         setOwnedStocks(ownedStocks);
         log.info("Updated information of " + id);
+    }
+
+    public void updateStocks(List<Stock> stocks) {
+        availableStocks = stocks;
+        log.info("Updated stocks information");
     }
 }

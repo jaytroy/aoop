@@ -65,9 +65,7 @@ public class TraderHandler implements MessageHandler {
         List<Stock> stocks = gson.fromJson(msg, stockListType); //here this list has all the stock info
 
         if (stocks != null) {
-            for (Stock stock : stocks) {
-                log.info("Received stock information - Symbol: {}, Price: {}", stock.getSymbol(), stock.getPrice());
-            }
+            trader.updateStocks(stocks);
         } else {
             log.warn("Failed to parse stock information.");
         }
