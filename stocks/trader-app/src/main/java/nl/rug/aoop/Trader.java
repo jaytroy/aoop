@@ -128,4 +128,11 @@ public class Trader {
             placeOrder(SELL, randomStockSymbol, randomQuantityBuy, limitPriceSell);
         }
     }
+
+    public void updateInfo(double funds, String name, Map<String,Integer> ownedStocks) {
+        setAvailableFunds(funds);
+        setName(name);
+        setOwnedStocks(ownedStocks);
+        log.info("Updated information of " + id);
+    }
 }

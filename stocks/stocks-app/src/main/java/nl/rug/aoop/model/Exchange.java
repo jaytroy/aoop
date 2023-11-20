@@ -37,8 +37,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private List<Trader> traders;
     @Getter
     private MessageQueue messageQueue;
-    private MessageQueue buyQueue;
-    private MessageQueue sellQueue;
     private NetConsumer consumer;
     private Map<String, PriorityQueue<Order>> buyOrders;
     private Map<String, PriorityQueue<Order>> sellOrders;
@@ -63,9 +61,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         consumer = new NetConsumer(messageQueue, this);
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
-
-        this.buyQueue = new OrderedQueue();
-        this.sellQueue = new OrderedQueue();
 
         updateTraders();
     }
@@ -110,7 +105,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 log.info("Sending update to " + server.getClientHandlers().size() + " clients");
-                for (ClientHandler handler : server.getClientHandlers().values()) {
+                for (ClientHandler handler : connectedClients.values()) {
                     sendTraderInformation(handler);
                 }
             }
@@ -127,7 +122,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
 
         if(handlerId != null) {
             String traderInfo = generateTraderInformation(handlerId);
-            handler.sendMessage(traderInfo);
+            Message msg = new Message("TRADER",traderInfo);
+            String jsonmsg = msg.toJson();
+            handler.sendMessage(jsonmsg);
         } else {
             log.warn("No client connected with ID: " + handlerId);
         }

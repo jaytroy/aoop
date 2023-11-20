@@ -15,8 +15,8 @@ public class TraderApp {
      */
     public void initialize() {
         Trader trader1 = new Trader("bot1", getSocketAddress());
-        Trader trader2 = new Trader("bot2", getSocketAddress());
-        Trader trader3 = new Trader("bot3", getSocketAddress());
+        //Trader trader2 = new Trader("bot2", getSocketAddress());
+        //Trader trader3 = new Trader("bot3", getSocketAddress());
     }
 
     /**
