@@ -6,6 +6,9 @@ import java.net.InetSocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static nl.rug.aoop.actions.Order.Type.BUY;
+import static nl.rug.aoop.actions.Order.Type.SELL;
+
 /**
  * The TraderApp class represents the entry point for initializing traders in the stock exchange system.
  */
@@ -20,8 +23,11 @@ public class TraderApp {
         Trader trader2 = new Trader("bot2", getSocketAddress());
         Trader trader3 = new Trader("bot3", getSocketAddress());
 
+        //trader1.placeOrder(BUY,"AMD",200,1000);
+        //trader2.placeOrder(SELL, "AMD", 200, 1000);
 
         Timer timer = new Timer();
+
 
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {

@@ -199,8 +199,11 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      *
      * @param order the order.
      */
-    public void placeOrder(Order order) {
-        log.info("Received order from client " + order.getClientId() + ": " + order);
+    public void placeOrder(Order order) throws NullPointerException {
+        if(order.getType() == null) {
+            throw new NullPointerException();
+        }
+        log.info("Received order from client " + order.getClientId() + ": " + order.getType());
 
         String stockSymbol = order.getSymbol();
         if (order.getType() == Order.Type.BUY) {
@@ -273,8 +276,14 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     @Override
     public void update(Message msg) {
         String body = msg.getBody();
+
         Order order = Order.fromJson(body);
-        placeOrder(order);
+        System.out.println(body);
+        try {
+            placeOrder(order);
+        } catch(NullPointerException e) {
+            log.error("Tried to place a null order");
+        }
     }
 
     private Trader findTraderById(String id) {

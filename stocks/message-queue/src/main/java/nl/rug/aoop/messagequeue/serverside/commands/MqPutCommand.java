@@ -30,8 +30,9 @@ public class MqPutCommand implements Command {
         log.info("Executing MQPut");
         String messageJson = (String) params.get("messageJson");
         Message message = Message.fromJson(messageJson);
+        Message message2 = Message.fromJson(message.getBody());
 
-        messageQueue.enqueue(message);
+        messageQueue.enqueue(message2);
         log.info("Message enqueued : " + message);
     }
 }
