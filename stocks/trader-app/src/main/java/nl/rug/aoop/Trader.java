@@ -103,8 +103,7 @@ public class Trader {
     public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
         Order order = new Order(type, this.id, symbol, quantity, price, LocalDateTime.now());
         Message msg = new Message("PUT", order.toJson());
-        NetworkMessage nmsg = new NetworkMessage(msg.getHeader(), msg.getBody());
-        client.sendMessage(nmsg.toJson());
+        producer.putMessage(msg);
     }
 
     /**
