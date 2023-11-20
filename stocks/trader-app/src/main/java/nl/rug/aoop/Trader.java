@@ -59,30 +59,7 @@ public class Trader {
             log.error("Failed to start trader client");
         }
     }
-
-    /**
-     * Add owned stocks to the trader's portfolio. This method is used for buying stocks.
-     *
-     * @param stockSymbol The symbol of the stock to be added.
-     * @param quantity    The quantity of the stock to be added.
-     */
-    public void addOwnedStock(String stockSymbol, int quantity) {
-        ownedStocks.put(stockSymbol, ownedStocks.getOrDefault(stockSymbol, 0) + quantity);
-    }
-
-    /**
-     * Subtract owned stocks from the trader's portfolio. This method is used for selling stocks.
-     *
-     * @param stockSymbol The symbol of the stock to be subtracted.
-     * @param quantity    The quantity of the stock to be subtracted.
-     */
-    public void subtractOwnedStock(String stockSymbol, int quantity) {
-        int currentQuantity = ownedStocks.getOrDefault(stockSymbol, 0);
-        if (currentQuantity >= quantity) {
-            ownedStocks.put(stockSymbol, currentQuantity - quantity);
-        }
-    }
-
+    
     /**
      * Place an order with the specified type, stock symbol, quantity, and price.
      *
