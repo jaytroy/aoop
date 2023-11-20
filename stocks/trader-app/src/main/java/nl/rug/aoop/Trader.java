@@ -14,6 +14,7 @@ import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -34,7 +35,7 @@ public class Trader {
     @Getter
     @Setter
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
-    private Map<String, Integer> availableStocks;
+    private List<String> availableStocks;
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
