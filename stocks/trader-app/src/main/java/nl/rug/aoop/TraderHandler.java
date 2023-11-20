@@ -48,6 +48,7 @@ public class TraderHandler implements MessageHandler {
                 handleStockInfo(msg.getBody());
             }
         } catch(JsonSyntaxException e) {
+            //A message was not sent from the exchange. This is going to be coming from the server.
             log.info(message);
         }
     }
