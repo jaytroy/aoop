@@ -30,6 +30,8 @@ public class TraderHandler implements MessageHandler {
     @Override
     public void handleMessage(String message) {
         // Ideally, we would use JSON paired with our message class here. We tried to, but we ran out of time.
+
+        /*
         String[] parts = message.split("  ");
         Map<String, Integer> ownedStocks = new HashMap<>();
         for (int i = 0; i < parts.length; i++) {
@@ -54,5 +56,7 @@ public class TraderHandler implements MessageHandler {
             }
         }
         trader.setOwnedStocks(ownedStocks);
+    }
+    */
     }
 }
