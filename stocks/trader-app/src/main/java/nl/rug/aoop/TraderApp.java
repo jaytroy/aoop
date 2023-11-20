@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static nl.rug.aoop.actions.Order.Type.BUY;
 import static nl.rug.aoop.actions.Order.Type.SELL;
@@ -14,6 +16,7 @@ import static nl.rug.aoop.actions.Order.Type.SELL;
  */
 @Slf4j
 public class TraderApp {
+    ExecutorService threadpool;
 
     /**
      * Initializes trader instances and connects them to the stock exchange.
@@ -22,9 +25,23 @@ public class TraderApp {
         Trader trader1 = new Trader("bot1", getSocketAddress());
         Trader trader2 = new Trader("bot2", getSocketAddress());
         Trader trader3 = new Trader("bot3", getSocketAddress());
-        trader1.run();
-        trader2.run();
-        trader2.run();
+        Trader trader4 = new Trader("bot4", getSocketAddress());
+        Trader trader5 = new Trader("bot5", getSocketAddress());
+        Trader trader6 = new Trader("bot6", getSocketAddress());
+        Trader trader7 = new Trader("bot7", getSocketAddress());
+        Trader trader8 = new Trader("bot8", getSocketAddress());
+
+        threadpool = Executors.newFixedThreadPool(8);
+
+        threadpool.submit(trader1);
+        threadpool.submit(trader2);
+        threadpool.submit(trader3);
+        threadpool.submit(trader4);
+        threadpool.submit(trader5);
+        threadpool.submit(trader6);
+        threadpool.submit(trader7);
+        threadpool.submit(trader8);
+
 
         //trader1.placeOrder(BUY,"AMD",200,1000);
         //trader2.placeOrder(SELL, "AMD", 200, 1000);
