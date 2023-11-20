@@ -70,7 +70,7 @@ public class Trader implements Runnable {
     @Override
     public void run() {
         Random random = new Random();
-        double randomDouble = 4 + (4 - 1) * random.nextDouble(); //Replace numbers with constants
+        double randomDouble = 4 + (4 - 1) * random.nextDouble(); //Replace numbers with constantsyep
     }
 
     /**
