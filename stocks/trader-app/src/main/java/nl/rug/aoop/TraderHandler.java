@@ -1,6 +1,7 @@
 package nl.rug.aoop;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.messagequeue.queues.Message;
@@ -36,17 +37,19 @@ public class TraderHandler implements MessageHandler {
     @Override
     public void handleMessage(String message) {
         //System.out.println(message);
+        try {
+            Message msg = nl.rug.aoop.messagequeue.queues.Message.fromJson(message);
+            String header = msg.getHeader();
 
-        Message msg = nl.rug.aoop.messagequeue.queues.Message.fromJson(message);
-        String header = msg.getHeader();
-
-        //Command pattern instead? This is bad handling. No time though.
-        if(header.equals("TRADER")) {
-            handleTraderInfo(msg.getBody());
-        } else if(header.equals("STOCK")) {
-            handleStockInfo(msg.getBody());
+            //Command pattern instead? This is bad handling. No time though.
+            if (header.equals("TRADER")) {
+                handleTraderInfo(msg.getBody());
+            } else if (header.equals("STOCK")) {
+                handleStockInfo(msg.getBody());
+            }
+        } catch(JsonSyntaxException e) {
+            log.info(message);
         }
-
     }
 
     public void handleTraderInfo(String msg) {
