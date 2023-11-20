@@ -102,7 +102,7 @@ public class Trader {
 /*
     /**
      * Implement a trader strategy for generating random orders.
-     */
+     *
     public void traderStrategy() {
         Random random = new Random();
         String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
