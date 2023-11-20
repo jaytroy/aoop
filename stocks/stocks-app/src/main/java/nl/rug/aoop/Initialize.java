@@ -58,7 +58,7 @@ public class Initialize {
         while (true) {
             viewFactory.updateView();
             try {
-                Thread.sleep(17); //updates ever ~every hz on a 60 hz screen
+                Thread.sleep(8); //Updates ever ~every hz on a 120 hz screen. Probably inefficient lmao
             } catch (InterruptedException e) {
                 log.error("Failed to put thread to sleep");
             }

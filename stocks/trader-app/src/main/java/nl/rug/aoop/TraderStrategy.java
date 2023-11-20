@@ -54,7 +54,7 @@ public class TraderStrategy {
 
         int buyOrSell = random.nextInt(2);
 
-        if (buyOrSell == 1) {
+        if (buyOrSell == 1 && trader.getAvailableFunds() > 0) {
             trader.placeOrder(BUY, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
         } else {
             trader.placeOrder(SELL, randomStockSymbolSell, randomQuantityBuy, limitPriceSell);
