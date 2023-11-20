@@ -2,7 +2,6 @@ package nl.rug.aoop;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import static nl.rug.aoop.actions.Order.Type.BUY;
 import static nl.rug.aoop.actions.Order.Type.SELL;
@@ -14,7 +13,6 @@ import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
@@ -22,24 +20,21 @@ import java.util.Random;
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
  * owned stocks.
  */
-@Slf4j
 public class Trader {
     @Getter
     @Setter
     private String name;
-    @Setter
     @Getter
     private String id;
     @Getter
     @Setter
-    private double funds;
+    private double availableFunds;
     @Getter
     @Setter
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
-    @Setter
     private InetSocketAddress address;
 
     /**
@@ -61,7 +56,7 @@ public class Trader {
             Thread clientThread = new Thread(client);
             clientThread.start();
         } catch (IOException e) {
-            log.error("Failed to start client");
+            e.printStackTrace();
         }
     }
 
@@ -71,7 +66,7 @@ public class Trader {
      * @param funds The new available funds.
      */
     public void setAvailableFunds(double funds) {
-        this.funds = funds;
+        availableFunds = funds;
     }
 
     /**
@@ -117,34 +112,19 @@ public class Trader {
      */
     public void traderStrategy() {
         Random random = new Random();
-
-        for (String stockSymbol : getRandomStockSymbols()) {
-            int randomQuantityBuy = random.nextInt(50) + 1;
-            double priceFactor = 1.0 + (0.01 * random.nextDouble());
-            int price = random.nextInt(250) + 1;
-            double limitPriceBuy = price * priceFactor;
-            double limitPriceSell = price / priceFactor;
-            int buyOrSell = random.nextInt(2);
-
-            Order.Type orderType = (buyOrSell == 1) ? Order.Type.BUY : Order.Type.SELL;
-            long randomQuantity = randomQuantityBuy;
-
-            placeOrder(orderType, stockSymbol, randomQuantity, (orderType == Order.Type.BUY) ? limitPriceBuy : limitPriceSell);
-        }
-    }
-
-    private String[] getRandomStockSymbols() {
         String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
-        Random random = new Random();
-        int numberOfStocks = random.nextInt(stockSymbols.length) + 1;
+        String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
+        int randomQuantityBuy = random.nextInt(100) + 1;
+        double priceFactor = 1.0 + (0.01 * random.nextDouble());
+        int price = random.nextInt(1000) + 1;
+        double limitPriceBuy = price * priceFactor;
+        double limitPriceSell = price / priceFactor;
+        int buyOrSell = random.nextInt(2);
 
-        for (int i = numberOfStocks - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
-            String temp = stockSymbols[index];
-            stockSymbols[index] = stockSymbols[i];
-            stockSymbols[i] = temp;
+        if (buyOrSell == 1) {
+            placeOrder(BUY, randomStockSymbol, randomQuantityBuy, limitPriceBuy);
+        } else {
+            placeOrder(SELL, randomStockSymbol, randomQuantityBuy, limitPriceSell);
         }
-
-        return Arrays.copyOfRange(stockSymbols, 0, numberOfStocks);
     }
 }

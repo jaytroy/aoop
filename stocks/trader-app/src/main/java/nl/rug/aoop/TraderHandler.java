@@ -1,12 +1,9 @@
 package nl.rug.aoop;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.networking.MessageHandler;
-import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * The TraderHandler class is responsible for handling messages and producing messages for a
@@ -30,32 +27,32 @@ public class TraderHandler implements MessageHandler {
      *
      * @param message The incoming message to be handled.
      */
-
     @Override
     public void handleMessage(String message) {
-        try {
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Trader.class, new TraderTypeAdapter(trader.getId()))
-                    .create();
-
-            Type traderType = new TypeToken<Trader>() {}.getType();
-
-            Trader trader = gson.fromJson(message, traderType);
-
-            if (trader != null) {
-                this.trader.setName(trader.getName());
-                this.trader.setAvailableFunds(trader.getFunds());
-                this.trader.setOwnedStocks(trader.getOwnedStocks());
-
-                this.trader.traderStrategy();
-
-                log.info("Trader information updated: " + trader.getName());
-            } else {
-                log.error("Failed to parse trader information from JSON message: " + message);
+        // Ideally, we would use JSON paired with our message class here. We tried to, but we ran out of time.
+        String[] parts = message.split("  ");
+        Map<String, Integer> ownedStocks = new HashMap<>();
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].equals("Name:")) {
+                trader.setName(parts[++i]);
+                log.info(parts[++i]);
+            } else if (parts[i].equals("Funds:")) {
+                trader.setAvailableFunds(Double.parseDouble(parts[++i]));
+            } else if (parts[i].equals("Stocks:")) {
+                i++;
+                while (i < parts.length) {
+                    String[] stockInfo = parts[i].split(":");
+                    if (stockInfo.length == 2) {
+                        String stockSymbol = stockInfo[0];
+                        int quantity = Integer.parseInt(stockInfo[1]);
+                        ownedStocks.put(stockSymbol, quantity);
+                    } else {
+                        break;
+                    }
+                    i++;
+                }
             }
-        } catch (JsonSyntaxException e) {
-            log.error("Error parsing JSON message: " + trader.getName());
         }
+        trader.setOwnedStocks(ownedStocks);
     }
-
 }

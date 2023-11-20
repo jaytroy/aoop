@@ -1,7 +1,5 @@
 package nl.rug.aoop.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
@@ -81,7 +79,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             StockList stockList = stockLoader.load(StockList.class);
             return stockList.getStocks();
         } catch (IOException e) {
-            log.error("Failed to initialize stocks");
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -97,7 +95,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             TraderList traderList = traderLoader.load(TraderList.class);
             return traderList.getTraders();
         } catch (IOException e) {
-            log.error("Failed to initialize traders");
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -139,21 +137,22 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      * @param id The client id to generate information for.
      * @return A string containing trader information for the client.
      */
-
     private String generateTraderInformation(String id) {
+        StringBuilder traderInfo = new StringBuilder();
         Trader trader = findTraderById(id);
 
-        if (trader != null) {
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Trader.class, new TraderTypeAdapter())
-                    .create();
-            return gson.toJson(trader);
-        } else {
-            return "Trader not found";
+        traderInfo.append("Trader ID: ").append(trader.getId()).append("  ");
+        traderInfo.append("Name: ").append(trader.getName()).append("  ");
+        traderInfo.append("Funds: ").append(trader.getFunds()).append("  ");
+
+        Map<String, Integer> ownedStocks = trader.getOwnedStocks();
+        traderInfo.append("Owned Stocks: ");
+        for (Map.Entry<String, Integer> entry : ownedStocks.entrySet()) {
+            traderInfo.append(entry.getKey()).append(": ").append(entry.getValue()).append("  ");
         }
+
+        return traderInfo.toString();
     }
-
-
 
     @Override
     public StockDataModel getStockByIndex(int index) {

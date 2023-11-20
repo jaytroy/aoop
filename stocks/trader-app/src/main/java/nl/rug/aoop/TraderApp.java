@@ -3,26 +3,20 @@ package nl.rug.aoop;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The TraderApp class represents the entry point for initializing traders in the stock exchange system.
  */
 @Slf4j
 public class TraderApp {
-    private List<Trader> traders = new ArrayList<>();
 
     /**
      * Initializes trader instances and connects them to the stock exchange.
      */
     public void initialize() {
-        int numberOfTraders = 9;
-        for (int i = 1; i <= numberOfTraders; i++) {
-            String traderId = "bot" + i;
-            Trader trader = new Trader(traderId, getSocketAddress());
-            traders.add(trader);
-        }
+        Trader trader1 = new Trader("bot1", getSocketAddress());
+        Trader trader2 = new Trader("bot2", getSocketAddress());
+        Trader trader3 = new Trader("bot3", getSocketAddress());
     }
 
     /**

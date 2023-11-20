@@ -11,10 +11,8 @@ import java.util.HashMap;
 public class Trader implements TraderDataModel {
     @Setter
     private String id;
-    @Setter
     private String name;
     private double funds;
-    @Setter
     private Map<String, Integer> ownedStocks;
 
     /**
