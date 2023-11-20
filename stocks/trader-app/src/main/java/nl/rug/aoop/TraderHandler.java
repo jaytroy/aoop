@@ -30,19 +30,18 @@ public class TraderHandler implements MessageHandler {
      */
     @Override
     public void handleMessage(String message) {
-        //log.info(message);
+        //System.out.println(message);
 
         Message msg = nl.rug.aoop.messagequeue.queues.Message.fromJson(message);
-/*
         String header = msg.getHeader();
 
         //Command pattern instead? This is bad handling. No time though.
         if(header.equals("TRADER")) {
             handleTraderInfo(msg.getBody());
-        } else {
+        } else if(header.equals("STOCK")) {
             //handle different type of message
         }
-*/
+
     }
 
     public void handleTraderInfo(String msg) {
@@ -52,5 +51,9 @@ public class TraderHandler implements MessageHandler {
         Map<String, Integer> ownedStocks = modelTrader.getOwnedStocks();
 
         trader.updateInfo(funds,name,ownedStocks);
+    }
+
+    public void handleStockInfo(String msg) {
+
     }
 }

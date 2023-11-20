@@ -2,6 +2,7 @@ package nl.rug.aoop.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.Getter;
 import lombok.Setter;
 import nl.rug.aoop.uimodel.TraderDataModel;
 import java.util.Map;
@@ -11,11 +12,15 @@ import java.util.HashMap;
  * The Trader class represents a trader in the trading system.
  */
 public class Trader implements TraderDataModel {
+    @Getter
     @Setter
     private String id;
+    @Getter
     @Setter
     private String name;
+    @Getter
     private double funds;
+    @Getter
     @Setter
     private Map<String, Integer> ownedStocks;
 
@@ -24,42 +29,6 @@ public class Trader implements TraderDataModel {
      */
     public Trader() {
         ownedStocks = new HashMap<>();
-    }
-
-    /**
-     * Get the ID of the trader.
-     *
-     * @return The trader's ID.
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Get the name of the trader.
-     *
-     * @return The trader's name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Get the funds available to the trader.
-     *
-     * @return The trader's available funds.
-     */
-    public double getFunds() {
-        return funds;
-    }
-
-    /**
-     * Get the map of owned stocks and their quantities.
-     *
-     * @return A map of stock symbols to quantities owned by the trader.
-     */
-    public Map<String, Integer> getOwnedStocks() {
-        return ownedStocks;
     }
 
     /**
@@ -122,7 +91,6 @@ public class Trader implements TraderDataModel {
 
     public String toJson() {
         Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
                 .create();
         return gson.toJson(this);
     }
@@ -135,7 +103,6 @@ public class Trader implements TraderDataModel {
      */
     public static Trader fromJson(String json) {
         Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
                 .create();
         return gson.fromJson(json, Trader.class);
     }

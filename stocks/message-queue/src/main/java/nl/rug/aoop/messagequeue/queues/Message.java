@@ -38,7 +38,6 @@ public class Message implements Comparable<Message> {
     public String toJson() {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .setPrettyPrinting()
                 .create();
         return gson.toJson(this);
     }
@@ -52,7 +51,6 @@ public class Message implements Comparable<Message> {
     public static Message fromJson(String json) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .setPrettyPrinting()
                 .create();
         return gson.fromJson(json, Message.class);
     }

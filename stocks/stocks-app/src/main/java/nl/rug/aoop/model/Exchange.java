@@ -107,6 +107,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
                 log.info("Sending update to " + server.getClientHandlers().size() + " clients");
                 for (ClientHandler handler : connectedClients.values()) {
                     sendTraderInformation(handler);
+                    sendStockInformation(handler);
                 }
             }
         }, 0, 4000);
@@ -139,6 +140,14 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private String generateTraderInformation(String id) {
         Trader trader = findTraderById(id);
         return trader.toJson();
+    }
+
+    private void sendStockInformation(ClientHandler handler) {
+
+    }
+
+    private String generateStockInformation() {
+
     }
 
     @Override

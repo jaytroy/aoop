@@ -34,6 +34,7 @@ public class Trader {
     @Getter
     @Setter
     private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
+    private Map<String, Integer> availableStocks;
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
@@ -60,15 +61,6 @@ public class Trader {
         } catch (IOException e) {
             log.error("Failed to start trader client");
         }
-    }
-
-    /**
-     * Set the available funds for trading.
-     *
-     * @param funds The new available funds.
-     */
-    public void setAvailableFunds(double funds) {
-        availableFunds = funds;
     }
 
     /**
@@ -107,7 +99,7 @@ public class Trader {
         Message msg = new Message("PUT", order.toJson());
         producer.putMessage(msg);
     }
-
+/*
     /**
      * Implement a trader strategy for generating random orders.
      */
@@ -128,7 +120,7 @@ public class Trader {
             placeOrder(SELL, randomStockSymbol, randomQuantityBuy, limitPriceSell);
         }
     }
-
+*/
     public void updateInfo(double funds, String name, Map<String,Integer> ownedStocks) {
         setAvailableFunds(funds);
         setName(name);
