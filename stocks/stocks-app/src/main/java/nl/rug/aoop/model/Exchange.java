@@ -143,12 +143,22 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     }
 
     private void sendStockInformation(ClientHandler handler) {
+        String stockInfo = generateStockInformation();
 
+        if (!stockInfo.isEmpty()) {
+            Message msg = new Message("STOCK", stockInfo);
+            String jsonMsg = msg.toJson();
+            handler.sendMessage(jsonMsg);
+        } else {
+            log.warn("No stock information available");
+        }
     }
 
     private String generateStockInformation() {
-
+        Gson gson = new GsonBuilder().create();
+        return gson.toJson(stocks);
     }
+
 
     @Override
     public StockDataModel getStockByIndex(int index) {
