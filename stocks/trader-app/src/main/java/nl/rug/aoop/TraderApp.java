@@ -16,35 +16,19 @@ import static nl.rug.aoop.actions.Order.Type.SELL;
  */
 @Slf4j
 public class TraderApp {
-    ExecutorService threadpool;
+    private static ExecutorService threadpool;
 
     /**
      * Initializes trader instances and connects them to the stock exchange.
      */
-    public void initialize() {
-        Trader trader1 = new Trader("bot1", getSocketAddress());
-        Trader trader2 = new Trader("bot2", getSocketAddress());
-        Trader trader3 = new Trader("bot3", getSocketAddress());
-        Trader trader4 = new Trader("bot4", getSocketAddress());
-        Trader trader5 = new Trader("bot5", getSocketAddress());
-        Trader trader6 = new Trader("bot6", getSocketAddress());
-        Trader trader7 = new Trader("bot7", getSocketAddress());
-        Trader trader8 = new Trader("bot8", getSocketAddress());
+    public static void main(String[] args) {
+        int numberOfTraders = 8; //8 traders as in the yaml file
+        threadpool = Executors.newFixedThreadPool(numberOfTraders);
 
-        threadpool = Executors.newFixedThreadPool(8);
-
-        threadpool.submit(trader1);
-        threadpool.submit(trader2);
-        threadpool.submit(trader3);
-        threadpool.submit(trader4);
-        threadpool.submit(trader5);
-        threadpool.submit(trader6);
-        threadpool.submit(trader7);
-        threadpool.submit(trader8);
-
-
-        //trader1.placeOrder(BUY,"AMD",200,1000);
-        //trader2.placeOrder(SELL, "AMD", 200, 1000);
+        for (int i = 1; i <= numberOfTraders; i++) {
+            Trader trader = new Trader("bot" + i, getSocketAddress());
+            threadpool.submit(trader);
+        }
     }
 
     /**
@@ -53,10 +37,9 @@ public class TraderApp {
      *
      * @return The network address (InetSocketAddress) for connecting to the message queue.
      */
-    public InetSocketAddress getSocketAddress() {
+    public static InetSocketAddress getSocketAddress() {
         int port;
         int BACKUP_PORT = 8080;
-        InetSocketAddress address;
         if (System.getenv("MESSAGE_QUEUE_PORT") != null) {
             port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
         } else {

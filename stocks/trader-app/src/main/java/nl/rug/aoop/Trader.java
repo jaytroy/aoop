@@ -83,7 +83,7 @@ public class Trader implements Runnable {
         // Execute the strategy periodically
         while (true) {
             Random random = new Random();
-            long randomDelay = 1000 + random.nextLong(4000 - 1000);  // Replace numbers with constants
+            long randomDelay = 1 + random.nextLong(100);  // Replace numbers with constants
             System.out.println(randomDelay);
 
             strategy.executeStrategy();
@@ -122,6 +122,5 @@ public class Trader implements Runnable {
     public void updateStocks(List<Stock> stocks) {
         availableStocks = stocks;
         log.info("Updated stocks information");
-
     }
 }
