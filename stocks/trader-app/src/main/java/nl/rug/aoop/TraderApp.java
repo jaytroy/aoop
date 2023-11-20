@@ -22,20 +22,12 @@ public class TraderApp {
         Trader trader1 = new Trader("bot1", getSocketAddress());
         Trader trader2 = new Trader("bot2", getSocketAddress());
         Trader trader3 = new Trader("bot3", getSocketAddress());
+        trader1.run();
+        trader2.run();
+        trader2.run();
 
         //trader1.placeOrder(BUY,"AMD",200,1000);
         //trader2.placeOrder(SELL, "AMD", 200, 1000);
-
-        Timer timer = new Timer();
-
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                trader1.traderStrategy();
-            }
-        }, 6000, 5 * 1000); // Delay of 6 seconds and execute every 5 second, the delay is important as
-        // you want to wait for code to update stock info in each individual trader
-
     }
 
     /**
