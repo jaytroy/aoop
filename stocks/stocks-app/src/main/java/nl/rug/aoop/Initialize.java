@@ -46,8 +46,6 @@ public class Initialize {
         serverThread.start();
         // Set up the Exchange
         Exchange stockApp = new Exchange(messageQueue, server);
-        List<Stock> stocks = stockApp.getStocks();
-        List<Trader> traders = stockApp.getTraders();
         // Start the view
         SimpleViewFactory viewFactory = new SimpleViewFactory();
         viewFactory.createView(stockApp);
@@ -55,6 +53,7 @@ public class Initialize {
         updateView(viewFactory);
     }
 
+    //Change this to a timer?
     private static void updateView(SimpleViewFactory viewFactory) {
         while (true) {
             viewFactory.updateView();
