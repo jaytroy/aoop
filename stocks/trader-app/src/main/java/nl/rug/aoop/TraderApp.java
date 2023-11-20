@@ -3,6 +3,8 @@ package nl.rug.aoop;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The TraderApp class represents the entry point for initializing traders in the stock exchange system.
@@ -17,6 +19,17 @@ public class TraderApp {
         Trader trader1 = new Trader("bot1", getSocketAddress());
         //Trader trader2 = new Trader("bot2", getSocketAddress());
         //Trader trader3 = new Trader("bot3", getSocketAddress());
+
+
+        Timer timer = new Timer();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                trader1.traderStrategy();
+            }
+        }, 6000, 5 * 1000); // Delay of 6 seconds and execute every 5 second, the delay is important as
+        // you want to wait for code to update stock info in each individual trader
+
     }
 
     /**

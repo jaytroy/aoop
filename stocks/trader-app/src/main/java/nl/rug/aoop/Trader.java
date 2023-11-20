@@ -13,6 +13,10 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import static nl.rug.aoop.actions.Order.Type.BUY;
+import static nl.rug.aoop.actions.Order.Type.SELL;
 
 /**
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
@@ -59,7 +63,7 @@ public class Trader {
             log.error("Failed to start trader client");
         }
     }
-    
+
     /**
      * Place an order with the specified type, stock symbol, quantity, and price.
      *
@@ -73,28 +77,51 @@ public class Trader {
         Message msg = new Message("PUT", order.toJson());
         producer.putMessage(msg);
     }
-/*
+
     /**
      * Implement a trader strategy for generating random orders.
      *
+     */
+
     public void traderStrategy() {
         Random random = new Random();
-        String[] stockSymbols = {"AAPL", "TSLA", "AMZN", "MSFT", "NVDA", "AMD", "ADBE", "FB", "INTC", "AOOP", "MRNA"};
-        String randomStockSymbol = stockSymbols[random.nextInt(stockSymbols.length)];
+
+        // For buying, get all possible stock symbols from available stocks
+        List<String> stockSymbolsToBuy = availableStocks.stream().map(Stock::getSymbol).toList();
+
+        // For selling, get stock symbols from the symbols of owned stocks
+        List<String> stockSymbolsToSell = ownedStocks.keySet().stream().toList();
+
         int randomQuantityBuy = random.nextInt(100) + 1;
         double priceFactor = 1.0 + (0.01 * random.nextDouble());
-        int price = random.nextInt(1000) + 1;
+
+        // For buying, randomly choose a stock symbol from available stocks
+        String randomStockSymbolBuy = stockSymbolsToBuy.get(random.nextInt(stockSymbolsToBuy.size()));
+
+        // For selling, randomly choose a stock symbol from owned stocks
+        String randomStockSymbolSell = stockSymbolsToSell.get(random.nextInt(stockSymbolsToSell.size()));
+
+        // Choose the correct stock price from available stocks
+        Stock chosenStock = availableStocks.stream()
+                .filter(stock -> stock.getSymbol().equals(randomStockSymbolBuy))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Stock not found for symbol: " + randomStockSymbolBuy));
+
+        double price = chosenStock.getPrice();
+
         double limitPriceBuy = price * priceFactor;
         double limitPriceSell = price / priceFactor;
+
         int buyOrSell = random.nextInt(2);
 
         if (buyOrSell == 1) {
-            placeOrder(BUY, randomStockSymbol, randomQuantityBuy, limitPriceBuy);
+            placeOrder(BUY, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
         } else {
-            placeOrder(SELL, randomStockSymbol, randomQuantityBuy, limitPriceSell);
+            placeOrder(SELL, randomStockSymbolSell, randomQuantityBuy, limitPriceSell);
         }
     }
-*/
+
+
     public void updateInfo(double funds, String name, Map<String,Integer> ownedStocks) {
         setAvailableFunds(funds);
         setName(name);
@@ -105,5 +132,6 @@ public class Trader {
     public void updateStocks(List<Stock> stocks) {
         availableStocks = stocks;
         log.info("Updated stocks information");
+
     }
 }
