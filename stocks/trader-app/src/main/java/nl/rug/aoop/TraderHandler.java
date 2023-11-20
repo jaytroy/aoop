@@ -54,6 +54,7 @@ public class TraderHandler implements MessageHandler {
     }
 
     public void handleTraderInfo(String msg) {
+        //This right here couples the program. We need to do it some other way.
         nl.rug.aoop.model.Trader modelTrader = nl.rug.aoop.model.Trader.fromJson(msg); //Is this the way this should be done?
         double funds = modelTrader.getFunds();
         String name = modelTrader.getName();
