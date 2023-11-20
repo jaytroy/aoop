@@ -28,7 +28,7 @@ public class NetConsumer extends Consumer implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Threaded consumer is running");
+        log.info("Threaded consumer is running");
         while(!Thread.currentThread().isInterrupted()) {
             if (queue.getSize() != 0) {
                 Message msg = queue.dequeue();

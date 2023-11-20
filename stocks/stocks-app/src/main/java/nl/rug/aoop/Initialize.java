@@ -78,7 +78,7 @@ public class Initialize {
             port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
         } else {
             port = BACKUP_PORT;
-            System.out.println("Using backup port at StockAppMain");
+            log.info("Using backup port at StockAppMain");
         }
         return port;
     }
