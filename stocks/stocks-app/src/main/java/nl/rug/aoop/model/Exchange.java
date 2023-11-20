@@ -45,14 +45,14 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      * Constructs an Exchange with the specified message queue.
      *
      * @param messageQueue The message queue used for communication.
-     * @param server The server to which this exchange is associated.
+     * @param server       The server to which this exchange is associated.
      */
     public Exchange(MessageQueue messageQueue, Server server) {
         this.server = server;
         this.buyOrders = new HashMap<>();
         this.sellOrders = new HashMap<>();
 
-        this.connectedClients =  server.getClientHandlers();
+        this.connectedClients = server.getClientHandlers();
 
         stocks = initializeStocks();
         traders = initializeTraders();
@@ -62,7 +62,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
 
-        updateTraders();
+        periodicUpdateStart();
     }
 
     /**
@@ -97,20 +97,26 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         }
     }
 
+
+    public void periodicUpdateStart() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                updateTraders();
+            }
+        }, 0, 4000);
+    }
+
+
     /**
      * Updates all connected traders at regular intervals.
      */
     public void updateTraders() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                log.info("Sending update to " + server.getClientHandlers().size() + " clients");
-                for (ClientHandler handler : connectedClients.values()) {
-                    sendTraderInformation(handler);
-                    sendStockInformation(handler);
-                }
-            }
-        }, 0, 4000);
+        log.info("Sending update to " + server.getClientHandlers().size() + " clients");
+        for (ClientHandler handler : connectedClients.values()) {
+            sendTraderInformation(handler);
+            sendStockInformation(handler);
+        }
     }
 
     /**
@@ -121,9 +127,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private void sendTraderInformation(ClientHandler handler) {
         String handlerId = handler.getId();
 
-        if(handlerId != null) {
+        if (handlerId != null) {
             String traderInfo = generateTraderInformation(handlerId);
-            Message msg = new Message("TRADER",traderInfo);
+            Message msg = new Message("TRADER", traderInfo);
             String jsonmsg = msg.toJson();
             handler.sendMessage(jsonmsg);
         } else {
