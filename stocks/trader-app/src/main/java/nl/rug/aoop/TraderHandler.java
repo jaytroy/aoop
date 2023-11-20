@@ -29,34 +29,13 @@ public class TraderHandler implements MessageHandler {
      */
     @Override
     public void handleMessage(String message) {
+        log.info(message);
+        if(true) {
+            
+        } else {
+            //handle different type of message
+        }
         // Ideally, we would use JSON paired with our message class here. We tried to, but we ran out of time.
 
-        /*
-        String[] parts = message.split("  ");
-        Map<String, Integer> ownedStocks = new HashMap<>();
-        for (int i = 0; i < parts.length; i++) {
-            if (parts[i].equals("Name:")) {
-                trader.setName(parts[++i]);
-                log.info(parts[++i]);
-            } else if (parts[i].equals("Funds:")) {
-                trader.setAvailableFunds(Double.parseDouble(parts[++i]));
-            } else if (parts[i].equals("Stocks:")) {
-                i++;
-                while (i < parts.length) {
-                    String[] stockInfo = parts[i].split(":");
-                    if (stockInfo.length == 2) {
-                        String stockSymbol = stockInfo[0];
-                        int quantity = Integer.parseInt(stockInfo[1]);
-                        ownedStocks.put(stockSymbol, quantity);
-                    } else {
-                        break;
-                    }
-                    i++;
-                }
-            }
-        }
-        trader.setOwnedStocks(ownedStocks);
-    }
-    */
     }
 }

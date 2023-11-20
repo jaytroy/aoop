@@ -1,5 +1,7 @@
 package nl.rug.aoop.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
@@ -65,7 +67,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         this.buyQueue = new OrderedQueue();
         this.sellQueue = new OrderedQueue();
 
-        updateClients();
+        updateTraders();
     }
 
     /**
@@ -101,9 +103,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     }
 
     /**
-     * Updates all connected clients at regular intervals.
+     * Updates all connected traders at regular intervals.
      */
-    public void updateClients() {
+    public void updateTraders() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -138,20 +140,8 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      * @return A string containing trader information for the client.
      */
     private String generateTraderInformation(String id) {
-        StringBuilder traderInfo = new StringBuilder();
         Trader trader = findTraderById(id);
-
-        traderInfo.append("Trader ID: ").append(trader.getId()).append("  ");
-        traderInfo.append("Name: ").append(trader.getName()).append("  ");
-        traderInfo.append("Funds: ").append(trader.getFunds()).append("  ");
-
-        Map<String, Integer> ownedStocks = trader.getOwnedStocks();
-        traderInfo.append("Owned Stocks: ");
-        for (Map.Entry<String, Integer> entry : ownedStocks.entrySet()) {
-            traderInfo.append(entry.getKey()).append(": ").append(entry.getValue()).append("  ");
-        }
-
-        return traderInfo.toString();
+        return trader.toJson();
     }
 
     @Override

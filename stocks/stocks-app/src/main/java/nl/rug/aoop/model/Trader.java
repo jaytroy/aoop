@@ -1,5 +1,7 @@
 package nl.rug.aoop.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.Setter;
 import nl.rug.aoop.uimodel.TraderDataModel;
 import java.util.Map;
@@ -11,8 +13,10 @@ import java.util.HashMap;
 public class Trader implements TraderDataModel {
     @Setter
     private String id;
+    @Setter
     private String name;
     private double funds;
+    @Setter
     private Map<String, Integer> ownedStocks;
 
     /**
@@ -114,5 +118,25 @@ public class Trader implements TraderDataModel {
             return currentQuantity >= quantity;
         }
         return false;
+    }
+
+    public String toJson() {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        return gson.toJson(this);
+    }
+
+    /**
+     * Turns a string from JSON to message.
+     *
+     * @param json The JSON string.
+     * @return Returns a message.
+     */
+    public static Trader fromJson(String json) {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        return gson.fromJson(json, Trader.class);
     }
 }

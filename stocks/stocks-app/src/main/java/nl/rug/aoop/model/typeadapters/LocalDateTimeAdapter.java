@@ -1,4 +1,4 @@
-package nl.rug.aoop.model;
+package nl.rug.aoop.model.typeadapters;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;

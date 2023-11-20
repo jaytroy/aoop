@@ -45,7 +45,7 @@ public class Initialize {
         }
         serverThread.start();
         // Set up the Exchange
-        Exchange stockApp = new Exchange(messageQueue,server);
+        Exchange stockApp = new Exchange(messageQueue, server);
         List<Stock> stocks = stockApp.getStocks();
         List<Trader> traders = stockApp.getTraders();
         // Start the view
@@ -59,7 +59,7 @@ public class Initialize {
         while (true) {
             viewFactory.updateView();
             try {
-                Thread.sleep(4000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -81,38 +81,5 @@ public class Initialize {
             System.out.println("Using backup port at StockAppMain");
         }
         return port;
-    }
-
-    /**
-     * Finds the stock by symbol.
-     *
-     * @param stocks the list of stocks.
-     * @param symbol the symbol.
-     * @return the stock you are trying to find.
-     */
-    private static Stock findStockBySymbol(List<Stock> stocks, String symbol) {
-        for (Stock stock : stocks) {
-            if (stock.getSymbol().equals(symbol)) {
-                return stock;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Finds the trader by id.
-     *
-     * @param traders the list of traders.
-     * @param id the id.
-     * @return the trader you are trying to find.
-     */
-
-    private static Trader findTraderById(List<Trader> traders, String id) {
-        for (Trader trader : traders) {
-            if (trader.getId().equals(id)) {
-                return trader;
-            }
-        }
-        return null;
     }
 }

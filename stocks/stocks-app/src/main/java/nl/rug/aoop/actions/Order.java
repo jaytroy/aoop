@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import com.google.gson.Gson;
-import nl.rug.aoop.model.LocalDateTimeAdapter;
+import nl.rug.aoop.model.typeadapters.LocalDateTimeAdapter;
 
 import java.time.LocalDateTime;
 
