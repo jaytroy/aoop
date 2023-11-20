@@ -41,7 +41,7 @@ public class Initialize {
         try {
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to start stockapp");
         }
         serverThread.start();
         // Set up the Exchange
@@ -61,7 +61,7 @@ public class Initialize {
             try {
                 Thread.sleep(4000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("Failed to put thread to sleep");
             }
         }
     }

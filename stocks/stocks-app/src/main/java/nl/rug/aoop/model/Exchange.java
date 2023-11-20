@@ -79,7 +79,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             StockList stockList = stockLoader.load(StockList.class);
             return stockList.getStocks();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to initialise stocks");
             return new ArrayList<>();
         }
     }
@@ -95,7 +95,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             TraderList traderList = traderLoader.load(TraderList.class);
             return traderList.getTraders();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to initialise traders");
             return new ArrayList<>();
         }
     }
