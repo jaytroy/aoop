@@ -167,7 +167,6 @@ Each of these modules plays a unique role in making the Stock Market Simulation 
   - Realistic Trading Strategies: To make the stock exchange simulation more authentic we should have considered implementing more advanced trading strategies and algorithms. Currently, the system randomly generates buy and sell orders; introducing intelligent trading strategies can add complexity and realism to the simulation. 
   - User Interface Enhancement: The user interface provided by the SimpleViewFactory could be improved for a more user-friendly experience. Enhancements like advanced charting, transaction history, and order book displays could provide a richer user experience.
   - When displaying the owned stocks of the trader in the ui the user can hardly see all the stocks, this could have been improved by adding a button where if you click on it you can view all the owned stocks.
-  - We should have added testing in our Stock App and Trader App, however due to time constraints we were not able to do this.
 
 3. Limits:
   - While it is good to look for areas of improvement it's also important to evaluate what limits this project had, we were a group of 2 members, so implementing realistic algorithms within the time constraint we were in was going to be difficult.

@@ -52,7 +52,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Server is running");
+        log.info("Server is running");
         if (!running) {
             log.error("Server is not started. Call start() before running.");
             return;

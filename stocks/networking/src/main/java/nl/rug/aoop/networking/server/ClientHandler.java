@@ -49,7 +49,7 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("ClientHandler is running");
+        log.info("ClientHandler is running");
         running = true;
         try {
             while (running) {

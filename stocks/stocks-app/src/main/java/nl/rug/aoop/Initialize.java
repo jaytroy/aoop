@@ -41,7 +41,7 @@ public class Initialize {
         try {
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to start stockapp");
         }
         serverThread.start();
         // Set up the Exchange
@@ -61,7 +61,7 @@ public class Initialize {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error("Failed to put thread to sleep");
             }
         }
     }
@@ -78,7 +78,7 @@ public class Initialize {
             port = Integer.parseInt(System.getenv("MESSAGE_QUEUE_PORT"));
         } else {
             port = BACKUP_PORT;
-            System.out.println("Using backup port at StockAppMain");
+            log.info("Using backup port at StockAppMain");
         }
         return port;
     }
