@@ -23,7 +23,7 @@ import static nl.rug.aoop.actions.Order.Type.SELL;
  * owned stocks.
  */
 @Slf4j
-public class Trader {
+public class Trader implements Runnable {
     @Getter
     @Setter
     private String name;
@@ -40,6 +40,7 @@ public class Trader {
     private Client client;
     private MessageHandler handler;
     private InetSocketAddress address;
+    private TraderStrategy strat;
 
     /**
      * Constructs a Trader with the given ID and network address.
@@ -62,6 +63,14 @@ public class Trader {
         } catch (IOException e) {
             log.error("Failed to start trader client");
         }
+
+
+    }
+
+    @Override
+    public void run() {
+        Random random = new Random();
+        double randomDouble = 4 + (4 - 1) * random.nextDouble(); //Replace numbers with constants
     }
 
     /**
