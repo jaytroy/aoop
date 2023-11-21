@@ -22,7 +22,7 @@ public class TraderApp {
      * Initializes trader instances and connects them to the stock exchange.
      */
     public static void main(String[] args) {
-        int numberOfTraders = 8; //8 traders as in the yaml file
+        int numberOfTraders = 10; //9 traders as in the yaml file
         threadpool = Executors.newFixedThreadPool(numberOfTraders);
 
         for (int i = 1; i <= numberOfTraders; i++) {
