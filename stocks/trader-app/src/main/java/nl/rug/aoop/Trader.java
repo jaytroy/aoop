@@ -82,14 +82,10 @@ public class Trader implements Runnable {
 
         // Execute the strategy periodically
         while (true) {
-            Random random = new Random();
-            long randomDelay = 100 + random.nextLong(4000);  // Replace numbers with constants
-
-            System.out.println(randomDelay);
 
             strategy.executeStrategy();
             try {
-                Thread.sleep(randomDelay);
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 log.error("Thread sleep interrupted", e);
                 Thread.currentThread().interrupt();

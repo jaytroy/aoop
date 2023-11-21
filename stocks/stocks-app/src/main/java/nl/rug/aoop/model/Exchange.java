@@ -200,9 +200,11 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      * @param order the order.
      */
     public void placeOrder(Order order) throws NullPointerException {
-        if(order.getType() == null) {
-            throw new NullPointerException();
+        if (order.getType() == null) {
+            log.error("Received order with null type from client " + order.getClientId());
+            throw new NullPointerException("Order type is null");
         }
+
         log.info("Received order from client " + order.getClientId() + ": " + order.getType());
 
         String stockSymbol = order.getSymbol();
@@ -244,25 +246,30 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
                 getClientId());
         Trader seller = findTraderById(newOrder.getType() == Order.Type.SELL ? newOrder.getClientId() : headOrder.
                 getClientId());
-        if (buyer != null && seller != null) {
-            buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
-            buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
+        if(buyer.getFunds() >= tradedQuantity * tradePrice) {
+            if (buyer != null && seller != null) {
+                buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
+                buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
 
-            seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
-            seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
+                seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
+                seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
 
-            System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
-                    "at price " + tradePrice);
+                System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
+                        "at price " + tradePrice);
 
-            updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
+                updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
+            } else {
+                log.error("Buyer or Seller not found for the trade");
+            }
+
+            if (headOrder.getQuantity() == 0) {
+                oppositeOrders.poll();
+            }
         } else {
-            log.error("Buyer or Seller not found for the trade");
-        }
-
-        if (headOrder.getQuantity() == 0) {
-            oppositeOrders.poll();
+            log.error("Buyer does not have enough money");
         }
     }
+
 
     private void updateStockPrice(String stockSymbol, double tradePrice) {
         Stock tradedStock = findStockBySymbol(stockSymbol);

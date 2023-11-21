@@ -23,6 +23,11 @@ public class TraderStrategy {
      * Implement a trader strategy for generating random orders.
      */
     public void executeStrategy() {
+        buySellStrategy();
+        //more strategies here as needed
+    }
+
+    private void buySellStrategy() {
         Random random = new Random();
 
         // For buying, get all possible stock symbols from available stocks
