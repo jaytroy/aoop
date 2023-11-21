@@ -85,7 +85,7 @@ public class Trader implements Runnable {
 
             strategy.executeStrategy();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 log.error("Thread sleep interrupted", e);
                 Thread.currentThread().interrupt();
@@ -102,12 +102,12 @@ public class Trader implements Runnable {
      * @param price     The price per unit of the stock.
      */
     public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
-        /*if(type == BUY) {
+        if(type == BUY) {
             setAvailableFunds(availableFunds - price * quantity);
         } else {
             Integer q = ownedStocks.get(symbol);
             ownedStocks.put(symbol, q - (int) quantity);
-        } */
+        }
         Order order = new Order(type, this.id, symbol, quantity, price, LocalDateTime.now());
         Message msg = new Message("PUT", order.toJson());
         producer.putMessage(msg);
