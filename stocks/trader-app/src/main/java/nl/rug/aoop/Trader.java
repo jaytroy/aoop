@@ -85,7 +85,7 @@ public class Trader implements Runnable {
 
             strategy.executeStrategy();
             try {
-                Thread.sleep(4000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 log.error("Thread sleep interrupted", e);
                 Thread.currentThread().interrupt();

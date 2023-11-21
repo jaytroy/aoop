@@ -36,7 +36,6 @@ public class TraderStrategy {
         // For selling, get stock symbols from the symbols of owned stocks
         List<String> stockSymbolsToSell = trader.getOwnedStocks().keySet().stream().toList();
 
-        int randomQuantityBuy = random.nextInt(100) + 1;
         double priceFactor = 1.0 + (0.01 * random.nextDouble());
 
         // For buying, randomly choose a stock symbol from available stocks
@@ -51,6 +50,12 @@ public class TraderStrategy {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Stock not found for symbol: " + randomStockSymbolBuy));
 
+        int maxQuantitySell = trader.getOwnedStocks().get(randomStockSymbolSell);
+
+        int randomQuantitySell = random.nextInt(maxQuantitySell) + 1;
+
+        int randomQuantityBuy = random.nextInt(100) + 1;
+
         double price = chosenStock.getPrice();
 
         double limitPriceBuy = price * priceFactor;
@@ -61,7 +66,7 @@ public class TraderStrategy {
         if (buyOrSell == 1 && trader.getAvailableFunds() > 0) {
             trader.placeOrder(BUY, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
         } else {
-            trader.placeOrder(SELL, randomStockSymbolSell, randomQuantityBuy, limitPriceSell);
+            trader.placeOrder(SELL, randomStockSymbolSell, randomQuantitySell, limitPriceSell);
         }
     }
 }
