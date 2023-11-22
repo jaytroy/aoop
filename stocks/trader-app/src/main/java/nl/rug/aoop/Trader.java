@@ -13,10 +13,8 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static nl.rug.aoop.actions.Order.Type.BUY;
-import static nl.rug.aoop.actions.Order.Type.SELL;
 
 /**
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
@@ -66,8 +64,6 @@ public class Trader implements Runnable {
         } catch (IOException e) {
             log.error("Failed to start trader client");
         }
-
-
     }
 
     @Override
@@ -85,7 +81,7 @@ public class Trader implements Runnable {
 
             strategy.executeStrategy();
             try {
-                Thread.sleep(4000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 log.error("Thread sleep interrupted", e);
                 Thread.currentThread().interrupt();
@@ -114,7 +110,13 @@ public class Trader implements Runnable {
         log.info("Placed order: {}", order.toJson());
     }
 
-
+    /**
+     * Updates the info of the trader.
+     *
+     * @param funds the funds of the trader.
+     * @param name the name of the trader.
+     * @param ownedStocks the owned stocks of the trader.
+     */
     public void updateInfo(double funds, String name, Map<String,Integer> ownedStocks) {
         setAvailableFunds(funds);
         setName(name);
@@ -122,6 +124,11 @@ public class Trader implements Runnable {
         log.info("Updated information of " + id);
     }
 
+    /**
+     * Updates the stock info.
+     *
+     * @param stocks the stocks.
+     */
     public void updateStocks(List<Stock> stocks) {
         availableStocks = stocks;
         log.info("Updated stocks information");

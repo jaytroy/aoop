@@ -3,13 +3,8 @@ package nl.rug.aoop;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static nl.rug.aoop.actions.Order.Type.BUY;
-import static nl.rug.aoop.actions.Order.Type.SELL;
 
 /**
  * The TraderApp class represents the entry point for initializing traders in the stock exchange system.
@@ -20,6 +15,8 @@ public class TraderApp {
 
     /**
      * Initializes trader instances and connects them to the stock exchange.
+     *
+     * @param args command line arguments.
      */
     public static void main(String[] args) {
         int numberOfTraders = 10; //9 traders as in the yaml file

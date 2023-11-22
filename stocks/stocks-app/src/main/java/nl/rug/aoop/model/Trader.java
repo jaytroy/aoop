@@ -89,6 +89,12 @@ public class Trader implements TraderDataModel {
         return false;
     }
 
+    /**
+     * Convert trader info to JSON.
+     *
+     * @return the json message.
+     */
+
     public String toJson() {
         Gson gson = new GsonBuilder()
                 .create();

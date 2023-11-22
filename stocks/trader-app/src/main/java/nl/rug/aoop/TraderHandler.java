@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
-
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +52,14 @@ public class TraderHandler implements MessageHandler {
         }
     }
 
+    /**
+     * Handles the incoming trader info.
+     *
+     * @param msg the message that arrives.
+     */
     public void handleTraderInfo(String msg) {
         //This right here couples the program. We need to do it some other way.
-        nl.rug.aoop.model.Trader modelTrader = nl.rug.aoop.model.Trader.fromJson(msg); //Is this the way this should be done?
+        nl.rug.aoop.model.Trader modelTrader = nl.rug.aoop.model.Trader.fromJson(msg);
         double funds = modelTrader.getFunds();
         String name = modelTrader.getName();
         Map<String, Integer> ownedStocks = modelTrader.getOwnedStocks();
@@ -63,6 +67,11 @@ public class TraderHandler implements MessageHandler {
         trader.updateInfo(funds,name,ownedStocks);
     }
 
+    /**
+     * Handles the incoming stock info.
+     *
+     * @param msg the message that arrives.
+     */
     public void handleStockInfo(String msg) {
         Gson gson = new Gson();
         Type stockListType = new TypeToken<List<Stock>>() {}.getType();

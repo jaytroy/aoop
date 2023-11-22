@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.serverside.ConsumerObserver;
 import nl.rug.aoop.messagequeue.queues.Message;
-import nl.rug.aoop.messagequeue.queues.OrderedQueue;
 import nl.rug.aoop.messagequeue.serverside.NetConsumer;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
 import nl.rug.aoop.networking.server.ClientHandler;
@@ -97,7 +96,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         }
     }
 
-
+    /**
+     * Update traders every 4 seconds.
+     */
     public void periodicUpdateStart() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -106,7 +107,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             }
         }, 0, 4000);
     }
-
 
     /**
      * Updates all connected traders at regular intervals.
@@ -164,7 +164,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         Gson gson = new GsonBuilder().create();
         return gson.toJson(stocks);
     }
-
 
     @Override
     public StockDataModel getStockByIndex(int index) {
@@ -238,10 +237,8 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private void executeTrade(Order newOrder, Order headOrder, PriorityQueue<Order> oppositeOrders) {
         int tradedQuantity = (int) Math.min(newOrder.getQuantity(), headOrder.getQuantity());
         double tradePrice = headOrder.getPrice();
-
         newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
         headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
-
         Trader buyer = findTraderById(newOrder.getType() == Order.Type.BUY ? newOrder.getClientId() : headOrder.
                 getClientId());
         Trader seller = findTraderById(newOrder.getType() == Order.Type.SELL ? newOrder.getClientId() : headOrder.
@@ -250,18 +247,15 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             if (buyer != null && seller != null) {
                 buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
                 buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
-
                 seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
                 seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
-
-                System.out.println("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
+                log.info("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
                         "at price " + tradePrice);
 
                 updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
             } else {
                 log.error("Buyer or Seller not found for the trade");
             }
-
             if (headOrder.getQuantity() == 0) {
                 oppositeOrders.poll();
             }
@@ -269,7 +263,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             log.error("Buyer does not have enough money");
         }
     }
-
 
     private void updateStockPrice(String stockSymbol, double tradePrice) {
         Stock tradedStock = findStockBySymbol(stockSymbol);
