@@ -3,6 +3,7 @@ package nl.rug.aoop.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.serverside.ConsumerObserver;
@@ -36,6 +37,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private List<Trader> traders;
     @Getter
     private MessageQueue messageQueue;
+    @Setter
     private NetConsumer consumer;
     private Map<String, PriorityQueue<Order>> buyOrders;
     private Map<String, PriorityQueue<Order>> sellOrders;
