@@ -8,15 +8,29 @@ import nl.rug.aoop.networking.server.Server;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+/**
+ * A facade for networking to be used on other packages.
+ *
+ */
 @Slf4j
 public class NetworkingFacade {
     @Getter
     private Server server;
 
+    /**
+     * Constructs a new netfacade with the specified messagehandler and port number.
+     *
+     * @param messageHandler The message handler for processing incoming messages.
+     * @param port           The port number on which the server will listen.
+     */
     public NetworkingFacade(MessageHandler messageHandler, int port) {
         this.server = new Server(messageHandler, port);
     }
 
+    /**
+     * Starts the server on a new thread.
+     * Logs information about the server start status.
+     */
     public void startServer() {
         try {
             server.start();
@@ -28,11 +42,22 @@ public class NetworkingFacade {
         }
     }
 
+    /**
+     * Stops the server and logs information about the server stop status.
+     */
     public void stopServer() {
         server.terminate();
         log.info("Server stopped");
     }
 
+    /**
+     * Connects to a remote server at the specified address with the given client ID.
+     * Logs information about the connection status.
+     *
+     * @param messageHandler The message handler for processing incoming messages.
+     * @param address        The InetSocketAddress of the remote server.
+     * @param clientId       The unique identifier for the client.
+     */
     public void connectToServer(MessageHandler messageHandler, InetSocketAddress address, String clientId) {
         try {
             Client client = new Client(messageHandler, address, clientId);
