@@ -1,6 +1,7 @@
 package nl.rug.aoop;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 
@@ -15,6 +16,7 @@ public class TraderFacade {
      * The Trader associated with this facade.
      */
     @Getter
+    @Setter
     private Trader trader;
 
     /**
