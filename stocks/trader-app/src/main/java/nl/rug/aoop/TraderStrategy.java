@@ -58,6 +58,7 @@ public class TraderStrategy {
         double limitPriceBuy = price * priceFactor;
         double limitPriceSell = price / priceFactor;
         int buyOrSell = random.nextInt(2);
+        //Randomly choose between LIMIT and MARKET
         if (buyOrSell == 1 && traderFacade.getTrader().getAvailableFunds() > 0) {
             traderFacade.placeOrder(BUY, LIMIT, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
         } else {

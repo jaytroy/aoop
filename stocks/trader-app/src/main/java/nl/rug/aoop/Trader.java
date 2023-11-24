@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static nl.rug.aoop.actions.Order.Action.BUY;
+import static nl.rug.aoop.actions.Order.Type.MARKET;
 
 /**
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
@@ -92,19 +93,26 @@ public class Trader implements Runnable {
     /**
      * Place an order with the specified type, stock symbol, quantity, and price.
      *
-     * @param type      The type of the order (BUY or SELL).
+     * @param action    The action of the order (BUY or SELL).
      * @param symbol    The symbol of the stock.
      * @param quantity  The quantity of the stock to be traded.
      * @param price     The price per unit of the stock.
      */
     public void placeOrder(Order.Action action, Order.Type type, String symbol, long quantity, double price) {
+        //Is this duplicated?
         if(action == BUY) {
             setAvailableFunds(getAvailableFunds() - price * quantity);
         } else {
             Integer q = getOwnedStocks().get(symbol);
             getOwnedStocks().put(symbol, q - (int) quantity);
         }
-        Order order = new Order(action, type, getId(), symbol, quantity, price, LocalDateTime.now());
+
+        Order order;
+        if(type == MARKET) {
+            order = new Order(action, getId(), symbol, quantity, LocalDateTime.now());
+        } else {
+            order = new Order(action, getId(), symbol, quantity, price, LocalDateTime.now());
+        }
         Message msg = new Message("PUT", order.toJson());
         getProducer().putMessage(msg);
         log.info("Placed order: {}", order.toJson());

@@ -4,11 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
-import nl.rug.aoop.messagequeue.queues.Message;
 
-import java.time.LocalDateTime;
 
-import static nl.rug.aoop.actions.Order.Type.BUY;
 
 /**
  * The StockExchangeFacade class serves as a facade for the stock exchange system.
@@ -42,7 +39,7 @@ public class TraderFacade {
     /**
      * Places an order with the stock exchange through the associated Trader.
      *
-     * @param type     The type of the order (BUY or SELL).
+     * @param action   The action of the order (BUY or SELL).
      * @param symbol   The symbol of the financial instrument.
      * @param quantity The quantity of the financial instrument to be traded.
      * @param price    The price at which the order should be executed.

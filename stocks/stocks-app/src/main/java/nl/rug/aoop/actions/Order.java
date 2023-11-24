@@ -25,7 +25,6 @@ public class Order implements Comparable<Order> {
 
     @Getter
     private Action action;
-    private Type type;
     @Getter
     private String clientId;
     @Getter
@@ -37,26 +36,47 @@ public class Order implements Comparable<Order> {
     private double price;
     @Getter
     private LocalDateTime timestamp;
+    @Getter
+    private Type type;
 
     /**
-     * Creates a new order with the specified parameters.
+     * Creates a new limit order with the specified parameters. (Price specified).
      *
-     * @param type      The type of order (BUY or SELL).
      * @param clientId  The identifier of the client or trader placing the order.
      * @param symbol    The symbol of the stock associated with the order.
      * @param quantity  The quantity of shares in the order.
      * @param price     The price of the order.
      * @param timestamp The timestamp of the order.
      */
-    public Order(Action action, Type type, String clientId, String symbol, long quantity, double price, LocalDateTime timestamp) {
+    public Order(Action action, String clientId, String symbol, long quantity, double price, LocalDateTime timestamp) {
+        this.type = Type.LIMIT;
+
         this.action = action;
-        this.type = type;
         this.clientId = clientId;
         this.symbol = symbol;
         this.quantity = quantity;
         this.price = price;
         this.timestamp = timestamp;
     }
+
+    /**
+     * Creates a new market order with the specified parameters. (No price specified. Buys at market price).
+     *
+     * @param clientId  The identifier of the client or trader placing the order.
+     * @param symbol    The symbol of the stock associated with the order.
+     * @param quantity  The quantity of shares in the order.
+     * @param timestamp The timestamp of the order.
+     */
+    public Order(Action action, String clientId, String symbol, long quantity, LocalDateTime timestamp) {
+        this.type = Type.MARKET;
+
+        this.action = action;
+        this.clientId = clientId;
+        this.symbol = symbol;
+        this.quantity = quantity;
+        this.timestamp = timestamp;
+    }
+
 
     @Override
     public int compareTo(Order other) {

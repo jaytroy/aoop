@@ -102,7 +102,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     }
 
     /**
-     * Update traders every 4 seconds.
+     * Periodically update traders every 2 seconds.
      */
     public void periodicUpdateStart() {
         Timer timer = new Timer();
@@ -110,7 +110,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
             public void run() {
                 updateTraders();
             }
-        }, 0, 4000);
+        }, 0, 2000);
     }
 
     /**
@@ -198,8 +198,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         return traders.size();
     }
 
-
-
     protected void updateStockPrice(String stockSymbol, double tradePrice) {
         Stock tradedStock = findStockBySymbol(stockSymbol);
         if (tradedStock != null) {
@@ -222,7 +220,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         try {
             orderHandler.placeOrder(order);
         } catch(NullPointerException e) {
-            log.error("Tried to place a null order");
+            log.error("Tried to place an order without action or type");
         }
     }
 
