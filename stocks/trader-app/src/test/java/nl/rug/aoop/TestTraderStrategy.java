@@ -27,10 +27,10 @@ public class TestTraderStrategy {
         when(traderFacade.getTrader().getOwnedStocks()).thenReturn(createOwnedStocksMap());
         when(traderFacade.getTrader().getAvailableFunds()).thenReturn(1000.0);
 
-        doNothing().when(traderFacade).placeOrder(any(Order.Type.class), anyString(), anyInt(), anyDouble());
+        doNothing().when(traderFacade).placeOrder(any(Order.Action.class), any(Order.Type.class), anyString(), anyInt(), anyDouble());
 
         traderStrategy.executeStrategy();
-        verify(traderFacade, times(1)).placeOrder(any(Order.Type.class), anyString(), anyLong(), anyDouble());
+        verify(traderFacade, times(1)).placeOrder(any(Order.Action.class), any(Order.Type.class), anyString(), anyLong(), anyDouble());
     }
 
 

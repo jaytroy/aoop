@@ -1,21 +1,17 @@
 package nl.rug.aoop;
 
 import nl.rug.aoop.model.Exchange;
+import nl.rug.aoop.model.components.Stock;
+import nl.rug.aoop.model.components.Trader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import nl.rug.aoop.actions.Order;
-import nl.rug.aoop.messagequeue.serverside.NetConsumer;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
-import nl.rug.aoop.networking.server.ClientHandler;
 import nl.rug.aoop.networking.server.Server;
-import nl.rug.aoop.model.*;
-import java.time.LocalDateTime;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 class TestExchange {
 

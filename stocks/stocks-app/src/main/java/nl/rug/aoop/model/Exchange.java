@@ -10,6 +10,10 @@ import nl.rug.aoop.messagequeue.serverside.ConsumerObserver;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetConsumer;
 import nl.rug.aoop.messagequeue.queues.MessageQueue;
+import nl.rug.aoop.model.components.Stock;
+import nl.rug.aoop.model.components.StockList;
+import nl.rug.aoop.model.components.Trader;
+import nl.rug.aoop.model.components.TraderList;
 import nl.rug.aoop.networking.server.ClientHandler;
 import nl.rug.aoop.networking.server.Server;
 import nl.rug.aoop.uimodel.StockDataModel;
@@ -39,8 +43,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     private MessageQueue messageQueue;
     @Setter
     private NetConsumer consumer;
-    private Map<String, PriorityQueue<Order>> buyOrders;
-    private Map<String, PriorityQueue<Order>> sellOrders;
+    private OrderHandler orderHandler;
 
     /**
      * Constructs an Exchange with the specified message queue.
@@ -50,9 +53,6 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      */
     public Exchange(MessageQueue messageQueue, Server server) {
         this.server = server;
-        this.buyOrders = new HashMap<>();
-        this.sellOrders = new HashMap<>();
-
         this.connectedClients = server.getClientHandlers();
 
         stocks = initializeStocks();
@@ -63,6 +63,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
 
+        this.orderHandler = new OrderHandler(this);
+
+        //Sets up periodic updates for the exchange UI
         periodicUpdateStart();
     }
 
@@ -114,7 +117,7 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
      * Updates all connected traders at regular intervals.
      */
     public void updateTraders() {
-        log.info("Sending update to " + server.getClientHandlers().size() + " clients");
+        log.info("Sending update to " + connectedClients.size() + " clients");
         for (ClientHandler handler : connectedClients.values()) {
             sendTraderInformation(handler);
             sendStockInformation(handler);
@@ -195,78 +198,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         return traders.size();
     }
 
-    /**
-     * Method to place order.
-     *
-     * @param order the order.
-     */
-    public void placeOrder(Order order) throws NullPointerException {
-        if (order.getType() == null) {
-            log.error("Received order with null type from client " + order.getClientId());
-            throw new NullPointerException("Order type is null");
-        }
 
-        log.info("Received order from client " + order.getClientId() + ": " + order.getType());
 
-        String stockSymbol = order.getSymbol();
-        if (order.getType() == Order.Type.BUY) {
-            matchOrder(order, sellOrders.get(stockSymbol), buyOrders);
-        } else {
-            matchOrder(order, buyOrders.get(stockSymbol), sellOrders);
-        }
-    }
-
-    private void matchOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>>
-            sameTypeOrder) {
-        log.info("Matching order " + newOrder);
-        if (oppositeOrders != null && !oppositeOrders.isEmpty()) {
-            while (!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
-                Order headOrder = oppositeOrders.peek();
-                if ((newOrder.getType() == Order.Type.BUY && newOrder.getPrice() >= headOrder.getPrice()) ||
-                        (newOrder.getType() == Order.Type.SELL && newOrder.getPrice() <= headOrder.getPrice())) {
-                    executeTrade(newOrder, headOrder, oppositeOrders);
-                } else {
-                    break;
-                }
-            }
-        }
-
-        if (newOrder.getQuantity() > 0) {
-            sameTypeOrder.computeIfAbsent(newOrder.getSymbol(), k -> new PriorityQueue<>()).add(newOrder);
-        }
-    }
-
-    private void executeTrade(Order newOrder, Order headOrder, PriorityQueue<Order> oppositeOrders) {
-        int tradedQuantity = (int) Math.min(newOrder.getQuantity(), headOrder.getQuantity());
-        double tradePrice = headOrder.getPrice();
-        newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
-        headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
-        Trader buyer = findTraderById(newOrder.getType() == Order.Type.BUY ? newOrder.getClientId() : headOrder.
-                getClientId());
-        Trader seller = findTraderById(newOrder.getType() == Order.Type.SELL ? newOrder.getClientId() : headOrder.
-                getClientId());
-        if(buyer.getFunds() >= tradedQuantity * tradePrice) {
-            if (buyer != null && seller != null) {
-                buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
-                buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
-                seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
-                seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
-                log.info("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
-                        "at price " + tradePrice);
-
-                updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
-            } else {
-                log.error("Buyer or Seller not found for the trade");
-            }
-            if (headOrder.getQuantity() == 0) {
-                oppositeOrders.poll();
-            }
-        } else {
-            log.error("Buyer does not have enough money");
-        }
-    }
-
-    private void updateStockPrice(String stockSymbol, double tradePrice) {
+    protected void updateStockPrice(String stockSymbol, double tradePrice) {
         Stock tradedStock = findStockBySymbol(stockSymbol);
         if (tradedStock != null) {
             tradedStock.setPrice(tradePrice);
@@ -275,6 +209,10 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         }
     }
 
+    /**
+     * This receives messages from the NetConsumer, which are continuously polled from the TSMessageQueue.
+     * @param msg The message.
+     */
     @Override
     public void update(Message msg) {
         String body = msg.getBody();
@@ -282,13 +220,13 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         Order order = Order.fromJson(body);
         System.out.println(body);
         try {
-            placeOrder(order);
+            orderHandler.placeOrder(order);
         } catch(NullPointerException e) {
             log.error("Tried to place a null order");
         }
     }
 
-    private Trader findTraderById(String id) {
+    protected Trader findTraderById(String id) {
         for (Trader trader : traders) {
             if (trader.getId().equals(id)) {
                 return trader;

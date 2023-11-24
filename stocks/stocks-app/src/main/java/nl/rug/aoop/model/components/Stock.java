@@ -1,4 +1,4 @@
-package nl.rug.aoop.model;
+package nl.rug.aoop.model.components;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,11 +3,6 @@ package nl.rug.aoop;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
-import nl.rug.aoop.messagequeue.queues.Message;
-
-import java.time.LocalDateTime;
-
-import static nl.rug.aoop.actions.Order.Type.BUY;
 
 /**
  * The StockExchangeFacade class serves as a facade for the stock exchange system.
@@ -24,8 +19,8 @@ public class TraderFacade {
         strategy = new TraderStrategy(this);
     }
 
-    public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
-        trader.placeOrder(type, symbol, quantity, price);
+    public void placeOrder(Order.Action action, Order.Type type, String symbol, long quantity, double price) {
+        trader.placeOrder(action, type, symbol, quantity, price);
     }
 
     public void executeStrategy() {

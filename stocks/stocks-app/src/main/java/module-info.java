@@ -15,4 +15,6 @@ module stocksapp {
     opens nl.rug.aoop.actions to com.google.gson;
     exports nl.rug.aoop.model.typeadapters;
     opens nl.rug.aoop.model.typeadapters to com.fasterxml.jackson.databind;
+    exports nl.rug.aoop.model.components;
+    opens nl.rug.aoop.model.components to com.fasterxml.jackson.databind, com.google.gson;
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static nl.rug.aoop.actions.Order.Type.BUY;
+import static nl.rug.aoop.actions.Order.Action.BUY;
 
 /**
  * The Trader class represents a participant in the stock exchange, including their name, available funds, and
@@ -97,14 +97,14 @@ public class Trader implements Runnable {
      * @param quantity  The quantity of the stock to be traded.
      * @param price     The price per unit of the stock.
      */
-    public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
-        if(type == BUY) {
+    public void placeOrder(Order.Action action, Order.Type type, String symbol, long quantity, double price) {
+        if(action == BUY) {
             setAvailableFunds(getAvailableFunds() - price * quantity);
         } else {
             Integer q = getOwnedStocks().get(symbol);
             getOwnedStocks().put(symbol, q - (int) quantity);
         }
-        Order order = new Order(type, getId(), symbol, quantity, price, LocalDateTime.now());
+        Order order = new Order(action, type, getId(), symbol, quantity, price, LocalDateTime.now());
         Message msg = new Message("PUT", order.toJson());
         getProducer().putMessage(msg);
         log.info("Placed order: {}", order.toJson());

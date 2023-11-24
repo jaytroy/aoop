@@ -9,9 +9,9 @@ public class TestOrder {
     @Test
     void testOrderCreation() {
         LocalDateTime timestamp = LocalDateTime.now();
-        Order order = new Order(Order.Type.BUY, "client1", "AAPL", 100, 150.0, timestamp);
+        Order order = new Order(Order.Action.BUY, Order.Type.LIMIT, "client1", "AAPL", 100, 150.0, timestamp);
 
-        assertEquals(Order.Type.BUY, order.getType());
+        assertEquals(Order.Action.BUY, order.getAction());
         assertEquals("client1", order.getClientId());
         assertEquals("AAPL", order.getSymbol());
         assertEquals(100, order.getQuantity());
@@ -24,8 +24,8 @@ public class TestOrder {
         LocalDateTime timestamp1 = LocalDateTime.now();
         LocalDateTime timestamp2 = timestamp1.plusSeconds(1);
 
-        Order buyOrder = new Order(Order.Type.BUY, "client1", "AAPL", 100, 150.0, timestamp1);
-        Order sellOrder = new Order(Order.Type.SELL, "client2", "AAPL", 100, 150.0, timestamp2);
+        Order buyOrder = new Order(Order.Action.BUY, Order.Type.LIMIT, "client1", "AAPL", 100, 150.0, timestamp1);
+        Order sellOrder = new Order(Order.Action.SELL, Order.Type.MARKET, "client2", "AAPL", 100, 150.0, timestamp2);
 
         assertTrue(buyOrder.compareTo(sellOrder) < 0);
         assertTrue(sellOrder.compareTo(buyOrder) > 0);
@@ -34,7 +34,7 @@ public class TestOrder {
     @Test
     void testOrderToJsonAndFromJson() {
         LocalDateTime timestamp = LocalDateTime.now();
-        Order originalOrder = new Order(Order.Type.BUY, "client1", "AAPL", 100, 150.0, timestamp);
+        Order originalOrder = new Order(Order.Action.BUY, Order.Type.LIMIT, "client1", "AAPL", 100, 150.0, timestamp);
 
         String json = originalOrder.toJson();
         Order restoredOrder = Order.fromJson(json);

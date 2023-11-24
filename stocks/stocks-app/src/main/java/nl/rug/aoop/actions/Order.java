@@ -15,11 +15,16 @@ public class Order implements Comparable<Order> {
     /**
      * Defines the type of order: BUY or SELL.
      */
-    public enum Type {
+    public enum Action {
         BUY, SELL
     }
 
+    public enum Type {
+        MARKET, LIMIT
+    }
+
     @Getter
+    private Action action;
     private Type type;
     @Getter
     private String clientId;
@@ -43,7 +48,8 @@ public class Order implements Comparable<Order> {
      * @param price     The price of the order.
      * @param timestamp The timestamp of the order.
      */
-    public Order(Type type, String clientId, String symbol, long quantity, double price, LocalDateTime timestamp) {
+    public Order(Action action, Type type, String clientId, String symbol, long quantity, double price, LocalDateTime timestamp) {
+        this.action = action;
         this.type = type;
         this.clientId = clientId;
         this.symbol = symbol;
@@ -55,7 +61,7 @@ public class Order implements Comparable<Order> {
     @Override
     public int compareTo(Order other) {
         if (this.price != other.price) {
-            return this.type == Type.BUY ? Double.compare(other.price, this.price) : Double.compare(this.price,
+            return this.action == Action.BUY ? Double.compare(other.price, this.price) : Double.compare(this.price,
                     other.price);
         } else {
             return this.timestamp.compareTo(other.timestamp);

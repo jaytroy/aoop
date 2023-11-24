@@ -1,4 +1,4 @@
-package nl.rug.aoop.model;
+package nl.rug.aoop.model.components;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

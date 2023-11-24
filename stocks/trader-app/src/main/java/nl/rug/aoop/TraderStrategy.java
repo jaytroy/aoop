@@ -5,8 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.Random;
 
-import static nl.rug.aoop.actions.Order.Type.BUY;
-import static nl.rug.aoop.actions.Order.Type.SELL;
+import static nl.rug.aoop.actions.Order.Action.BUY;
+import static nl.rug.aoop.actions.Order.Action.SELL;
+import static nl.rug.aoop.actions.Order.Type.LIMIT;
 
 /**
  * The TraderStrategy class represents the strategy for generating random orders for a trader.
@@ -57,9 +58,9 @@ public class TraderStrategy {
         double limitPriceSell = price / priceFactor;
         int buyOrSell = random.nextInt(2);
         if (buyOrSell == 1 && traderFacade.getTrader().getAvailableFunds() > 0) {
-            traderFacade.placeOrder(BUY, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
+            traderFacade.placeOrder(BUY, LIMIT, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
         } else {
-            traderFacade.placeOrder(SELL, randomStockSymbolSell, randomQuantitySell, limitPriceSell);
+            traderFacade.placeOrder(SELL, LIMIT, randomStockSymbolSell, randomQuantitySell, limitPriceSell);
         }
     }
 }
