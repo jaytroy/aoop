@@ -3,8 +3,6 @@ package nl.rug.aoop;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,6 +13,11 @@ import java.util.concurrent.Executors;
 public class TraderApp {
     private static ExecutorService threadpool;
 
+    /**
+     * The main method that initializes the trader App bots.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         int numberOfTraders = 10;
         threadpool = Executors.newFixedThreadPool(numberOfTraders);
@@ -24,7 +27,6 @@ public class TraderApp {
             threadpool.submit(trader);
         }
     }
-
 
     /**
      * Get the network address for connecting to the message queue. It uses the environment variable

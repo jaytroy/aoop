@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
@@ -13,11 +14,17 @@ import static org.mockito.Mockito.*;
 public class TestTraderStrategy {
 
     private TraderFacade traderFacade;
+    private Trader trader;
     private TraderStrategy traderStrategy;
 
     @BeforeEach
     public void setUp() {
         traderFacade = mock(TraderFacade.class);
+        trader = mock(Trader.class);
+
+        // Ensure that the TraderFacade mock returns the mock Trader object
+        when(traderFacade.getTrader()).thenReturn(trader);
+
         traderStrategy = new TraderStrategy(traderFacade);
     }
 
@@ -30,7 +37,7 @@ public class TestTraderStrategy {
         doNothing().when(traderFacade).placeOrder(any(Order.Action.class), any(Order.Type.class), anyString(), anyInt(), anyDouble());
 
         traderStrategy.executeStrategy();
-        verify(traderFacade, times(1)).placeOrder(any(Order.Action.class), any(Order.Type.class), anyString(), anyLong(), anyDouble());
+        verify(traderFacade, times(1)).placeOrder(any(Order.Type.class), anyString(), anyLong(), anyDouble());
     }
 
 
