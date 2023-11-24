@@ -36,7 +36,8 @@ public class TraderStrategy {
     private void buySellStrategy() {
         Random random = new Random();
         // For buying, get all possible stock symbols from available stocks
-        List<String> stockSymbolsToBuy = traderFacade.getTrader().getAvailableStocks().stream().map(Stock::getSymbol).toList();
+        List<String> stockSymbolsToBuy = traderFacade.getTrader().getAvailableStocks().stream().map(Stock::getSymbol).
+                toList();
         // For selling, get stock symbols from the symbols of owned stocks
         List<String> stockSymbolsToSell = traderFacade.getTrader().getOwnedStocks().keySet().stream().toList();
         double priceFactor = 1.0 + (0.01 * random.nextDouble());
