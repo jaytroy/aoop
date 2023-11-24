@@ -36,11 +36,15 @@ public class Trader implements Runnable {
     @Getter
     @Setter
     private List<Stock> availableStocks;
+    @Getter
     private NetProducer producer;
     private Client client;
     private MessageHandler handler;
+    @Getter
     private InetSocketAddress address;
-    private TraderStrategy strategy;
+    @Setter
+    @Getter
+    private TraderFacade traderFacade;
 
     /**
      * Constructs a Trader with the given ID and network address.
@@ -55,8 +59,7 @@ public class Trader implements Runnable {
         handler = new TraderHandler(this);
         client = new Client(handler, address, id);
         producer = new NetProducer(client);
-        strategy = new TraderStrategy(this);
-
+        traderFacade = new TraderFacade(this);
         try {
             client.connect();
             Thread clientThread = new Thread(client);
@@ -75,11 +78,8 @@ public class Trader implements Runnable {
             log.error("Thread sleep interrupted", e);
             Thread.currentThread().interrupt();
         }
-
-        // Execute the strategy periodically
         while (true) {
-
-            strategy.executeStrategy();
+            traderFacade.executeStrategy();
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -99,14 +99,14 @@ public class Trader implements Runnable {
      */
     public void placeOrder(Order.Type type, String symbol, long quantity, double price) {
         if(type == BUY) {
-            setAvailableFunds(availableFunds - price * quantity);
+            setAvailableFunds(getAvailableFunds() - price * quantity);
         } else {
-            Integer q = ownedStocks.get(symbol);
-            ownedStocks.put(symbol, q - (int) quantity);
+            Integer q = getOwnedStocks().get(symbol);
+            getOwnedStocks().put(symbol, q - (int) quantity);
         }
-        Order order = new Order(type, this.id, symbol, quantity, price, LocalDateTime.now());
+        Order order = new Order(type, getId(), symbol, quantity, price, LocalDateTime.now());
         Message msg = new Message("PUT", order.toJson());
-        producer.putMessage(msg);
+        getProducer().putMessage(msg);
         log.info("Placed order: {}", order.toJson());
     }
 

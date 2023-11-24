@@ -12,25 +12,25 @@ import static org.mockito.Mockito.*;
 
 public class TestTraderStrategy {
 
-    private Trader trader;
+    private TraderFacade traderFacade;
     private TraderStrategy traderStrategy;
 
     @BeforeEach
     public void setUp() {
-        trader = mock(Trader.class);
-        traderStrategy = new TraderStrategy(trader);
+        traderFacade = mock(TraderFacade.class);
+        traderStrategy = new TraderStrategy(traderFacade);
     }
 
     @Test
     public void testExecuteStrategy() {
-        when(trader.getAvailableStocks()).thenReturn(createStockList());
-        when(trader.getOwnedStocks()).thenReturn(createOwnedStocksMap());
-        when(trader.getAvailableFunds()).thenReturn(1000.0);
+        when(traderFacade.getTrader().getAvailableStocks()).thenReturn(createStockList());
+        when(traderFacade.getTrader().getOwnedStocks()).thenReturn(createOwnedStocksMap());
+        when(traderFacade.getTrader().getAvailableFunds()).thenReturn(1000.0);
 
-        doNothing().when(trader).placeOrder(any(Order.Type.class), anyString(), anyInt(), anyDouble());
+        doNothing().when(traderFacade).placeOrder(any(Order.Type.class), anyString(), anyInt(), anyDouble());
 
         traderStrategy.executeStrategy();
-        verify(trader, times(1)).placeOrder(any(Order.Type.class), anyString(), anyLong(), anyDouble());
+        verify(traderFacade, times(1)).placeOrder(any(Order.Type.class), anyString(), anyLong(), anyDouble());
     }
 
 
