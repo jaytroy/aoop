@@ -18,9 +18,9 @@ public class TraderStrategy {
     private TraderFacade traderFacade;
 
     /**
-     * Implements a trader strategy on a trader.
+     * Implements a trader strategy on a traderFacade which will then implement it on a trader.
      *
-     * @param traderFacade the trader that will have a strategy implemented on them.
+     * @param traderFacade the traderFacade that will have a strategy implemented on them.
      */
 
     public TraderStrategy(TraderFacade traderFacade) {
@@ -28,7 +28,7 @@ public class TraderStrategy {
     }
 
     /**
-     * Implement a trader strategy for generating random orders.
+     * Execute a trader strategy for generating random orders.
      */
     public void executeStrategy() {
         Random random = new Random();
@@ -93,7 +93,6 @@ public class TraderStrategy {
         double limitPriceBuy = price * priceFactor;
         double limitPriceSell = price / priceFactor;
         int buyOrSell = random.nextInt(2);
-        //Randomly choose between LIMIT and MARKET
         if (buyOrSell == 1 && traderFacade.getTrader().getAvailableFunds() > 0) {
             traderFacade.placeOrder(BUY, LIMIT, randomStockSymbolBuy, randomQuantityBuy, limitPriceBuy);
         } else {

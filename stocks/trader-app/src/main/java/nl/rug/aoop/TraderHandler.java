@@ -22,7 +22,7 @@ public class TraderHandler implements MessageHandler {
     /**
      * Constructs a TraderHandler for a specific trader.
      *
-     * @param traderFacade The trader associated with this handler.
+     * @param traderFacade The traderFacade associated with this handler.
      */
     public TraderHandler(TraderFacade traderFacade) {
         this.traderFacade = traderFacade;
@@ -60,7 +60,7 @@ public class TraderHandler implements MessageHandler {
         String name = modelTrader.getName();
         Map<String, Integer> ownedStocks = modelTrader.getOwnedStocks();
 
-        traderFacade.getTrader().updateInfo(funds,name,ownedStocks);
+        traderFacade.updateInfo(funds,name,ownedStocks);
     }
 
     /**
@@ -75,7 +75,7 @@ public class TraderHandler implements MessageHandler {
         List<Stock> stocks = gson.fromJson(msg, stockListType); //here this list has all the stock info
 
         if (stocks != null) {
-            traderFacade.getTrader().updateStocks(stocks);
+            traderFacade.updateStocks(stocks);
         } else {
             log.warn("Failed to parse stock information.");
         }

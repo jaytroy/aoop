@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
-import nl.rug.aoop.networking.MessageHandler;
 import nl.rug.aoop.networking.client.Client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -41,7 +40,6 @@ public class Trader implements Runnable {
     @Getter
     private NetProducer producer;
     private Client client;
-    private MessageHandler handler;
     @Getter
     private InetSocketAddress address;
     @Setter
@@ -96,6 +94,7 @@ public class Trader implements Runnable {
      * Place an order with the specified type, stock symbol, quantity, and price.
      *
      * @param action    The action of the order (BUY or SELL).
+     * @param type      The order type.
      * @param symbol    The symbol of the stock.
      * @param quantity  The quantity of the stock to be traded.
      * @param price     The price per unit of the stock.

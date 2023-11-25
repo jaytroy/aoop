@@ -19,6 +19,11 @@ public class OrderHandler {
     private Map<String, PriorityQueue<Order>> buyOrders;
     private Map<String, PriorityQueue<Order>> sellOrders;
 
+    /**
+     * Order handler that deals with handling the logic of orders.
+     *
+     * @param exchange the exchange.
+     */
     public OrderHandler(Exchange exchange) {
         this.buyOrders = new HashMap<>();
         this.sellOrders = new HashMap<>();
@@ -106,29 +111,19 @@ public class OrderHandler {
         double tradePrice = headOrder.getPrice();
         newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);
         headOrder.setQuantity(headOrder.getQuantity() - tradedQuantity);
-
         //Get pointer to buyer and seller
-        Trader buyer = exchange.findTraderById(newOrder.getAction() == Order.Action.BUY ? newOrder.getClientId() : headOrder.
+        Trader buyer = exchange.findTraderById(newOrder.getAction() == Order.Action.BUY ? newOrder.getClientId() : 
+                headOrder.
                 getClientId());
-        Trader seller = exchange.findTraderById(newOrder.getAction() == Order.Action.SELL ? newOrder.getClientId() : headOrder.
+        Trader seller = exchange.findTraderById(newOrder.getAction() == Order.Action.SELL ? newOrder.getClientId() : 
+                headOrder.
                 getClientId());
-
         //If buyer has enough money to buy a stock,
         if(buyer.getFunds() >= tradedQuantity * tradePrice) {
             //If buyer and seller exist
             if (buyer != null && seller != null) {
                 //Execute order arithmetic and exchange stocks
-                buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
-                buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
-                seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
-                seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
-                log.info("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
-                        "at price " + tradePrice);
-
-                //Update the exchange stock price
-                exchange.updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
-                //Update the traders after order completed
-                exchange.updateTraders();
+                executeOrder(newOrder, headOrder, buyer, tradedQuantity, tradePrice, seller);
             } else {
                 log.error("Buyer or Seller not found for the trade");
             }
@@ -138,5 +133,20 @@ public class OrderHandler {
         } else {
             log.error("Buyer does not have enough money");
         }
+    }
+
+    private void executeOrder(Order newOrder, Order headOrder, Trader buyer, int tradedQuantity, double tradePrice,
+                              Trader seller) {
+        buyer.setFunds(buyer.getFunds() - tradedQuantity * tradePrice);
+        buyer.addOwnedStock(newOrder.getSymbol(), tradedQuantity);
+        seller.setFunds(seller.getFunds() + tradedQuantity * tradePrice);
+        seller.removeOwnedStock(newOrder.getSymbol(), tradedQuantity);
+        log.info("Executed trade for " + tradedQuantity + " shares of " + newOrder.getSymbol() + " " +
+                "at price " + tradePrice);
+
+        //Update the exchange stock price
+        exchange.updateStockPrice(newOrder.getSymbol(), headOrder.getPrice());
+        //Update the traders after order completed
+        exchange.updateTraders();
     }
 }

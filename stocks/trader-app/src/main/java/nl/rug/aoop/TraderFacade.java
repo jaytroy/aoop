@@ -6,11 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.networking.MessageHandler;
 
+import java.util.List;
+import java.util.Map;
+
 
 /**
- * The StockExchangeFacade class serves as a facade for the stock exchange system.
- * It provides a simplified interface for traders to interact with the system.
- *
+ * The TraderFacade class serves as a facade for the TraderApp system.
  */
 @Slf4j
 public class TraderFacade {
@@ -38,8 +39,9 @@ public class TraderFacade {
      * Places an order with the stock exchange through the associated Trader.
      *
      * @param action   The action of the order (BUY or SELL).
-     * @param symbol   The symbol of the financial instrument.
-     * @param quantity The quantity of the financial instrument to be traded.
+     * @param type     The order type.
+     * @param symbol   The symbol of the stock.
+     * @param quantity The quantity of the stock to be traded.
      * @param price    The price at which the order should be executed.
      */
     public void placeOrder(Order.Action action, Order.Type type, String symbol, long quantity, double price) {
@@ -47,11 +49,29 @@ public class TraderFacade {
     }
 
     /**
+     * Update trader information.
+     *
+     * @param funds       The updated funds.
+     * @param name        The updated name.
+     * @param ownedStocks The updated owned stocks.
+     */
+    public void updateInfo(double funds, String name, Map<String, Integer> ownedStocks) {
+        trader.updateInfo(funds, name, ownedStocks);
+    }
+
+    /**
+     * Update stock information.
+     *
+     * @param stocks The updated list of stocks.
+     */
+    public void updateStocks(List<Stock> stocks) {
+        trader.updateStocks(stocks);
+    }
+
+    /**
      * Executes the trading strategy associated with this TraderFacade.
-     * The specific strategy is defined by the TraderStrategy instance.
      */
     public void executeStrategy() {
         strategy.executeStrategy();
     }
-
 }

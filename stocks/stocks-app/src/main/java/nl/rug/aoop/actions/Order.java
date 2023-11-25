@@ -19,6 +19,10 @@ public class Order implements Comparable<Order> {
         BUY, SELL
     }
 
+    /**
+     * Defines the type of order: MARKET or LIMT.
+     */
+
     public enum Type {
         MARKET, LIMIT
     }
@@ -43,6 +47,7 @@ public class Order implements Comparable<Order> {
     /**
      * Creates a new limit order with the specified parameters. (Price specified).
      *
+     * @param action    The action of the order.
      * @param clientId  The identifier of the client or trader placing the order.
      * @param symbol    The symbol of the stock associated with the order.
      * @param quantity  The quantity of shares in the order.
@@ -63,6 +68,7 @@ public class Order implements Comparable<Order> {
     /**
      * Creates a new market order with the specified parameters. (No price specified. Buys at market price).
      *
+     * @param action    The action of the order.
      * @param clientId  The identifier of the client or trader placing the order.
      * @param symbol    The symbol of the stock associated with the order.
      * @param quantity  The quantity of shares in the order.
@@ -77,7 +83,6 @@ public class Order implements Comparable<Order> {
         this.quantity = quantity;
         this.timestamp = timestamp;
     }
-
 
     @Override
     public int compareTo(Order other) {

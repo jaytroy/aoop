@@ -198,14 +198,24 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         return traders.size();
     }
 
+    /**
+     * Updates the stock price for a given stock symbol.
+     * If the stock with the specified symbol is found, its price is updated.
+     * If the stock is not found, an error message is logged.
+     *
+     * @param stockSymbol The symbol of the stock whose price needs to be updated.
+     * @param tradePrice The new trade price to set for the stock.
+     */
     protected void updateStockPrice(String stockSymbol, double tradePrice) {
         Stock tradedStock = findStockBySymbol(stockSymbol);
+
         if (tradedStock != null) {
             tradedStock.setPrice(tradePrice);
         } else {
             log.error("Stock not found for symbol: " + stockSymbol);
         }
     }
+
 
     /**
      * This receives messages from the NetConsumer, which are continuously polled from the TSMessageQueue.
@@ -224,6 +234,12 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
         }
     }
 
+    /**
+     * Finds the trader by id.
+     *
+     * @param id the id of the trader you are looking for..
+     * @return the trader that has that id.
+     */
     protected Trader findTraderById(String id) {
         for (Trader trader : traders) {
             if (trader.getId().equals(id)) {
