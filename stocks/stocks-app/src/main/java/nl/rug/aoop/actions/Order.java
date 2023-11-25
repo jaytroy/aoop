@@ -33,6 +33,7 @@ public class Order implements Comparable<Order> {
     @Getter
     private long quantity;
     @Getter
+    @Setter
     private double price;
     @Getter
     private LocalDateTime timestamp;

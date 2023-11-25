@@ -31,9 +31,12 @@ public class OrderHandler {
      * @param order the order.
      */
     public void placeOrder(Order order) throws NullPointerException {
-        if (order.getAction() == null || order.getType() == null) {
+        if (order.getType() == null) {
             log.error("Received order with null type from client " + order.getClientId());
             throw new NullPointerException("Order type is null");
+        } else if(order.getAction() == null) {
+            log.error("Received order with null action from client " + order.getClientId());
+            throw new NullPointerException("Order action is null");
         }
 
         log.info("Received order from client " + order.getClientId() + ": " + order.getAction());
@@ -41,6 +44,7 @@ public class OrderHandler {
         String stockSymbol = order.getSymbol();
         if(order.getType() == MARKET) {
             //Order is of type market
+            //order.setPrice();
             if (order.getAction() == Order.Action.BUY) {
                 matchMarketOrder(order, sellOrders.get(stockSymbol), buyOrders);
             } else {
@@ -79,7 +83,7 @@ public class OrderHandler {
 
     private void matchMarketOrder(Order newOrder, PriorityQueue<Order> oppositeOrders, Map<String, PriorityQueue<Order>>
                                   sameTypeOrder) {
-        log.info("Matching market order " + newOrder);
+        log.info("Matching market order " + newOrder.getAction() + newOrder.getType());
 
         while(!oppositeOrders.isEmpty() && newOrder.getQuantity() > 0) {
             Order headOrder = oppositeOrders.peek();
@@ -97,6 +101,8 @@ public class OrderHandler {
     }
 
     private void executeTrade(Order newOrder, Order headOrder, PriorityQueue<Order> oppositeOrders) {
+        log.info("Executing order " + newOrder.getAction() + newOrder.getType());
+
         int tradedQuantity = (int) Math.min(newOrder.getQuantity(), headOrder.getQuantity());
         double tradePrice = headOrder.getPrice();
         newOrder.setQuantity(newOrder.getQuantity() - tradedQuantity);

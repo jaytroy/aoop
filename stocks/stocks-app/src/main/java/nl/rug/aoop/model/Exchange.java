@@ -214,9 +214,9 @@ public class Exchange implements StockExchangeDataModel, ConsumerObserver {
     @Override
     public void update(Message msg) {
         String body = msg.getBody();
+        log.info("Exchange received: " + body);
 
         Order order = Order.fromJson(body);
-        System.out.println(body);
         try {
             orderHandler.placeOrder(order);
         } catch(NullPointerException e) {

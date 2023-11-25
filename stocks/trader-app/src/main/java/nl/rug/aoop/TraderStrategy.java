@@ -32,8 +32,12 @@ public class TraderStrategy {
      */
     public void executeStrategy() {
         Random random = new Random();
-        int marketOrLimit = random.nextInt(1);
-        buySellMarketStrategy();
+        int marketOrLimit = random.nextInt(2);
+        if(marketOrLimit == 0) {
+            buySellMarketStrategy();
+        } else {
+            buySellStrategy();
+        }
         //more strategies here as needed
     }
 
