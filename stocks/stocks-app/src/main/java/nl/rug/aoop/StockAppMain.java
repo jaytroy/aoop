@@ -52,12 +52,11 @@ public class StockAppMain {
         updateView(viewFactory);
     }
 
-    //Change this to a timer?
     private static void updateView(SimpleViewFactory viewFactory) {
         while (true) {
             viewFactory.updateView();
             try {
-                Thread.sleep(8); //Updates ever ~every hz on a 120 hz screen. Probably inefficient lmao
+                Thread.sleep(8); //Updates ever ~every hz on a 120 hz screen
             } catch (InterruptedException e) {
                 log.error("Failed to put thread to sleep");
             }

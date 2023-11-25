@@ -44,7 +44,6 @@ public class OrderHandler {
         String stockSymbol = order.getSymbol();
         if(order.getType() == MARKET) {
             //Order is of type market
-            //order.setPrice();
             if (order.getAction() == Order.Action.BUY) {
                 matchMarketOrder(order, sellOrders.get(stockSymbol), buyOrders);
             } else {

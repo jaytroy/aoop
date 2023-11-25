@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
-
+import nl.rug.aoop.networking.MessageHandler;
 
 
 /**
@@ -14,17 +14,14 @@ import nl.rug.aoop.actions.Order;
  */
 @Slf4j
 public class TraderFacade {
-    /**
-     * The Trader associated with this facade.
-     */
     @Getter
     @Setter
     private Trader trader;
 
-    /**
-     * The strategy employed by the trader for making trading decisions.
-     */
     private TraderStrategy strategy;
+    @Getter
+    @Setter
+    private MessageHandler handler;
 
     /**
      * Constructs a new TraderFacade with the specified Trader.
@@ -34,6 +31,7 @@ public class TraderFacade {
     public TraderFacade(Trader trader) {
         this.trader = trader;
         strategy = new TraderStrategy(this);
+        this.handler = new TraderHandler(this);
     }
 
     /**

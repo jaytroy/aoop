@@ -13,6 +13,7 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static nl.rug.aoop.actions.Order.Action.BUY;
 import static nl.rug.aoop.actions.Order.Type.MARKET;
@@ -33,7 +34,7 @@ public class Trader implements Runnable {
     private double availableFunds;
     @Getter
     @Setter
-    private Map<String, Integer> ownedStocks; // Map to track owned stocks (stock symbol, quantity)
+    private Map<String, Integer> ownedStocks;
     @Getter
     @Setter
     private List<Stock> availableStocks;
@@ -57,10 +58,9 @@ public class Trader implements Runnable {
         this.id = id;
         this.address = address;
 
-        handler = new TraderHandler(this);
-        client = new Client(handler, address, id);
-        producer = new NetProducer(client);
         traderFacade = new TraderFacade(this);
+        client = new Client(traderFacade.getHandler(), address, id);
+        producer = new NetProducer(client);
         try {
             client.connect();
             Thread clientThread = new Thread(client);
@@ -81,8 +81,10 @@ public class Trader implements Runnable {
         }
         while (true) {
             traderFacade.executeStrategy();
+            Random random = new Random();
+            int sleepDuration = random.nextInt(3000) + 1000; //random time between 1 and 4 seconds
             try {
-                Thread.sleep(4000);
+                Thread.sleep(sleepDuration);
             } catch (InterruptedException e) {
                 log.error("Thread sleep interrupted", e);
                 Thread.currentThread().interrupt();
@@ -99,7 +101,6 @@ public class Trader implements Runnable {
      * @param price     The price per unit of the stock.
      */
     public void placeOrder(Order.Action action, Order.Type type, String symbol, long quantity, double price) {
-        //Is this duplicated?
         if(action == BUY) {
             setAvailableFunds(getAvailableFunds() - price * quantity);
         } else {

@@ -38,7 +38,7 @@ public class TraderStrategy {
         } else {
             buySellStrategy();
         }
-        //more strategies here as needed
+        //more strategies here as needed (for the future if we develop this further)
     }
 
     private void buySellMarketStrategy() {

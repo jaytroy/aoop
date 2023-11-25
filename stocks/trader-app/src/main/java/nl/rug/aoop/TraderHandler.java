@@ -17,15 +17,15 @@ import java.util.Map;
  */
 @Slf4j
 public class TraderHandler implements MessageHandler {
-    private Trader trader;
+    private TraderFacade traderFacade;
 
     /**
      * Constructs a TraderHandler for a specific trader.
      *
-     * @param trader The trader associated with this handler.
+     * @param traderFacade The trader associated with this handler.
      */
-    public TraderHandler(Trader trader) {
-        this.trader = trader;
+    public TraderHandler(TraderFacade traderFacade) {
+        this.traderFacade = traderFacade;
     }
 
     /**
@@ -35,19 +35,16 @@ public class TraderHandler implements MessageHandler {
      */
     @Override
     public void handleMessage(String message) {
-        //System.out.println(message);
         try {
             Message msg = nl.rug.aoop.messagequeue.queues.Message.fromJson(message);
             String header = msg.getHeader();
 
-            //Command pattern instead? This is bad handling. No time though.
             if (header.equals("TRADER")) {
                 handleTraderInfo(msg.getBody());
             } else if (header.equals("STOCK")) {
                 handleStockInfo(msg.getBody());
             }
         } catch(JsonSyntaxException e) {
-            //A message was not sent from the exchange. This is going to be coming from the server.
             log.info(message);
         }
     }
@@ -58,13 +55,12 @@ public class TraderHandler implements MessageHandler {
      * @param msg the message that arrives.
      */
     public void handleTraderInfo(String msg) {
-        //This right here couples the program. We need to do it some other way.
         nl.rug.aoop.model.components.Trader modelTrader = nl.rug.aoop.model.components.Trader.fromJson(msg);
         double funds = modelTrader.getFunds();
         String name = modelTrader.getName();
         Map<String, Integer> ownedStocks = modelTrader.getOwnedStocks();
 
-        trader.updateInfo(funds,name,ownedStocks);
+        traderFacade.getTrader().updateInfo(funds,name,ownedStocks);
     }
 
     /**
@@ -79,7 +75,7 @@ public class TraderHandler implements MessageHandler {
         List<Stock> stocks = gson.fromJson(msg, stockListType); //here this list has all the stock info
 
         if (stocks != null) {
-            trader.updateStocks(stocks);
+            traderFacade.getTrader().updateStocks(stocks);
         } else {
             log.warn("Failed to parse stock information.");
         }
