@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.networking.MessageHandler;
+import nl.rug.aoop.strategy.TraderStrategy;
 
 import java.util.List;
 import java.util.Map;

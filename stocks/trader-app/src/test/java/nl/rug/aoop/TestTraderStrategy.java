@@ -1,12 +1,11 @@
 package nl.rug.aoop;
 
-import nl.rug.aoop.actions.Order;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nl.rug.aoop.strategy.TraderStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
