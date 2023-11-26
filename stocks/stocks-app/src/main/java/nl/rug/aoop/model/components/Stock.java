@@ -19,8 +19,6 @@ public class Stock implements StockDataModel {
     @Getter
     @Setter
     private long sharesOutstanding;
-    @Setter
-    private double marketCap;
     @Getter
     @Setter
     private double price;

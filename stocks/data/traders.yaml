@@ -77,7 +77,3 @@ traders:
     funds: 300000
     ownedStocks:
       "AOOP" : 60000
-  - id: "bot10"
-    name: "Broke boy"
-    funds: 1000
-    ownedStocks:

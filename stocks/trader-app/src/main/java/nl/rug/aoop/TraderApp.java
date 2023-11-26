@@ -20,7 +20,7 @@ public class TraderApp {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
-        int numberOfTraders = 10;
+        int numberOfTraders = 9;
         threadpool = Executors.newFixedThreadPool(numberOfTraders);
 
         for (int i = 1; i <= numberOfTraders; i++) {

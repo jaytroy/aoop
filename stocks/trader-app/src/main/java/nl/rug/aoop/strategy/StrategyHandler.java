@@ -38,6 +38,10 @@ public class StrategyHandler {
         strategies.get(stratChoice).execute();
     }
 
+    /**
+     * Adds a strategy to the handler.
+     * @param strategy The strategy.
+     */
     public void addStrategy(TradeStrategy strategy) {
         strategies.add(strategy);
     }

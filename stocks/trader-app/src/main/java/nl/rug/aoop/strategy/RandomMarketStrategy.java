@@ -10,13 +10,23 @@ import static nl.rug.aoop.actions.Order.Action.BUY;
 import static nl.rug.aoop.actions.Order.Action.SELL;
 import static nl.rug.aoop.actions.Order.Type.MARKET;
 
+/**
+ * A strategy which places random market orders.
+ */
 public class RandomMarketStrategy implements TradeStrategy {
     private TraderFacade traderFacade;
 
+    /**
+     * The constructor.
+     * @param traderFacade A trader who uses this strategy.
+     */
     public RandomMarketStrategy(TraderFacade traderFacade) {
         this.traderFacade = traderFacade;
     }
 
+    /**
+     * The method responsible for executing the logic of the strategy.
+     */
     public void execute() {
         Random random = new Random();
         // For buying, get all possible stock symbols from available stocks
