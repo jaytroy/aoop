@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.rug.aoop.strategy.TraderStrategy;
+import nl.rug.aoop.marketcomponents.Stock;
+import nl.rug.aoop.marketcomponents.Trader;
+import nl.rug.aoop.strategy.StrategyHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
@@ -14,7 +16,7 @@ public class TestTraderStrategy {
 
     private TraderFacade traderFacade;
     private Trader trader;
-    private TraderStrategy traderStrategy;
+    private StrategyHandler traderStrategy;
 
     @BeforeEach
     public void setUp() {
@@ -24,7 +26,7 @@ public class TestTraderStrategy {
         // Ensure that the TraderFacade mock returns the mock Trader object
         when(traderFacade.getTrader()).thenReturn(trader);
 
-        traderStrategy = new TraderStrategy(traderFacade);
+        traderStrategy = new StrategyHandler(traderFacade);
     }
 
     @Test

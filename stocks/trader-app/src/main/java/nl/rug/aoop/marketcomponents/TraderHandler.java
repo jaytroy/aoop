@@ -1,9 +1,10 @@
-package nl.rug.aoop;
+package nl.rug.aoop.marketcomponents;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.TraderFacade;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.networking.MessageHandler;
 import java.lang.reflect.Type;

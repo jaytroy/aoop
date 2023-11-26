@@ -1,6 +1,7 @@
 package nl.rug.aoop;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.marketcomponents.Trader;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +20,7 @@ public class TraderApp {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
-        int numberOfTraders = 9;
+        int numberOfTraders = 10;
         threadpool = Executors.newFixedThreadPool(numberOfTraders);
 
         for (int i = 1; i <= numberOfTraders; i++) {

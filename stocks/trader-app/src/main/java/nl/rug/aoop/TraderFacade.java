@@ -4,8 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import nl.rug.aoop.actions.Order;
+import nl.rug.aoop.marketcomponents.Stock;
+import nl.rug.aoop.marketcomponents.Trader;
+import nl.rug.aoop.marketcomponents.TraderHandler;
 import nl.rug.aoop.networking.MessageHandler;
-import nl.rug.aoop.strategy.TraderStrategy;
+import nl.rug.aoop.strategy.RandomLimitStrategy;
+import nl.rug.aoop.strategy.RandomMarketStrategy;
+import nl.rug.aoop.strategy.StrategyHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +25,7 @@ public class TraderFacade {
     @Setter
     private Trader trader;
 
-    private TraderStrategy strategy;
+    private StrategyHandler strategyHandler;
     @Getter
     @Setter
     private MessageHandler handler;
@@ -32,8 +37,12 @@ public class TraderFacade {
      */
     public TraderFacade(Trader trader) {
         this.trader = trader;
-        strategy = new TraderStrategy(this);
+        this.strategyHandler = new StrategyHandler(this);
         this.handler = new TraderHandler(this);
+
+        //Add as many strategies as you have/need
+        strategyHandler.addStrategy(new RandomMarketStrategy(this));
+        strategyHandler.addStrategy(new RandomLimitStrategy(this));
     }
 
     /**
@@ -73,6 +82,6 @@ public class TraderFacade {
      * Executes the trading strategy associated with this TraderFacade.
      */
     public void executeStrategy() {
-        strategy.executeStrategy();
+        strategyHandler.executeStrategy();
     }
 }

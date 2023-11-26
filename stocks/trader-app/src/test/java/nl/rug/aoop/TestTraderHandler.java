@@ -3,6 +3,8 @@ package nl.rug.aoop;
 import java.util.HashMap;
 import java.util.Map;
 
+import nl.rug.aoop.marketcomponents.Trader;
+import nl.rug.aoop.marketcomponents.TraderHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;

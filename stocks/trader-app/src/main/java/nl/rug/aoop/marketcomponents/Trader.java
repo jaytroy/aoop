@@ -1,8 +1,9 @@
-package nl.rug.aoop;
+package nl.rug.aoop.marketcomponents;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.TraderFacade;
 import nl.rug.aoop.actions.Order;
 import nl.rug.aoop.messagequeue.queues.Message;
 import nl.rug.aoop.messagequeue.serverside.NetProducer;
@@ -80,7 +81,7 @@ public class Trader implements Runnable {
         while (true) {
             traderFacade.executeStrategy();
             Random random = new Random();
-            int sleepDuration = random.nextInt(4000) + 1000; //random time between 1 and 4 seconds
+            int sleepDuration = random.nextInt(4000) + 1000; //Send an order between 1 and 4 seconds
             try {
                 Thread.sleep(sleepDuration);
             } catch (InterruptedException e) {
