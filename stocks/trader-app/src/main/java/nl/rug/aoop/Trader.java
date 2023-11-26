@@ -80,7 +80,7 @@ public class Trader implements Runnable {
         while (true) {
             traderFacade.executeStrategy();
             Random random = new Random();
-            int sleepDuration = random.nextInt(3000) + 1000; //random time between 1 and 4 seconds
+            int sleepDuration = random.nextInt(4000) + 1000; //random time between 1 and 4 seconds
             try {
                 Thread.sleep(sleepDuration);
             } catch (InterruptedException e) {

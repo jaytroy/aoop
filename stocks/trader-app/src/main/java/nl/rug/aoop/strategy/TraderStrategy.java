@@ -1,6 +1,8 @@
-package nl.rug.aoop;
+package nl.rug.aoop.strategy;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.rug.aoop.Stock;
+import nl.rug.aoop.TraderFacade;
 
 import java.util.List;
 import java.util.Random;

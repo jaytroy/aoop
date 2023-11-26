@@ -34,7 +34,7 @@ public class CommandHandler {
         log.info("CommandHandler received " + commandName);
         Command command = commands.get(commandName);
         if (command != null) {
-            System.out.println("executing " + commandName);
+            log.info("CommandHandler executing " + commandName);
             command.execute(params);
         }
     }
